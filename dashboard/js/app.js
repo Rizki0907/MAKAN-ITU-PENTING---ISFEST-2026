@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Setup Diurnal Day Filter
   setupDiurnalFilter();
+
+  // Initialize Animated Counters
+  setTimeout(animateHeroCounters, 150);
 });
 
 /* --------------------------------------------------------------------------
@@ -43,6 +46,11 @@ function setupTabNavigation() {
           content.classList.remove('active');
         }
       });
+
+      // Trigger Hero Counters Animation if Beranda is opened
+      if (targetTabId === 'tab-beranda') {
+        animateHeroCounters();
+      }
 
       // Trigger Map Invalidation if Map tab is opened
       if (targetTabId === 'tab-peta' && spkluMap) {
@@ -120,3 +128,43 @@ function applyTheme(theme) {
     updateChartJsTheme(isLight);
   }
 }
+
+/* --------------------------------------------------------------------------
+   4. Animated Number Counters (Smooth Count-up for KPI Hero Cards)
+   -------------------------------------------------------------------------- */
+function animateHeroCounters() {
+  const statElements = document.querySelectorAll('.stat-value[data-target]');
+  statElements.forEach(el => {
+    const target = parseFloat(el.getAttribute('data-target'));
+    const isDecimal = el.getAttribute('data-decimal') === 'true';
+    const suffix = el.getAttribute('data-suffix') || '';
+    const duration = 1200;
+    const startTime = performance.now();
+
+    function updateCounter(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const current = target * ease;
+
+      if (isDecimal) {
+        el.innerText = current.toFixed(4) + suffix;
+      } else {
+        el.innerText = Math.round(current).toLocaleString() + suffix;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        if (isDecimal) {
+          el.innerText = target.toFixed(4) + suffix;
+        } else {
+          el.innerText = target.toLocaleString() + suffix;
+        }
+      }
+    }
+
+    requestAnimationFrame(updateCounter);
+  });
+}
+

@@ -343,6 +343,7 @@ function renderModelEvaluationTable() {
 
   models.forEach((m, idx) => {
     const isChampion = idx === 2; // A3 Balanced
+    const pct = m.Weight_Percentage || 0;
     html += `
       <tr>
         <td>
@@ -356,8 +357,13 @@ function renderModelEvaluationTable() {
         <td style="font-family: monospace; font-weight: 700; color: ${m['Holdout RMSE'] < 0.0678 ? '#34d399' : '#cbd5e1'}">
           ${m['Holdout RMSE'].toFixed(6)}
         </td>
-        <td style="font-family: monospace; color: #60a5fa; font-weight: 600;">
-          ${m.Weight_Percentage ? m.Weight_Percentage.toFixed(2) + '%' : '-'}
+        <td style="min-width: 105px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: monospace; font-size: 0.78rem;">
+            <span style="color: #60a5fa; font-weight: 600;">${pct.toFixed(2)}%</span>
+            <div style="flex: 1; max-width: 44px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+              <div style="width: ${(pct / 25) * 100}%; height: 100%; background: linear-gradient(90deg, #6366f1, #00f2fe); border-radius: 3px;"></div>
+            </div>
+          </div>
         </td>
       </tr>
     `;
@@ -378,8 +384,13 @@ function renderModelEvaluationTable() {
       <td style="font-family: monospace; font-weight: 800; color: #4ade80;">
         0.067710
       </td>
-      <td style="font-family: monospace; color: #a5b4fc; font-weight: 700;">
-        100.0%
+      <td style="min-width: 105px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: monospace; font-size: 0.78rem;">
+          <span style="color: #a5b4fc; font-weight: 700;">100.0%</span>
+          <div style="flex: 1; max-width: 44px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ec4899, #a5b4fc); border-radius: 3px;"></div>
+          </div>
+        </div>
       </td>
     </tr>
   `;

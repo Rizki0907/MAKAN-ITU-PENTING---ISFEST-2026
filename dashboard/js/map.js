@@ -79,7 +79,10 @@ function renderMapMarkers(stations) {
     const popupContent = `
       <div class="popup-card">
         <div class="popup-station-title">${station.station_name}</div>
-        <div class="popup-city">📍 ${station.city}, ${station.state} &bull; ${station.location_type}</div>
+        <div class="popup-city">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 2px; color: var(--accent-cyan);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${station.city}, ${station.state} &bull; ${station.location_type}
+        </div>
         
         <div class="popup-grid">
           <div class="popup-metric-item">
@@ -109,6 +112,11 @@ function renderMapMarkers(stations) {
     `;
 
     marker.bindPopup(popupContent, { maxWidth: 320 });
+    marker.bindTooltip(`<strong>${station.station_name}</strong> &bull; ${(util * 100).toFixed(1)}%`, {
+      direction: 'top',
+      offset: [0, -6],
+      opacity: 0.95
+    });
     markerLayerGroup.addLayer(marker);
   });
 

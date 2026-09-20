@@ -107,7 +107,7 @@
        LIVE TICKER BAR (SIPEDA Reference Style)
        ======================================================================== -->
   <div class="ticker-bar">
-    <div class="ticker-label"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px;"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg> ChargeIQ</div>
+    <div class="ticker-label"><span class="live-radar-dot"></span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px;"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg> ChargeIQ</div>
     <div class="ticker-track">
       <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
       <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
@@ -151,22 +151,22 @@
           <!-- Hero KPI Stat Cards -->
           <div class="hero-stats-row">
             <div class="hero-stat-card">
-              <span class="stat-value">150</span>
+              <span class="stat-value" data-target="150">150</span>
               <span class="stat-label">Stasiun SPKLU</span>
               <span class="stat-sub">100% US Coverage</span>
             </div>
             <div class="hero-stat-card purple-border">
-              <span class="stat-value">1.3M+</span>
+              <span class="stat-value" data-target="1.3" data-suffix="M+" data-decimal="true">1.3M+</span>
               <span class="stat-label">Data Log</span>
-              <span class="stat-sub">Juli - Des 2025</span>
+              <span class="stat-sub">1.317.750 Observasi</span>
             </div>
             <div class="hero-stat-card pink-border">
-              <span class="stat-value">6</span>
+              <span class="stat-value" data-target="6">6</span>
               <span class="stat-label">Model GBDT</span>
               <span class="stat-sub">Consensus Blend</span>
             </div>
             <div class="hero-stat-card emerald-border">
-              <span class="stat-value">0.0680</span>
+              <span class="stat-value" data-target="0.0680" data-decimal="true">0.0680</span>
               <span class="stat-label">Skor Kaggle</span>
               <span class="stat-sub">RMSE Model Murni (0.06780)</span>
             </div>
@@ -484,17 +484,22 @@
         <div class="map-floating-controls">
           <input type="text" id="map-search" class="map-search-input" placeholder="Cari nama stasiun, kota, atau state..." style="width: 260px;">
           <select id="map-filter-charger" class="map-control-select">
-            <option value="all">Semua Tipe Pengisi Daya</option>
+            <option value="all">Semua Tipe Pengisi Daya (4 Tipe)</option>
             <option value="DC Fast Charge">DC Fast Charge</option>
+            <option value="Level 2">Level 2</option>
+            <option value="Tesla DC Fast">Tesla DC Fast</option>
             <option value="Hyper-Fast">Hyper-Fast</option>
           </select>
           <select id="map-filter-location" class="map-control-select">
-            <option value="all">Semua Tipe Lokasi</option>
-            <option value="Highway Corridor">Highway Corridor</option>
+            <option value="all">Semua Tipe Lokasi (8 Tipe)</option>
             <option value="Airport">Airport</option>
-            <option value="Shopping Center">Shopping Center</option>
-            <option value="Urban Center">Urban Center</option>
+            <option value="Highway Corridor">Highway Corridor</option>
+            <option value="Hotel/Hospitality">Hotel / Hospitality</option>
             <option value="Residential">Residential</option>
+            <option value="Shopping Center">Shopping Center</option>
+            <option value="Suburban">Suburban</option>
+            <option value="Urban Center">Urban Center</option>
+            <option value="Workplace">Workplace</option>
           </select>
         </div>
 
@@ -582,13 +587,107 @@
       <div class="section-header">
         <div class="section-title-wrap">
           <span class="section-pill">Policy & Capacity Simulator</span>
-          <h2 class="section-title">Simulator Kebijakan & Dynamic Pricing (What-If Analysis)</h2>
+          <h2 class="section-title">Kalkulator Inferensi & Simulator Kebijakan SPKLU</h2>
           <p class="section-subtitle">
-            Alat bantu pengambil keputusan (Decision Support System) untuk memproyeksikan pergeseran utilisasi, antrean, dan pendapatan operator berbasis elastisitas harga dan ekspansi port.
+            Uji inferensi prediksi langsung untuk setiap stasiun secara spesifik, serta simulasikan skenario penyesuaian tarif dinamis dan ekspansi port berbasis data empiris.
           </p>
         </div>
       </div>
 
+      <!-- Part 1: Interactive Inference Playground Card -->
+      <div class="glass-card" style="margin-bottom: 2rem;">
+        <div class="card-header-clean">
+          <div>
+            <h3 class="card-title">Kalkulator Prediksi Instan (Inference Playground)</h3>
+            <p class="card-subtitle">Uji langsung output prediksi model Consensus GBDT untuk 150 stasiun riil secara interaktif</p>
+          </div>
+          <span class="badge-model badge-champion">Real-time Inference</span>
+        </div>
+
+        <div class="playground-layout">
+          <!-- Controls -->
+          <div>
+            <div style="margin-bottom: 1rem;">
+              <label style="font-size: 0.76rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">
+                Pilih Stasiun SPKLU (150 Stasiun Riil)
+              </label>
+              <select id="calc-station-select" class="map-control-select" style="width: 100%;">
+                <option value="EV00001">EV00001 - ChargePoint - Los Angeles #1</option>
+              </select>
+              <div id="calc-station-info" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <div class="playground-controls-grid">
+              <!-- Hour Slider -->
+              <div class="sim-control-group" style="margin-bottom: 0;">
+                <div class="sim-control-header">
+                  <span class="sim-control-title">Jam Operasional</span>
+                  <span id="calc-hour-val" class="sim-control-val" style="color: var(--accent-cyan);">12:00</span>
+                </div>
+                <input type="range" id="calc-hour-slider" class="sim-slider" min="0" max="23" step="1" value="12">
+              </div>
+
+              <!-- Day Type Select -->
+              <div class="sim-control-group" style="margin-bottom: 0;">
+                <div class="sim-control-header">
+                  <span class="sim-control-title">Tipe Hari</span>
+                </div>
+                <select id="calc-day-select" class="map-control-select" style="width: 100%;">
+                  <option value="weekday">Hari Kerja (Senin - Jumat)</option>
+                  <option value="weekend">Akhir Pekan (Sabtu - Minggu)</option>
+                </select>
+              </div>
+
+              <!-- Temperature Slider -->
+              <div class="sim-control-group" style="margin-bottom: 0; grid-column: span 2;">
+                <div class="sim-control-header">
+                  <span class="sim-control-title">Suhu Udara Lingkungan (°F)</span>
+                  <span id="calc-temp-val" class="sim-control-val" style="color: var(--accent-purple);">65°F</span>
+                </div>
+                <input type="range" id="calc-temp-slider" class="sim-slider" min="10" max="100" step="1" value="65">
+                <span style="font-size: 0.68rem; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 2px;">
+                  <span>10°F (Beku Ekstrem)</span>
+                  <span>65°F (Normal)</span>
+                  <span>100°F (Panas Terik)</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Output Box -->
+          <div class="playground-result-box">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.74rem; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan); letter-spacing: 0.06em;">
+                  Estimasi Prediksi Model
+                </span>
+                <span id="calc-pred-risk"></span>
+              </div>
+
+              <div style="margin: 0.75rem 0;">
+                <span style="font-size: 0.76rem; color: var(--text-muted);">Nilai Utilisasi Terprediksi (utilization_rate):</span>
+                <div id="calc-pred-val" style="font-family: var(--font-heading); font-size: 2.8rem; font-weight: 800; color: #ffffff; line-height: 1;">
+                  42.85%
+                </div>
+              </div>
+
+              <!-- Progress bar -->
+              <div class="sim-gauge-bar-wrapper" style="margin-top: 0.5rem;">
+                <div id="calc-pred-bar" class="sim-gauge-bar-fill" style="width: 42.85%;"></div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; border-top: 1px solid var(--border-subtle); padding-top: 0.75rem; margin-top: 1rem;">
+              <span class="badge-model" style="font-size: 0.65rem; margin-right: 4px;">Formula Konsensus</span>
+              Dihitung berbasis interaksi profil spasial stasiun, kurva siklus diurnal jam-hari, dan penyesuaian konveks musiman <code>OPTIMAL_SHIFT = +0.0007</code>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 2: Policy & Dynamic Pricing Simulator -->
       <div class="simulator-layout">
         <!-- Controls Column -->
         <div class="glass-card simulator-controls">
@@ -602,14 +701,17 @@
           <!-- Location Type Selector -->
           <div class="sim-control-group">
             <div class="sim-control-header">
-              <span class="sim-control-title">Tipe Lokasi SPKLU Target</span>
+              <span class="sim-control-title">Tipe Lokasi SPKLU Target (8 Kategori Data Asli)</span>
             </div>
             <select id="sim-loc-type" class="map-control-select" style="width: 100%;">
-              <option value="Highway Corridor">Highway Corridor (Koridor Jalan Tol)</option>
-              <option value="Airport">Airport (Bandara)</option>
-              <option value="Shopping Center">Shopping Center (Pusat Perbelanjaan)</option>
-              <option value="Urban Center">Urban Center (Kawasan Perkotaan)</option>
-              <option value="Residential">Residential (Kawasan Pemukiman)</option>
+              <option value="Shopping Center">Shopping Center (Pusat Perbelanjaan &bull; Rata-rata 48.3%)</option>
+              <option value="Highway Corridor">Highway Corridor (Koridor Jalan Tol &bull; Rata-rata 47.0%)</option>
+              <option value="Urban Center">Urban Center (Kawasan Perkotaan &bull; Rata-rata 45.8%)</option>
+              <option value="Airport">Airport (Bandara &bull; Rata-rata 41.8%)</option>
+              <option value="Hotel/Hospitality">Hotel / Hospitality (Perhotelan &bull; Rata-rata 41.6%)</option>
+              <option value="Suburban">Suburban (Kawasan Pinggiran Kota &bull; Rata-rata 39.5%)</option>
+              <option value="Workplace">Workplace (Area Perkantoran &bull; Rata-rata 29.3%)</option>
+              <option value="Residential">Residential (Kawasan Pemukiman &bull; Rata-rata 27.0%)</option>
             </select>
           </div>
 
@@ -759,6 +861,79 @@
           <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
             Pengembangan sistem dashboard interaktif berbasis web responsif, visualisasi spasial 150 stasiun Leaflet, serta simulator kebijakan *dynamic pricing* waktu nyata.
           </p>
+        </div>
+      </div>
+
+      <!-- Interactive Machine Learning Pipeline Flowchart -->
+      <div class="glass-card" style="margin-bottom: 2.5rem;">
+        <div class="card-header-clean">
+          <div>
+            <h3 class="card-title">Arsitektur Pipeline Pemodelan End-to-End</h3>
+            <p class="card-subtitle">Alur rekayasa fitur bertingkat, pelatihan paralel 6 GBDT, dan optimasi konveks linear</p>
+          </div>
+          <span class="badge-model badge-champion">End-to-End Pipeline</span>
+        </div>
+
+        <div class="pipeline-flow-container">
+          <!-- Step 1 -->
+          <div class="pipeline-step-card">
+            <div>
+              <div class="pipeline-step-num">1</div>
+              <div class="pipeline-step-title">Data Ingestion</div>
+              <div class="pipeline-step-desc">
+                Pembersihan 1.317.750 baris data transaksi pada 150 stasiun SPKLU di 15 kota metropolitan AS tanpa data bocor (data leakage).
+              </div>
+            </div>
+            <span class="pipeline-step-tag">100% US Coverage</span>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="pipeline-step-card">
+            <div>
+              <div class="pipeline-step-num">2</div>
+              <div class="pipeline-step-title">Spatiotemporal Profiling</div>
+              <div class="pipeline-step-desc">
+                Agregasi kuantil target per kombinasi stasiun-jam-hari (P25, P50, P75), encoding siklis trigonometri, dan fitur deviasi suhu.
+              </div>
+            </div>
+            <span class="pipeline-step-tag">56.5% Bobot Kunci</span>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="pipeline-step-card">
+            <div>
+              <div class="pipeline-step-num">3</div>
+              <div class="pipeline-step-title">6 GBDT Parallel Ensemble</div>
+              <div class="pipeline-step-desc">
+                Pelatihan 6 konfigurasi pohon (LightGBM deep/reg, CatBoost symmetric/balanced, XGBoost hist) dengan skema multi-seed 125% full trees.
+              </div>
+            </div>
+            <span class="pipeline-step-tag">RMSE 0.0677 Single</span>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="pipeline-step-card">
+            <div>
+              <div class="pipeline-step-num">4</div>
+              <div class="pipeline-step-title">Stacking Meta-Learner</div>
+              <div class="pipeline-step-desc">
+                Penyatuan prediksi via Ridge Regression regularized untuk mengoptimalkan bobot konsensus tanpa risiko overfitting.
+              </div>
+            </div>
+            <span class="pipeline-step-tag">Holdout 0.06771</span>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="pipeline-step-card">
+            <div>
+              <div class="pipeline-step-num">5</div>
+              <div class="pipeline-step-title">Convex Post-Processing</div>
+              <div class="pipeline-step-desc">
+                Koreksi seasonal drift musim dingin Desember via SHIFT (+0.0007) & SHRINKAGE (1.0028) dan pembatasan fisik [0.02, 0.98].
+              </div>
+            </div>
+            <span class="pipeline-step-tag">Kaggle LB 0.0680</span>
+          </div>
         </div>
       </div>
 
