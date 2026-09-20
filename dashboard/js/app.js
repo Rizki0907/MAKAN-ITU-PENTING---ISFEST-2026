@@ -3,6 +3,9 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Preloader Telemetry Animation
+  initPreloader();
+
   // Initialize Theme (Dark / Light Mode)
   initThemeToggle();
 
@@ -21,6 +24,41 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Animated Counters
   setTimeout(animateHeroCounters, 150);
 });
+
+/* --------------------------------------------------------------------------
+   0. ChargeIQ Telemetry Preloader Controller
+   -------------------------------------------------------------------------- */
+function initPreloader() {
+  const preloader = document.getElementById('chargeiq-preloader');
+  const fill = document.getElementById('preloader-progress-fill');
+  const status = document.getElementById('preloader-status-text');
+
+  if (!preloader) return;
+
+  const steps = [
+    { progress: 28, text: 'Menginisialisasi Telemetri 150 SPKLU...' },
+    { progress: 62, text: 'Memuat Profil Spasial-Temporal...' },
+    { progress: 88, text: 'Sinkronisasi Model Konsensus GBDT...' },
+    { progress: 100, text: 'Sistem Siap &bull; ChargeIQ Aktif' }
+  ];
+
+  let currentStep = 0;
+  const stepInterval = setInterval(() => {
+    if (currentStep < steps.length) {
+      if (fill) fill.style.width = steps[currentStep].progress + '%';
+      if (status) status.innerHTML = steps[currentStep].text;
+      currentStep++;
+    } else {
+      clearInterval(stepInterval);
+      setTimeout(() => {
+        preloader.classList.add('fade-out');
+        setTimeout(() => {
+          preloader.style.display = 'none';
+        }, 500);
+      }, 300);
+    }
+  }, 220);
+}
 
 /* --------------------------------------------------------------------------
    1. Tab Navigation Routing (Sticky Header Controls)
