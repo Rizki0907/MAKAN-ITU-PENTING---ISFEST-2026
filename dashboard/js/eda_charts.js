@@ -3,14 +3,27 @@
    Matches exact distributions & numbers from ISFEST_Final #2.ipynb
    ========================================================================== */
 
-const PLOTLY_DARK_LAYOUT = {
-  paper_bgcolor: 'rgba(14, 20, 36, 0.85)',
-  plot_bgcolor: 'rgba(8, 11, 19, 0.6)',
-  font: { family: 'Inter, sans-serif', color: '#94a3b8', size: 11 },
-  margin: { l: 50, r: 25, t: 40, b: 45 },
-  hovermode: 'closest',
-  autosize: true
-};
+function getPlotlyBaseLayout() {
+  const isLight = document.body.classList.contains('light-theme');
+  return {
+    paper_bgcolor: isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(14, 20, 36, 0.85)',
+    plot_bgcolor: isLight ? 'rgba(244, 246, 250, 0.7)' : 'rgba(8, 11, 19, 0.6)',
+    font: { family: 'Inter, sans-serif', color: isLight ? '#475569' : '#94a3b8', size: 11 },
+    margin: { l: 50, r: 25, t: 40, b: 45 },
+    hovermode: 'closest',
+    autosize: true
+  };
+}
+
+function updateEdaChartsTheme(isLight) {
+  if (typeof Plotly === 'undefined' || typeof EDA_INTERACTIVE_DATA === 'undefined') return;
+  renderEdaDiurnal();
+  renderEdaLocationCharger();
+  renderEdaPorts();
+  renderEdaTemperature();
+  renderEdaCorrelation();
+  renderEdaTargetDistribution();
+}
 
 const PLOTLY_CONFIG = {
   responsive: true,
@@ -66,8 +79,8 @@ function renderEdaDiurnal() {
   };
 
   const layout = {
-    ...PLOTLY_DARK_LAYOUT,
-    title: { text: '<b>Rata-rata Utilisasi: Hari Kerja vs Akhir Pekan</b>', font: { size: 13, color: '#ffffff' } },
+    ...getPlotlyBaseLayout(),
+    title: { text: '<b>Rata-rata Utilisasi: Hari Kerja vs Akhir Pekan</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
     xaxis: {
       title: 'Jam Operasional (0 - 23)',
       gridcolor: 'rgba(255, 255, 255, 0.05)',
@@ -121,8 +134,8 @@ function renderEdaLocationCharger() {
   };
 
   const layout = {
-    ...PLOTLY_DARK_LAYOUT,
-    title: { text: '<b>Distribusi Utilisasi per Tipe Lokasi SPKLU (Mean & IQR)</b>', font: { size: 13, color: '#ffffff' } },
+    ...getPlotlyBaseLayout(),
+    title: { text: '<b>Distribusi Utilisasi per Tipe Lokasi SPKLU (Mean & IQR)</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
     xaxis: {
       gridcolor: 'rgba(255, 255, 255, 0.05)',
       tickangle: -20
@@ -160,8 +173,8 @@ function renderEdaPorts() {
   };
 
   const layout = {
-    ...PLOTLY_DARK_LAYOUT,
-    title: { text: '<b>Distribusi Jumlah Port per Stasiun Pengisian Daya</b>', font: { size: 13, color: '#ffffff' } },
+    ...getPlotlyBaseLayout(),
+    title: { text: '<b>Distribusi Jumlah Port per Stasiun Pengisian Daya</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
     xaxis: { gridcolor: 'rgba(255, 255, 255, 0.05)' },
     yaxis: { title: 'Jumlah Data Log (Frekuensi)', gridcolor: 'rgba(255, 255, 255, 0.07)' },
     showlegend: false
@@ -205,8 +218,8 @@ function renderEdaTemperature() {
   };
 
   const layout = {
-    ...PLOTLY_DARK_LAYOUT,
-    title: { text: '<b>Pergeseran Distribusi Suhu (Seasonal Drift): Train vs Test</b>', font: { size: 13, color: '#ffffff' } },
+    ...getPlotlyBaseLayout(),
+    title: { text: '<b>Pergeseran Distribusi Suhu (Seasonal Drift): Train vs Test</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
     xaxis: { title: 'Suhu Udara (°F)', gridcolor: 'rgba(255, 255, 255, 0.05)' },
     yaxis: { title: 'Density Estimator', gridcolor: 'rgba(255, 255, 255, 0.07)' },
     legend: { orientation: 'h', y: -0.22, x: 0.15 }
@@ -255,15 +268,15 @@ function renderEdaCorrelation() {
         x: prettyLabels[j],
         y: prettyLabels[i],
         text: z[i][j].toFixed(3),
-        font: { color: '#ffffff', size: 9, family: 'monospace' },
+        font: { color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff'), size: 9, family: 'monospace' },
         showarrow: false
       });
     }
   }
 
   const layout = {
-    ...PLOTLY_DARK_LAYOUT,
-    title: { text: '<b>Matriks Korelasi Linear Pearson Antar Variabel</b>', font: { size: 13, color: '#ffffff' } },
+    ...getPlotlyBaseLayout(),
+    title: { text: '<b>Matriks Korelasi Linear Pearson Antar Variabel</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
     margin: { l: 110, r: 30, t: 40, b: 80 },
     xaxis: { tickangle: -35 },
     yaxis: { autorange: 'reversed' },
@@ -294,8 +307,8 @@ function renderEdaTargetDistribution() {
   };
 
   const layout = {
-    ...PLOTLY_DARK_LAYOUT,
-    title: { text: '<b>Distribusi Frekuensi Variabel Sasaran: utilization_rate (60 Bins)</b>', font: { size: 13, color: '#ffffff' } },
+    ...getPlotlyBaseLayout(),
+    title: { text: '<b>Distribusi Frekuensi Variabel Sasaran: utilization_rate (60 Bins)</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
     xaxis: {
       title: 'Tingkat Utilisasi ([0.02, 0.98])',
       gridcolor: 'rgba(255, 255, 255, 0.05)',

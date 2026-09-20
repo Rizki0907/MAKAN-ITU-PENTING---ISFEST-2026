@@ -25,6 +25,20 @@ function initAllCharts() {
   renderModelEvaluationTable();
 }
 
+function updateChartJsTheme(isLight) {
+  Chart.defaults.color = isLight ? '#475569' : '#94a3b8';
+  Chart.defaults.plugins.tooltip.backgroundColor = isLight ? 'rgba(255, 255, 255, 0.96)' : 'rgba(14, 20, 36, 0.95)';
+  Chart.defaults.plugins.tooltip.titleColor = isLight ? '#0f172a' : '#ffffff';
+  Chart.defaults.plugins.tooltip.bodyColor = isLight ? '#334155' : '#e2e8f0';
+  Chart.defaults.plugins.tooltip.borderColor = isLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(99, 102, 241, 0.4)';
+
+  if (donutChartInstance) initDonutChart();
+  const daySelect = document.getElementById('diurnal-day-select');
+  const dayVal = daySelect ? daySelect.value : 0;
+  if (diurnalChartInstance) initDiurnalChart(dayVal);
+  if (featureChartInstance) initFeatureImportanceChart();
+}
+
 /* --------------------------------------------------------------------------
    1. Donut Chart (Distribusi Kategori Utilisasi Nasional)
    -------------------------------------------------------------------------- */

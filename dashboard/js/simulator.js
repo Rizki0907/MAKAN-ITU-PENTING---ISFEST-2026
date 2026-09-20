@@ -127,11 +127,11 @@ function initSimulator() {
     if (alertBox) {
       let recommendation = '';
       if (util > 0.75) {
-        recommendation = '🚨 <strong>Peringatan Risiko Antrean Kritis:</strong> Tingkat utilisasi melampaui ambang batas 75%. Sangat disarankan menaikkan tarif beban puncak (+15% s/d +20%) untuk menggeser beban atau segera menambah minimal 2 port pengisian daya.';
+        recommendation = '<span class="badge-model" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; margin-right: 6px;">Perhatian</span> <strong>Peringatan Risiko Antrean Kritis:</strong> Tingkat utilisasi melampaui ambang batas 75%. Sangat disarankan menaikkan tarif beban puncak (+15% s/d +20%) untuk menggeser beban atau segera menambah minimal 2 port pengisian daya.';
       } else if (util < 0.35) {
-        recommendation = '💡 <strong>Peluang Monetisasi Kapasitas Menganggur:</strong> Utilisasi berada pada level rendah (<35%). Terapkan diskon tarif dinamis (-15%) untuk menarik pengguna komuter dan armada logistik.';
+        recommendation = '<span class="badge-model" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; margin-right: 6px;">Peluang</span> <strong>Monetisasi Kapasitas Menganggur:</strong> Utilisasi berada pada level rendah (<35%). Terapkan diskon tarif dinamis (-15%) untuk menarik pengguna komuter dan armada logistik.';
       } else {
-        recommendation = '✅ <strong>Kondisi Jaringan Optimal:</strong> Utilisasi berada di rentang ideal (45% - 70%). Keseimbangan antara perputaran kendaraan, pendapatan operator, dan kepuasan pelanggan tercapai secara stabil.';
+        recommendation = '<span class="badge-model" style="background: rgba(16, 185, 129, 0.2); color: #34d399; margin-right: 6px;">Stabil</span> <strong>Kondisi Jaringan Optimal:</strong> Utilisasi berada di rentang ideal (45% - 70%). Keseimbangan antara perputaran kendaraan, pendapatan operator, dan kepuasan pelanggan tercapai secara stabil.';
       }
       alertBox.innerHTML = recommendation;
     }

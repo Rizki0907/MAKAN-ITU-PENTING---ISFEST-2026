@@ -3,6 +3,9 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Theme (Dark / Light Mode)
+  initThemeToggle();
+
   // Initialize Tab Navigation
   setupTabNavigation();
 
@@ -81,4 +84,39 @@ function setupDiurnalFilter() {
   daySelect.addEventListener('change', (e) => {
     initDiurnalChart(e.target.value);
   });
+}
+
+/* --------------------------------------------------------------------------
+   3. Theme Manager (Dark / Light Mode Controller)
+   -------------------------------------------------------------------------- */
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle-btn');
+  const savedTheme = localStorage.getItem('chargeiq_theme') || 'dark';
+
+  applyTheme(savedTheme);
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme);
+      localStorage.setItem('chargeiq_theme', newTheme);
+    });
+  }
+}
+
+function applyTheme(theme) {
+  const isLight = theme === 'light';
+  document.body.classList.toggle('light-theme', isLight);
+  document.body.classList.toggle('dark-theme', !isLight);
+
+  // Update Plotly EDA charts theme if available
+  if (typeof updateEdaChartsTheme === 'function') {
+    updateEdaChartsTheme(isLight);
+  }
+
+  // Update Chart.js instances if available
+  if (typeof updateChartJsTheme === 'function') {
+    updateChartJsTheme(isLight);
+  }
 }
