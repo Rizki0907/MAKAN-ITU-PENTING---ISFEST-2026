@@ -1,0 +1,7 @@
+Model,Kedalaman Pohon,Learning Rate,Pohon Optimal (Validation),Pohon Pelatihan Penuh (125%),Holdout RMSE,Weight_Percentage
+A1: LightGBM Deep,10,0.035,172,215,0.06825441511172148,
+A2: CatBoost Deep Symmetric,8,0.045,399,498,0.06776520323698243,
+A3: CatBoost Balanced,7,0.055,368,460,0.06774768668934945,
+B1: LightGBM Regularized,7,0.045,167,209,0.068024421749078,
+B2: CatBoost Regularized,6,0.07,379,473,0.06776035494277122,
+B3: XGBoost Hist,6,0.05,217,272,0.06790413110124105,

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.ipynb_checkpoints/
+.venv/
+env/
+venv/
+ENV/
+
+# Large Datasets (>50MB)
+data/train.csv
+data/train_ORI.csv
+data/test.csv
+data/test_ORI.csv
+data/test_with_ground_truth_full.csv
+
+# Heavy Model Binaries (>40MB)
+models/final_champion_model.joblib
+models/pipeline_full_artifacts.joblib
+
+# Scratch & Logs
+scratch/
+catboost_info/
+.gemini/
+*.log
+
+# OS Metadata
+.DS_Store
+Thumbs.db

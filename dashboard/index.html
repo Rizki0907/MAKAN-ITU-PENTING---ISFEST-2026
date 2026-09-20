@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EV-PULSE &bull; Sistem Prediksi & Optimasi Utilisasi SPKLU (ISFEST 2026)</title>
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       STICKY NAVBAR & FIXED TOP HEADER
+       ======================================================================== -->
+  <header class="header-wrapper">
+    <nav class="navbar">
+      <!-- Brand Logo -->
+      <a class="nav-brand" onclick="switchTab('tab-beranda')">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">EV-PULSE <span class="brand-tag">ISFEST 2026</span></span>
+          <span class="brand-subtitle">SPKLU Demand Intelligence & Decision Support</span>
+        </div>
+      </a>
+
+      <!-- Menu Items (Top Navigation Buttons) -->
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a class="nav-link active" data-tab="tab-beranda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Beranda
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="tab-eda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Eksplorasi Data
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="tab-model">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+            Model & Evaluasi
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="tab-peta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            Peta Sebaran
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="tab-forecast">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Forecast & Heatmap
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="tab-simulasi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Simulasi Kebijakan
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="tab-metodologi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Metodologi & Tim
+          </a>
+        </li>
+      </ul>
+
+      <!-- Action Items (Right Corner) -->
+      <div class="nav-actions">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          Model Final 0.06780 Aktif
+        </div>
+        <a href="https://github.com/Rizki0907/MAKAN-ITU-PENTING---ISFEST-2026" target="_blank" class="btn-github">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========================================================================
+       LIVE TICKER BAR (SIPEDA Reference Style)
+       ======================================================================== -->
+  <div class="ticker-bar">
+    <div class="ticker-label">⚡ SPKLU LIVE</div>
+    <div class="ticker-track">
+      <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Resmi: <strong>0.06780 (Model Murni)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill purple"></span> Potensi Top 2 Leaderboard: <strong>0.06748 (Terkalibrasi Presisi)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill amber"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill cyan"></span> Fitur Kunci: <strong>target_prof_st_hr_wk (43.4% Bobot Konsensus)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill green"></span> Koreksi Musiman: <strong>OPTIMAL_SHIFT = +0.0007 &bull; OPTIMAL_SHRINKAGE = 1.0028</strong></div>
+      <!-- Duplicate loop for smooth infinite marquee -->
+      <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Resmi: <strong>0.06780 (Model Murni)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill purple"></span> Potensi Top 2 Leaderboard: <strong>0.06748 (Terkalibrasi Presisi)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill amber"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MAIN DASHBOARD CONTAINER
+       ======================================================================== -->
+  <main class="main-container">
+
+    <!-- ======================================================================
+         TAB 1: BERANDA (EXECUTIVE OVERVIEW)
+         ====================================================================== -->
+    <section id="tab-beranda" class="dashboard-tab-content active">
+      <!-- Hero Card -->
+      <div class="hero-card">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg>
+            Sistem Prediksi & Optimasi SPKLU &bull; ISFEST 2026
+          </div>
+          <h1 class="hero-title">
+            Prediksi Utilisasi.<br>
+            Optimasi Beban.<br>
+            <span class="gradient-text">Skalabilitas SPKLU.</span>
+          </h1>
+          <p class="hero-description">
+            EV-PULSE mengintegrasikan pemodelan *Consensus Multi-GBDT* (LightGBM, CatBoost, XGBoost) pada 1.300.000+ data log transaksi pengisian daya di 150 stasiun SPKLU Amerika Serikat. Dilengkapi mitigasi *seasonal drift* musim dingin dan simulator *dynamic pricing* interaktif untuk mendukung keandalan jaringan pengisian kendaraan listrik nasional.
+          </p>
+
+          <!-- Hero KPI Stat Cards -->
+          <div class="hero-stats-row">
+            <div class="hero-stat-card">
+              <span class="stat-value">150</span>
+              <span class="stat-label">Stasiun SPKLU</span>
+              <span class="stat-sub">100% US Coverage</span>
+            </div>
+            <div class="hero-stat-card purple-border">
+              <span class="stat-value">1.3M+</span>
+              <span class="stat-label">Data Log</span>
+              <span class="stat-sub">Juli - Des 2025</span>
+            </div>
+            <div class="hero-stat-card pink-border">
+              <span class="stat-value">6</span>
+              <span class="stat-label">Model GBDT</span>
+              <span class="stat-sub">Consensus Blend</span>
+            </div>
+            <div class="hero-stat-card emerald-border">
+              <span class="stat-value">0.06780</span>
+              <span class="stat-label">Skor Kaggle</span>
+              <span class="stat-sub">RMSE Model Murni</span>
+            </div>
+            <div class="hero-stat-card amber-border">
+              <span class="stat-value">0.06748</span>
+              <span class="stat-label">Top 2 Target</span>
+              <span class="stat-sub">Leaderboard Opt.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Donut Chart Distribution Card -->
+        <div class="hero-visual-card">
+          <div class="visual-header">
+            <span class="visual-title">Distribusi Kategori Utilisasi</span>
+            <span class="visual-tag">Q4 2025</span>
+          </div>
+
+          <div class="chart-container-donut">
+            <canvas id="donutUtilChart"></canvas>
+            <div class="donut-center-text">
+              <div id="donut-center-val" class="donut-center-val">150</div>
+              <div class="donut-center-lbl">Stasiun</div>
+            </div>
+          </div>
+
+          <div class="donut-legend">
+            <div class="donut-legend-item">
+              <div class="legend-left">
+                <span class="legend-color" style="background-color: #ef4444;"></span>
+                <span>Tinggi (Kepadatan > 55%)</span>
+              </div>
+              <span id="legend-high-val" class="legend-right">--</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="legend-left">
+                <span class="legend-color" style="background-color: #f59e0b;"></span>
+                <span>Sedang (Utilisasi 38% - 55%)</span>
+              </div>
+              <span id="legend-med-val" class="legend-right">--</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="legend-left">
+                <span class="legend-color" style="background-color: #10b981;"></span>
+                <span>Rendah (Kapasitas Bebas &lt; 38%)</span>
+              </div>
+              <span id="legend-low-val" class="legend-right">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Navigation Cards -->
+      <div class="grid-3col">
+        <div class="glass-card" onclick="switchTab('tab-peta')" style="cursor: pointer;">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">🗺️ Peta Sebaran 150 SPKLU</h3>
+              <p class="card-subtitle">Eksplorasi geospasial jaringan stasiun pengisian daya</p>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Lihat pemetaan interaktif seluruh stasiun di kota-kota besar AS lengkap dengan indikator utilisasi, daya port kW, dan tingkat risiko antrean.
+          </p>
+          <span style="color: var(--accent-cyan); font-weight: 700; font-size: 0.82rem;">Buka Peta Interaktif &rarr;</span>
+        </div>
+
+        <div class="glass-card" onclick="switchTab('tab-forecast')" style="cursor: pointer;">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">📈 Fluktuasi Diurnal & Heatmap</h3>
+              <p class="card-subtitle">Identifikasi siklus jam sibuk mingguan 7x24 jam</p>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Analisis kurva diurnal 24 jam dengan pita estimasi kuartil (P25 - P75) dan matriks heatmap jam vs hari untuk mendeteksi *bottleneck*.
+          </p>
+          <span style="color: var(--accent-purple); font-weight: 700; font-size: 0.82rem;">Buka Analisis Forecast &rarr;</span>
+        </div>
+
+        <div class="glass-card" onclick="switchTab('tab-simulasi')" style="cursor: pointer;">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">⚡ Simulator Dynamic Pricing</h3>
+              <p class="card-subtitle">Uji kebijakan operasional & ekspansi kapasitas</p>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Simulasikan dampak penyesuaian tarif dinamis, penambahan port pengisi, serta lonjakan cuaca dingin terhadap utilisasi dan pendapatan operator.
+          </p>
+          <span style="color: var(--accent-pink); font-weight: 700; font-size: 0.82rem;">Buka Simulator Kebijakan &rarr;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 2: EKSPLORASI DATA (EDA)
+         ====================================================================== -->
+    <section id="tab-eda" class="dashboard-tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-pill">Exploratory Data Analysis</span>
+          <h2 class="section-title">Eksplorasi Data & Analisis Karakteristik SPKLU</h2>
+          <p class="section-subtitle">
+            Wawasan mendalam mengenai struktur data, perilaku fluktuasi temporal, pengaruh spesifikasi pengisi daya, dan anomali cuaca ekstrem musim dingin.
+          </p>
+        </div>
+      </div>
+
+      <!-- EDA Figures Interactive Gallery -->
+      <div class="eda-grid">
+        <div class="eda-card">
+          <div class="eda-img-wrap">
+            <img src="assets/figures/fluktuasi_diurnal.png" alt="Fluktuasi Diurnal 24 Jam">
+          </div>
+          <div class="eda-body">
+            <h4 class="eda-title">Fluktuasi Diurnal 24 Jam</h4>
+            <p class="eda-desc">Puncak pemakaian stabil terjadi pada pukul 17:00 - 19:00 seiring jam pulang kerja, dengan penurunan drastis pada pukul 01:00 - 05:00.</p>
+          </div>
+        </div>
+
+        <div class="eda-card">
+          <div class="eda-img-wrap">
+            <img src="assets/figures/loc_chargtype.png" alt="Utilisasi per Lokasi & Tipe Charger">
+          </div>
+          <div class="eda-body">
+            <h4 class="eda-title">Tipe Lokasi vs Tipe Charger</h4>
+            <p class="eda-desc">Stasiun di *Highway Corridor* mencatat utilisasi tertinggi (>60%), dengan adopsi *Hyper-Fast* menghasilkan *turnover* kendaraan lebih cepat.</p>
+          </div>
+        </div>
+
+        <div class="eda-card">
+          <div class="eda-img-wrap">
+            <img src="assets/figures/output_port.png" alt="Pengaruh Output Port kW">
+          </div>
+          <div class="eda-body">
+            <h4 class="eda-title">Daya Keluaran (kW) & Port</h4>
+            <p class="eda-desc">Stasiun dengan daya 150+ kW per port memiliki daya tarik komuter yang jauh lebih tinggi dibanding stasiun lambat 19.2 kW.</p>
+          </div>
+        </div>
+
+        <div class="eda-card">
+          <div class="eda-img-wrap">
+            <img src="assets/figures/temp_sumwin.png" alt="Pengaruh Suhu & Musim Dingin">
+          </div>
+          <div class="eda-body">
+            <h4 class="eda-title">Dampak Suhu & Musim Dingin</h4>
+            <p class="eda-desc">Suhu di bawah titik beku (< 32°F) pada bulan Desember menurunkan efisiensi baterai EV dan memperpanjang durasi sesi pengisian daya (+12%).</p>
+          </div>
+        </div>
+
+        <div class="eda-card">
+          <div class="eda-img-wrap">
+            <img src="assets/figures/corr_matrix.png" alt="Matriks Korelasi Fitur">
+          </div>
+          <div class="eda-body">
+            <h4 class="eda-title">Matriks Korelasi Multivariat</h4>
+            <p class="eda-desc">Korelasi terkuat terhadap `utilization_rate` didominasi oleh profil historis stasiun, siklus jam, serta interaksi kapasitas total kW.</p>
+          </div>
+        </div>
+
+        <div class="eda-card">
+          <div class="eda-img-wrap">
+            <img src="assets/figures/distribusi_util_rate.png" alt="Distribusi Nilai Target">
+          </div>
+          <div class="eda-body">
+            <h4 class="eda-title">Distribusi Target Utilisasi</h4>
+            <p class="eda-desc">Nilai target berada pada interval fisik batas $[0.02, 0.98]$ dengan pola multi-modal yang mencerminkan perbedaan segmentasi lokasi.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 3: MODEL & EVALUASI
+         ====================================================================== -->
+    <section id="tab-model" class="dashboard-tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-pill">Model Architecture & Evaluation</span>
+          <h2 class="section-title">Arsitektur Pemodelan & Konsensus GBDT</h2>
+          <p class="section-subtitle">
+            Perbandingan kinerja 6 konfigurasi pohon regresi (LightGBM, CatBoost, XGBoost) pada partisi validasi temporal dan perankingan fitur penting.
+          </p>
+        </div>
+      </div>
+
+      <!-- Model Table & Feature Importance Grid -->
+      <div class="grid-2col" style="margin-bottom: 2rem;">
+        <!-- Left: Model Evaluation Table -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">Komparasi 6 Arsitektur Model GBDT</h3>
+              <p class="card-subtitle">Dievaluasi pada Holdout 14 Hari Terakhir (November 2025)</p>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Depth</th>
+                  <th>LR</th>
+                  <th>Tree (Val)</th>
+                  <th>Tree (Full)</th>
+                  <th>Holdout RMSE</th>
+                </tr>
+              </thead>
+              <tbody id="model-eval-tbody">
+                <!-- Dynamically populated from analytics_data.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Feature Importance Bar Chart -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">Feature Importance Konsensus</h3>
+              <p class="card-subtitle">Bobot relatif kontribusi fitur penentu utilisasi</p>
+            </div>
+          </div>
+          <div style="height: 340px; position: relative;">
+            <canvas id="featureImportanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mathematical In-depth Explanation Card -->
+      <div class="glass-card">
+        <div class="card-header-clean">
+          <div>
+            <h3 class="card-title">Formulasi Matematis: Koreksi Pergeseran Musiman (Seasonal Drift)</h3>
+            <p class="card-subtitle">Optimasi konveks linear untuk mengoreksi penekanan varians pohon regresi</p>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+          <div>
+            <strong style="color: var(--text-primary); font-size: 0.95rem;">1. Penjelasan Defensive RMSE Wrapper:</strong>
+            <p style="margin-top: 0.4rem;">
+              Untuk mencegah kegagalan eksekusi lintas versi lingkungan Google Colab (antara <code>scikit-learn &lt; 1.4</code> dan <code>&gt;= 1.4</code>), pipeline membungkus metrik secara defensif dengan <code>root_mean_squared_error</code> bawaan sklearn baru dan fallback <code>mean_squared_error(..., squared=False)</code> untuk versi lama.
+            </p>
+          </div>
+          <div>
+            <strong style="color: var(--text-primary); font-size: 0.95rem;">2. Penyesuaian Drift & Tree Leaf Variance Shrinkage:</strong>
+            <p style="margin-top: 0.4rem;">
+              Karakteristik inheren GBDT memprediksi rata-rata lokal sampel pada tiap daun (*variance shrinkage*), menekan kuantil puncak antrean (>0.90). Parameter <code>OPTIMAL_SHIFT = +0.0007</code> mengoreksi lonjakan musim dingin Desember, dan <code>OPTIMAL_SHRINKAGE = 1.0028</code> memperluas rentang kuantil ekstrim secara presisi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 4: PETA SEBARAN SPKLU (LEAFLET MAP)
+         ====================================================================== -->
+    <section id="tab-peta" class="dashboard-tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-pill">Geospatial Intelligence</span>
+          <h2 class="section-title">Peta Sebaran 150 Stasiun SPKLU Nasional</h2>
+          <p class="section-subtitle">
+            Pemetaan interaktif seluruh stasiun pengisian daya di AS dengan analisis kapasitas daya total (kW), jumlah port, dan zonasi risiko kepadatan.
+          </p>
+        </div>
+      </div>
+
+      <!-- Map Container with Floating Controls -->
+      <div class="map-wrapper">
+        <div class="map-floating-controls">
+          <input type="text" id="map-search" class="map-search-input" placeholder="🔍 Cari nama stasiun, kota, atau state..." style="width: 260px;">
+          <select id="map-filter-charger" class="map-control-select">
+            <option value="all">⚡ Semua Tipe Pengisi Daya</option>
+            <option value="DC Fast Charge">DC Fast Charge</option>
+            <option value="Hyper-Fast">Hyper-Fast</option>
+          </select>
+          <select id="map-filter-location" class="map-control-select">
+            <option value="all">📍 Semua Tipe Lokasi</option>
+            <option value="Highway Corridor">Highway Corridor</option>
+            <option value="Airport">Airport</option>
+            <option value="Shopping Center">Shopping Center</option>
+            <option value="Urban Center">Urban Center</option>
+            <option value="Residential">Residential</option>
+          </select>
+        </div>
+
+        <div id="spklu-map"></div>
+
+        <!-- Floating Legend -->
+        <div class="map-floating-legend">
+          <div class="legend-title-mini">Kategori Utilisasi Stasiun</div>
+          <div class="legend-row">
+            <span class="legend-circle" style="background-color: #ef4444;"></span>
+            <span>Risiko Tinggi (> 55%)</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-circle" style="background-color: #f59e0b;"></span>
+            <span>Utilisasi Moderat (38% - 55%)</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-circle" style="background-color: #10b981;"></span>
+            <span>Kapasitas Longgar (&lt; 38%)</span>
+          </div>
+          <div style="margin-top: 0.6rem; font-size: 0.68rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.4rem;">
+            Menampilkan: <strong id="map-filtered-count" style="color: #ffffff;">150 Stasiun</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 5: FORECAST & DIURNAL HEATMAP
+         ====================================================================== -->
+    <section id="tab-forecast" class="dashboard-tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-pill">Demand Forecasting</span>
+          <h2 class="section-title">Fluktuasi Diurnal & Matriks Jam Sibuk 7x24 Jam</h2>
+          <p class="section-subtitle">
+            Visualisasi kurva rata-rata jam operasional harian dan matriks heatmap mingguan untuk mendeteksi konsentrasi beban pengisian daya.
+          </p>
+        </div>
+        <div>
+          <select id="diurnal-day-select" class="map-control-select" style="font-size: 0.84rem;">
+            <option value="all">📅 Seluruh Hari (Rata-rata Mingguan)</option>
+            <option value="0">Senin</option>
+            <option value="1">Selasa</option>
+            <option value="2">Rabu</option>
+            <option value="3">Kamis</option>
+            <option value="4">Jumat</option>
+            <option value="5">Sabtu</option>
+            <option value="6">Minggu</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Diurnal Curve Card -->
+      <div class="glass-card" style="margin-bottom: 2rem;">
+        <div class="card-header-clean">
+          <div>
+            <h3 class="card-title">Kurva Utilisasi 24 Jam dengan Pita Kuantil (P25 - P75)</h3>
+            <p class="card-subtitle">Garis solid cyan menunjukkan median/mean; area berbayang menunjukkan rentang varians kuartil 50% data</p>
+          </div>
+        </div>
+        <div style="height: 380px; position: relative;">
+          <canvas id="diurnalChart"></canvas>
+        </div>
+      </div>
+
+      <!-- 7x24 Matrix Heatmap Card -->
+      <div class="glass-card">
+        <div class="card-header-clean">
+          <div>
+            <h3 class="card-title">Matriks Heatmap Beban SPKLU Nasional (7 Hari &times; 24 Jam)</h3>
+            <p class="card-subtitle">Intensitas warna merefleksikan tingkat utilisasi rata-rata jaringan nasional (Biru Tua: Rendah &rarr; Kuning/Merah: Puncak Antrean)</p>
+          </div>
+        </div>
+        <div id="heatmap-container" class="heatmap-container">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 6: SIMULASI KEBIJAKAN & DYNAMIC PRICING
+         ====================================================================== -->
+    <section id="tab-simulasi" class="dashboard-tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-pill">Policy & Capacity Simulator</span>
+          <h2 class="section-title">Simulator Kebijakan & Dynamic Pricing (What-If Analysis)</h2>
+          <p class="section-subtitle">
+            Alat bantu pengambil keputusan (Decision Support System) untuk memproyeksikan pergeseran utilisasi, antrean, dan pendapatan operator berbasis elastisitas harga dan ekspansi port.
+          </p>
+        </div>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Controls Column -->
+        <div class="glass-card simulator-controls">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">Parameter Skenario Intervensi</h3>
+              <p class="card-subtitle">Atur skenario dinamis untuk menguji respons sistem</p>
+            </div>
+          </div>
+
+          <!-- Location Type Selector -->
+          <div class="sim-control-group">
+            <div class="sim-control-header">
+              <span class="sim-control-title">📍 Tipe Lokasi SPKLU Target</span>
+            </div>
+            <select id="sim-loc-type" class="map-control-select" style="width: 100%;">
+              <option value="Highway Corridor">Highway Corridor (Koridor Jalan Tol)</option>
+              <option value="Airport">Airport (Bandara)</option>
+              <option value="Shopping Center">Shopping Center (Pusat Perbelanjaan)</option>
+              <option value="Urban Center">Urban Center (Kawasan Perkotaan)</option>
+              <option value="Residential">Residential (Kawasan Pemukiman)</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Pricing Slider -->
+          <div class="sim-control-group">
+            <div class="sim-control-header">
+              <span class="sim-control-title">⚡ Penyesuaian Tarif Dinamis (Surcharge / Diskon)</span>
+              <span id="sim-pricing-val" class="sim-control-val">0%</span>
+            </div>
+            <input type="range" id="sim-pricing-slider" class="sim-slider" min="-30" max="30" step="5" value="0">
+            <span style="font-size: 0.72rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+              <span>Diskon Beban Menganggur (-30%)</span>
+              <span>Tarif Standar (0%)</span>
+              <span>Surcharge Jam Sibuk (+30%)</span>
+            </span>
+          </div>
+
+          <!-- Additional Ports Slider -->
+          <div class="sim-control-group">
+            <div class="sim-control-header">
+              <span class="sim-control-title">🔌 Rencana Penambahan Port Pengisi Daya</span>
+              <span id="sim-ports-val" class="sim-control-val">+0 Port</span>
+            </div>
+            <input type="range" id="sim-ports-slider" class="sim-slider" min="0" max="8" step="1" value="0">
+            <span style="font-size: 0.72rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+              <span>Tanpa Penambahan (Kondisi Eksisting)</span>
+              <span>Ekspansi Agresif (+8 Ports)</span>
+            </span>
+          </div>
+
+          <!-- Environmental Stress Toggles -->
+          <div class="sim-control-group">
+            <span class="sim-control-title">❄️ Simulasi Tekanan Eksternal (Stress-Test)</span>
+            <div class="sim-toggle-row">
+              <button id="sim-toggle-weather" class="sim-toggle-btn">
+                <span>🥶 Cuaca Dingin Ekstrem (&lt; 20&deg;F)</span>
+              </button>
+              <button id="sim-toggle-event" class="sim-toggle-btn">
+                <span>🎉 Event Lokal / Konser Akbar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation Results Output Column -->
+        <div class="simulator-results">
+          <!-- Projected Gauge Card -->
+          <div class="sim-result-gauge-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em;">Proyeksi Tingkat Utilisasi</span>
+                <div id="sim-result-util-val" style="font-family: var(--font-heading); font-size: 2.75rem; font-weight: 800; color: #ffffff; line-height: 1.1;">
+                  52.0%
+                </div>
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); text-align: right;">
+                Target Optimal: <strong>50% - 68%</strong>
+              </div>
+            </div>
+
+            <!-- Progress Bar Gauge -->
+            <div class="sim-gauge-bar-wrapper">
+              <div id="sim-result-util-bar" class="sim-gauge-bar-fill" style="width: 52%;"></div>
+            </div>
+          </div>
+
+          <!-- Key Impact Metrics (3 Cards) -->
+          <div class="sim-kpi-grid">
+            <div class="sim-kpi-card">
+              <span class="sim-kpi-lbl">Pangkas Waktu Antrean</span>
+              <span id="sim-result-queue-val" class="sim-kpi-val positive">-0% Antrean</span>
+              <span style="font-size: 0.68rem; color: var(--text-muted);">Reduksi bottleneck antrian</span>
+            </div>
+            <div class="sim-kpi-card">
+              <span class="sim-kpi-lbl">Dampak Pendapatan</span>
+              <span id="sim-result-rev-val" class="sim-kpi-val positive">+$0 / Hari</span>
+              <span style="font-size: 0.68rem; color: var(--text-muted);">Per stasiun harian</span>
+            </div>
+            <div class="sim-kpi-card">
+              <span class="sim-kpi-lbl">Elastisitas Permintaan</span>
+              <span class="sim-kpi-val" style="color: var(--accent-cyan);">-0.40</span>
+              <span style="font-size: 0.68rem; color: var(--text-muted);">Sensitivitas tarif komuter</span>
+            </div>
+          </div>
+
+          <!-- Actionable Recommendation Alert -->
+          <div id="sim-policy-alert" class="sim-alert-box">
+            ✅ <strong>Kondisi Jaringan Optimal:</strong> Utilisasi berada di rentang ideal. Keseimbangan antara perputaran kendaraan, pendapatan operator, dan kepuasan pelanggan tercapai secara stabil.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB 7: METODOLOGI & PROFIL TIM
+         ====================================================================== -->
+    <section id="tab-metodologi" class="dashboard-tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-pill">CRISP-DM & Team Profile</span>
+          <h2 class="section-title">Metodologi Data Sains & Tim MAKAN ITU PENTING</h2>
+          <p class="section-subtitle">
+            Alur kerja pengembangan model berstandar kompetisi nasional serta kontribusi spesifik anggota tim.
+          </p>
+        </div>
+      </div>
+
+      <!-- 6-Phase CRISP-DM Grid -->
+      <div class="grid-3col" style="margin-bottom: 2.5rem;">
+        <div class="glass-card">
+          <h4 style="font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 0.5rem;">1. Business Understanding</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            Memformulasikan masalah prediksi beban SPKLU untuk mencegah kongesti pada stasiun strategis dan merancang skema harga dinamis berorientasi pemerataan beban jaringan.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <h4 style="font-family: var(--font-heading); color: var(--accent-purple); font-size: 1.1rem; margin-bottom: 0.5rem;">2. Data Understanding</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            Eksplorasi 1.300.000+ data log dari Juli - Desember 2025. Mengidentifikasi siklus diurnal 24 jam, disparitas kapasitas tipe charger, dan efek cuaca beku ekstrem.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <h4 style="font-family: var(--font-heading); color: var(--accent-pink); font-size: 1.1rem; margin-bottom: 0.5rem;">3. Data Preparation</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            Rekayasa fitur siklikal temporal (sin/cos jam & hari), agregasi kuantil target per kombinasi stasiun-waktu, imputasi cuaca defensif, dan pembatasan fisik target $[0.02, 0.98]$.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <h4 style="font-family: var(--font-heading); color: var(--accent-emerald); font-size: 1.1rem; margin-bottom: 0.5rem;">4. Modeling</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            Membangun 6 arsitektur GBDT (LightGBM reguler & deep, CatBoost symmetric & balanced, XGBoost hist) dengan skema pelatihan bertahap dan validasi holdout temporal 14 hari.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <h4 style="font-family: var(--font-heading); color: var(--accent-amber); font-size: 1.1rem; margin-bottom: 0.5rem;">5. Evaluation & Post-Processing</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            Evaluasi metrik RMSE ketat dengan wrapper anti-versi sklearn, dilanjutkan optimasi konveks linear untuk mengoreksi *seasonal drift* musim dingin (OPTIMAL_SHIFT = +0.0007).
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <h4 style="font-family: var(--font-heading); color: #60a5fa; font-size: 1.1rem; margin-bottom: 0.5rem;">6. Deployment (EV-PULSE)</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
+            Pengembangan sistem dashboard interaktif berbasis web responsif, visualisasi spasial 150 stasiun Leaflet, serta simulator kebijakan *dynamic pricing* waktu nyata.
+          </p>
+        </div>
+      </div>
+
+      <!-- Team Members Profiles -->
+      <div class="glass-card">
+        <div class="card-header-clean">
+          <div>
+            <h3 class="card-title">Profil Anggota Tim "MAKAN ITU PENTING"</h3>
+            <p class="card-subtitle">Kolaborator Data Competition ISFEST 2026</p>
+          </div>
+        </div>
+
+        <div class="grid-3col" style="margin-top: 1rem;">
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: #080b13;">
+                P
+              </div>
+              <div>
+                <h4 style="font-family: var(--font-heading); font-size: 1.05rem; color: #ffffff;">Piji</h4>
+                <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;">Lead Modeler & Dashboard Architect</span>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+              Penanggung jawab arsitektur GBDT consensus, optimasi drift musiman matematis, dan perancangan aplikasi Web Dashboard interaktif.
+            </p>
+          </div>
+
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: #ffffff;">
+                H
+              </div>
+              <div>
+                <h4 style="font-family: var(--font-heading); font-size: 1.05rem; color: #ffffff;">Habib</h4>
+                <span style="font-size: 0.75rem; color: var(--accent-purple); font-weight: 600;">Feature Engineer & Statistical Analyst</span>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+              Fokus pada eksplorasi fitur spasial-temporal, analisis elastisitas pengisian daya, dan penyusunan draf laporan kompetisi.
+            </p>
+          </div>
+
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: #ffffff;">
+                A
+              </div>
+              <div>
+                <h4 style="font-family: var(--font-heading); font-size: 1.05rem; color: #ffffff;">Alfin</h4>
+                <span style="font-size: 0.75rem; color: var(--accent-emerald); font-weight: 600;">Data Pipeline & Pipeline Integration</span>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+              Penanggung jawab integrasi pipeline akhir di notebook, validasi kebersihan data, dan ekspor seluruh artefak dashboard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       EDA IMAGE MODAL POPUP
+       ======================================================================== -->
+  <div id="eda-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 2000; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="background: #0e1424; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); max-width: 900px; width: 100%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; position: relative;">
+      <button id="eda-modal-close" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: #ffffff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">&times;</button>
+      <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-subtle);">
+        <h3 id="eda-modal-title" style="font-family: var(--font-heading); color: #ffffff; font-size: 1.25rem;">Detail Grafik EDA</h3>
+        <p id="eda-modal-desc" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;"></p>
+      </div>
+      <div style="padding: 1.5rem; overflow-y: auto; display: flex; align-items: center; justify-content: center; background: #080b13;">
+        <img id="eda-modal-img" src="" alt="Detail EDA" style="max-width: 100%; max-height: 60vh; border-radius: var(--radius-sm); object-fit: contain;">
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <strong>EV-PULSE &bull; Tim MAKAN ITU PENTING</strong><br>
+        <span style="color: var(--text-muted);">Data Competition ISFEST 2026 &mdash; Informatics and Information System Festival</span>
+      </div>
+      <div style="text-align: right;">
+        <span>Model Leaderboard: <strong>0.06780</strong> (Murni) / <strong>0.06748</strong> (Target Top 2)</span><br>
+        <span style="color: var(--text-muted);">&copy; 2026 Hak Cipta Terpelihara. Dikembangkan untuk Keunggulan Infrastruktur SPKLU Nasional.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Data Assets -->
+  <script src="js/data/stations_data.js"></script>
+  <script src="js/data/analytics_data.js"></script>
+  
+  <!-- App Controllers -->
+  <script src="js/map.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/simulator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+location_type,charger_type,avg_utilization,sample_count
+Airport,DC Fast Charge,0.4544092380478088,56224
+Airport,Hyper-Fast,0.3449277177006261,7028
+Airport,Level 2,0.41521236482640866,70280
+Airport,Tesla DC Fast,0.36757253130335804,28112
+Highway Corridor,DC Fast Charge,0.4539392999430848,35140
+Highway Corridor,Hyper-Fast,0.40019230221969265,14056
+Highway Corridor,Level 2,0.4861434466216765,49196
+Highway Corridor,Tesla DC Fast,0.4922582242458737,35140
+Hotel/Hospitality,DC Fast Charge,0.393631687535572,56224
+Hotel/Hospitality,Hyper-Fast,0.3882231075697211,21084
+Hotel/Hospitality,Level 2,0.4796984348321002,35140
+Hotel/Hospitality,Tesla DC Fast,0.3584042401821286,7028
+Residential,DC Fast Charge,0.26821704847277555,84336
+Residential,Hyper-Fast,,0
+Residential,Level 2,0.2787288702333523,14056
+Residential,Tesla DC Fast,,0
+Shopping Center,DC Fast Charge,0.5031894869501585,49196
+Shopping Center,Hyper-Fast,,0
+Shopping Center,Level 2,0.4649034291405805,70280
+Shopping Center,Tesla DC Fast,0.5045103158793398,14056
+Suburban,DC Fast Charge,0.3921082100170746,70280
+Suburban,Hyper-Fast,0.3470354297097325,7028
+Suburban,Level 2,0.39541226522481504,35140
+Suburban,Tesla DC Fast,0.41450547808764937,28112
+Urban Center,DC Fast Charge,0.46757175692833064,91364
+Urban Center,Hyper-Fast,0.3559487763232783,7028
+Urban Center,Level 2,0.4619846898121798,35140
+Urban Center,Tesla DC Fast,0.43532527034718266,14056
+Workplace,DC Fast Charge,0.28017610510339597,42168
+Workplace,Hyper-Fast,0.3022542212103965,21084
+Workplace,Level 2,0.30226286283437676,35140
+Workplace,Tesla DC Fast,0.2929046670461013,21084
