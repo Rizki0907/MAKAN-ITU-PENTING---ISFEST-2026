@@ -6,6 +6,7 @@ let donutChartInstance = null;
 let diurnalChartInstance = null;
 let featureChartInstance = null;
 let modelChartInstance = null;
+let futureForecastChartInstance = null;
 
 // Global Chart.js Defaults for Dark Mode Luxury Aesthetic
 Chart.defaults.color = '#94a3b8';
@@ -21,6 +22,8 @@ function initAllCharts() {
   initDonutChart();
   initDiurnalChart(0); // Default to Monday / all days
   initFeatureImportanceChart();
+  initFutureForecastChart();
+  setupForecastControls();
   renderHourlyHeatmap();
   renderModelEvaluationTable();
 }
@@ -37,6 +40,13 @@ function updateChartJsTheme(isLight) {
   const dayVal = daySelect ? daySelect.value : 0;
   if (diurnalChartInstance) initDiurnalChart(dayVal);
   if (featureChartInstance) initFeatureImportanceChart();
+  if (futureForecastChartInstance) {
+    const catSelect = document.getElementById('forecast-category-select');
+    const itemSelect = document.getElementById('forecast-item-select');
+    const cat = catSelect ? catSelect.value : 'national';
+    const item = itemSelect ? itemSelect.value : '';
+    initFutureForecastChart(cat, item);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -397,3 +407,169 @@ function renderModelEvaluationTable() {
 
   tbody.innerHTML = html;
 }
+
+/* --------------------------------------------------------------------------
+   6. Future Demand Forecast Time-Series (24 Nov - 31 Des 2025 Test Set)
+   -------------------------------------------------------------------------- */
+function initFutureForecastChart(selectedCategory = 'national', selectedItem = '') {
+  const canvas = document.getElementById('futureForecastChart');
+  if (!canvas) return;
+
+  const forecastData = ANALYTICS_DATA.forecast;
+  if (!forecastData) return;
+
+  renderForecastRanking();
+
+  const dates = forecastData.dates;
+  let dataPoints = [];
+  let chartLabel = 'Rata-rata Nasional';
+
+  if (selectedCategory === 'city' && selectedItem && forecastData.city_daily[selectedItem]) {
+    chartLabel = `Kota: ${selectedItem}`;
+    dataPoints = dates.map(d => (forecastData.city_daily[selectedItem][d] || 0) * 100);
+  } else if (selectedCategory === 'location' && selectedItem && forecastData.location_daily[selectedItem]) {
+    chartLabel = `Lokasi: ${selectedItem}`;
+    dataPoints = dates.map(d => (forecastData.location_daily[selectedItem][d] || 0) * 100);
+  } else {
+    chartLabel = 'Rata-rata Nasional Seluruh Stasiun';
+    dataPoints = dates.map(d => (forecastData.national_daily[d] || 0) * 100);
+  }
+
+  const labels = dates.map(d => {
+    const parts = d.split('-');
+    const day = parts[2];
+    const month = parts[1] === '11' ? 'Nov' : 'Des';
+    return `${day} ${month}`;
+  });
+
+  const ctx = canvas.getContext('2d');
+  if (futureForecastChartInstance) futureForecastChartInstance.destroy();
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 320);
+  gradient.addColorStop(0, 'rgba(0, 242, 254, 0.35)');
+  gradient.addColorStop(1, 'rgba(0, 242, 254, 0.01)');
+
+  futureForecastChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: `${chartLabel} (%)`,
+        data: dataPoints,
+        borderColor: '#00f2fe',
+        backgroundColor: gradient,
+        borderWidth: 2.5,
+        fill: true,
+        pointBackgroundColor: '#00f2fe',
+        pointRadius: 2.5,
+        pointHoverRadius: 5,
+        tension: 0.28
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: '#94a3b8', font: { size: 11, family: "'Inter', sans-serif" } }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              return ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}%`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255, 255, 255, 0.04)' },
+          ticks: { color: '#94a3b8', font: { size: 10 }, maxTicksLimit: 13 }
+        },
+        y: {
+          grid: { color: 'rgba(255, 255, 255, 0.06)' },
+          ticks: {
+            color: '#94a3b8',
+            callback: v => `${v}%`
+          },
+          suggestedMin: 15,
+          suggestedMax: 80
+        }
+      }
+    }
+  });
+}
+
+function setupForecastControls() {
+  const catSelect = document.getElementById('forecast-category-select');
+  const itemSelect = document.getElementById('forecast-item-select');
+  if (!catSelect || !itemSelect) return;
+
+  const forecastData = ANALYTICS_DATA.forecast;
+  if (!forecastData) return;
+
+  catSelect.addEventListener('change', (e) => {
+    const val = e.target.value;
+    if (val === 'national') {
+      itemSelect.style.display = 'none';
+      initFutureForecastChart('national');
+    } else if (val === 'city') {
+      itemSelect.style.display = 'inline-block';
+      itemSelect.innerHTML = '';
+      forecastData.cities.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.text = c;
+        itemSelect.appendChild(opt);
+      });
+      initFutureForecastChart('city', forecastData.cities[0]);
+    } else if (val === 'location') {
+      itemSelect.style.display = 'inline-block';
+      itemSelect.innerHTML = '';
+      forecastData.location_types.forEach(l => {
+        const opt = document.createElement('option');
+        opt.value = l;
+        opt.text = l;
+        itemSelect.appendChild(opt);
+      });
+      initFutureForecastChart('location', forecastData.location_types[0]);
+    }
+  });
+
+  itemSelect.addEventListener('change', (e) => {
+    initFutureForecastChart(catSelect.value, e.target.value);
+  });
+}
+
+function renderForecastRanking() {
+  const container = document.getElementById('forecast-ranking-list');
+  if (!container) return;
+
+  const ranking = ANALYTICS_DATA.forecast ? ANALYTICS_DATA.forecast.city_ranking : null;
+  if (!ranking) return;
+
+  const top5 = Object.entries(ranking).slice(0, 5);
+  let html = '<div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.5rem;">';
+
+  top5.forEach(([city, val], idx) => {
+    const pct = (val * 100).toFixed(1);
+    const color = idx === 0 ? '#00f2fe' : (idx === 1 ? '#6366f1' : '#a5b4fc');
+    html += `
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 2px;">
+          <span><strong>#${idx + 1} ${city}</strong></span>
+          <span style="font-family: monospace; font-weight: 700; color: ${color}">${pct}%</span>
+        </div>
+        <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+          <div style="width: ${(val / 0.65) * 100}%; height: 100%; background: linear-gradient(90deg, ${color}, #ec4899); border-radius: 3px;"></div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+

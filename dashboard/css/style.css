@@ -1572,4 +1572,11 @@ body.light-theme .playground-result-box {
   border-color: rgba(99, 102, 241, 0.3);
 }
 
+@media (max-width: 960px) {
+  .forecast-grid-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
 

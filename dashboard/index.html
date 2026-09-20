@@ -534,10 +534,70 @@
       <div class="section-header">
         <div class="section-title-wrap">
           <span class="section-pill">Demand Forecasting</span>
-          <h2 class="section-title">Fluktuasi Diurnal & Matriks Jam Sibuk 7x24 Jam</h2>
+          <h2 class="section-title">Peramalan Permintaan Beban & Fluktuasi Diurnal</h2>
           <p class="section-subtitle">
-            Visualisasi kurva rata-rata jam operasional harian dan matriks heatmap mingguan untuk mendeteksi konsentrasi beban pengisian daya.
+            Proyeksi utilisasi masa depan hasil inferensi model ensemble (Desember 2025) serta analisis pola beban diurnal historis 7x24 jam.
           </p>
+        </div>
+      </div>
+
+      <!-- Part 1: Future Forecast Card (Aggregated from test_predictions_aggregated.csv) -->
+      <div class="glass-card" style="margin-bottom: 2rem;">
+        <div class="card-header-clean">
+          <div>
+            <h3 class="card-title">Proyeksi Utilisasi Harian Masa Depan (Test Set: 24 Nov &ndash; 31 Des 2025)</h3>
+            <p class="card-subtitle">Estimasi pergerakan beban harian hasil inferensi model ensemble untuk 15 kota dan 8 tipe lokasi</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <select id="forecast-category-select" class="map-control-select" style="font-size: 0.82rem;">
+              <option value="national">Rata-rata Nasional (All Cities)</option>
+              <option value="city">Filter per Kota (15 Kota)</option>
+              <option value="location">Filter per Tipe Lokasi (8 Tipe)</option>
+            </select>
+            <select id="forecast-item-select" class="map-control-select" style="font-size: 0.82rem; display: none;">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 1.5rem; margin-top: 1rem;" class="forecast-grid-layout">
+          <!-- Left: Timeline Line Chart -->
+          <div>
+            <div style="height: 340px; position: relative;">
+              <canvas id="futureForecastChart"></canvas>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.75rem; border-top: 1px solid var(--border-subtle); padding-top: 0.6rem;">
+              <span class="badge-model" style="font-size: 0.68rem; margin-right: 6px;">Catatan Inferensi</span>
+              Grafik menunjukkan kestabilan utilisasi pada hari kerja (~46%) dan penurunan berkala pada akhir pekan (~42%), dengan lonjakan terpusat pada stasiun transit jalan tol dan bandara saat periode libur Natal.
+            </div>
+          </div>
+
+          <!-- Right: Top 5 High-Demand Cities Ranking in December 2025 -->
+          <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.74rem; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan); letter-spacing: 0.05em;">
+                  Top Kepadatan Desember 2025
+                </span>
+                <span class="badge-model badge-champion" style="font-size: 0.65rem;">Peringkat Kota</span>
+              </div>
+              <div id="forecast-ranking-list">
+                <!-- Dynamically populated from city_ranking -->
+              </div>
+            </div>
+
+            <div style="margin-top: 0.75rem; font-size: 0.74rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.6rem; line-height: 1.5;">
+              <span style="color: var(--accent-amber); font-weight: 700;">Insight Musim Dingin:</span> Kota-kota pesisir barat (San Francisco, Seattle) dan utara (Boston, Denver) diproyeksikan mencatat utilisasi tertinggi karena kombinasi adopsi EV tinggi dan perlambatan durasi pengisian daya pada suhu beku.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diurnal Header Filter -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.2rem;">Pola Siklis Diurnal 24 Jam & Matriks Beban Mingguan</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">Analisis siklus beban jam operasional harian berdasarkan 1.054.200 data latih historis</p>
         </div>
         <div>
           <select id="diurnal-day-select" class="map-control-select" style="font-size: 0.84rem;">

@@ -9,7 +9,9 @@ venv/
 ENV/
 
 # Large & Raw Datasets
-data/
+/data/
+!dashboard/js/data/
+
 
 # Heavy Model Binaries (>40MB)
 models/final_champion_model.joblib
