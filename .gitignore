@@ -15,8 +15,13 @@ data/
 models/final_champion_model.joblib
 models/pipeline_full_artifacts.joblib
 
-# Competition PDF Documents
+# Competition PDF Documents & Spreadsheets
 *.pdf
+*.xlsx
+Logbook*
+
+# Agent Rules & SOP Internals
+AGENTS.md
 
 # Intermediate / Trial Notebooks (Keep only ISFEST_Final)
 notebook/Experiment_piji_*.ipynb
