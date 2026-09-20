@@ -98,9 +98,15 @@ Dashboard dirancang sebagai aplikasi web berbasis *Modern Vanilla Frontend* tanp
 ---
 
 ## Anggota Tim "MAKAN ITU PENTING"
+**Asal Institusi: Universitas Negeri Surabaya (UNESA)**
 
-- **Piji (Lead Modeler & Dashboard Architect)**
-- **Habib (Feature Engineer & Statistical Analyst)**
-- **Alfin (Data Cleaning & Pipeline Integration)**
+| No | Nama Lengkap | Posisi Tim | Peran Teknis Utama | Institusi & Kontak |
+| :---: | :--- | :---: | :--- | :--- |
+| 1 | **Muhammad Habib Nur Aiman** | **Ketua Tim** | Feature Engineering & Statistical Analysis | Universitas Negeri Surabaya<br>`muhammadhabibna@gmail.com` |
+| 2 | **Rizki Piji Fathoni** | **Anggota** | Lead Modeler & Dashboard Architect | Universitas Negeri Surabaya<br>`rizkipiji0907@gmail.com` |
+| 3 | **Alfin Jayadi** | **Anggota** | Data Cleaning & Pipeline Integration | Universitas Negeri Surabaya |
+
+---
 
 *ISFEST 2026 — Informatics and Information System Festival*
+
