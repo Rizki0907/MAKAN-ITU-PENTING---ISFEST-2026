@@ -1,12 +1,12 @@
-# EV-PULSE: Sistem Prediksi & Optimasi Utilisasi SPKLU Nasional
+# ChargeIQ: Sistem Prediksi & Optimasi Utilisasi SPKLU Nasional
 ### Data Competition ISFEST 2026 — Tim MAKAN ITU PENTING
 
 [![ISFEST 2026](https://img.shields.io/badge/Competition-ISFEST%202026-blue.svg)](https://isfest.id)
-[![Kaggle Leaderboard](https://img.shields.io/badge/Kaggle%20Score-0.06780-success.svg)](#hasil-evaluasi--skor)
+[![Kaggle Leaderboard](https://img.shields.io/badge/Kaggle%20Score-0.0680-success.svg)](#ringkasan-proyek--pencapaian-utama)
 [![Architecture](https://img.shields.io/badge/Model-Consensus%20GBDT-purple.svg)](#arsitektur-pemodelan)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Repositori ini memuat seluruh pipeline *end-to-end data science*, berkas pemodelan, analisis data eksploratif (EDA), serta aplikasi **Web Dashboard Interaktif** yang dikembangkan oleh **Tim MAKAN ITU PENTING** untuk kompetisi data sains **ISFEST 2026**.
+Repositori ini memuat seluruh pipeline *end-to-end data science*, berkas pemodelan, analisis data eksploratif (EDA), serta aplikasi **Web Dashboard Interaktif (ChargeIQ)** yang dikembangkan oleh **Tim MAKAN ITU PENTING** untuk kompetisi data sains **ISFEST 2026**.
 
 Fokus kompetisi adalah memprediksi **Tingkat Utilisasi (*utilization rate*)** pada jaringan 150 Stasiun Pengisian Kendaraan Listrik Umum (SPKLU / EV Charging Stations) di Amerika Serikat, serta memberikan rekomendasi strategis berupa *dynamic pricing* dan *capacity planning*.
 
@@ -17,14 +17,14 @@ Fokus kompetisi adalah memprediksi **Tingkat Utilisasi (*utilization rate*)** pa
 - **Dataset**: Lebih dari 1.300.000 data log pengisian daya SPKLU (Juli - Desember 2025) mencakup data spasial geolokasi, spesifikasi pengisi daya (*DC Fast Charge* vs *Hyper-Fast*), histori cuaca, fluktuasi harga bahan bakar, dan event lokal.
 - **Arsitektur Pemodelan**: *Consensus Multi-GBDT Architecture* menggabungkan 6 konfigurasi pohon regresi (LightGBM, CatBoost, dan XGBoost) dengan pembagian validasi *Temporal Holdout* 14 hari terakhir bulan November.
 - **Inovasi Pasca-Pemrosesan**: Penyesuaian matematis konveks linear (*Convex Linear Optimization*) untuk mengoreksi *seasonal drift* musim dingin bulan Desember (`OPTIMAL_SHIFT = +0.0007`) dan mengatasi *tree leaf variance shrinkage* pada kuantil antrean tinggi (`OPTIMAL_SHRINKAGE = 1.0028`).
-- **Skor Resmi Kaggle**: **0.06780** (Model Murni) dan **0.06748** (Target Optimal Top 2).
+- **Skor Resmi Kaggle**: **0.0680** (Model Murni Stacking Consensus &bull; Presisi Penuh: 0.06780).
 
 ---
 
 ## Struktur Repositori
 
 ```text
-├── dashboard/                  # Berkas Aplikasi Web Dashboard Interaktif
+├── dashboard/                  # Berkas Aplikasi Web Dashboard Interaktif (ChargeIQ)
 │   ├── index.html              # Halaman Utama Dashboard (Modern Dark-Mode SPA)
 │   ├── css/
 │   │   └── style.css           # Design System (Glassmorphism & Responsive Layout)
@@ -32,6 +32,7 @@ Fokus kompetisi adalah memprediksi **Tingkat Utilisasi (*utilization rate*)** pa
 │       ├── app.js              # State Manager, Tab Routing & Live Ticker
 │       ├── map.js              # Visualisasi Peta Leaflet (150 Stasiun SPKLU)
 │       ├── charts.js           # Visualisasi Chart.js (Diurnal, Heatmap, Importance)
+│       ├── eda_charts.js       # Visualisasi Plotly.js Interaktif (6 Analisis EDA)
 │       ├── simulator.js        # Engine Simulasi Dynamic Pricing & Kapasitas
 │       └── data/               # Aset Data Teroptimasi untuk Browser
 ├── dashboard_data/             # Berkas Agregat Analitik & Evaluasi Model
@@ -52,12 +53,10 @@ Fokus kompetisi adalah memprediksi **Tingkat Utilisasi (*utilization rate*)** pa
 ├── models/                     # Artefak Model Terlatih
 │   ├── baseline_ridge_model.joblib
 │   └── meta_learner_ridge.joblib
-├── notebook/                   # Berkas Eksperimen & Notebook Final
-│   ├── ISFEST_Final #2.ipynb   # Notebook Final Tim MAKAN ITU PENTING
-│   └── Experiment_piji_*.ipynb # Seri Eksperimen Modeling Piji (1 - 16)
-├── submission/                 # Berkas Hasil Prediksi / Submission
-│   ├── MAKAN ITU PENTING_FINAL-SUB.csv # Submission Final Resmi (0.06780)
-│   └── submission_18.csv       # Submission Terkalibrasi Presisi (0.06748)
+├── notebook/                   # Berkas Notebook Final Resmi
+│   └── ISFEST_Final #2.ipynb   # Notebook Final Tim MAKAN ITU PENTING
+├── submission/                 # Berkas Hasil Prediksi Resmi
+│   └── MAKAN ITU PENTING_FINAL-SUB.csv # Submission Final Resmi (0.0680 / 0.06780)
 └── README.md                   # Dokumentasi Utama Proyek
 ```
 
@@ -73,13 +72,13 @@ Pipeline pemodelan dibangun menggunakan metodologi terstruktur:
    - *Interaksi Kapasitas Daya Spasial* (`total_capacity_kw`, `power_per_port`).
    - *Kondisi Ekstrem Cuaca* (suhu beku musim dingin, curah hujan).
 3. **Validasi Temporal Realistis**: Menggunakan partisi *holdout* waktu 14 hari terakhir untuk mencegah *data leakage*.
-4. **Consensus Ensemble**: Pembobotan optimal dari model pohon LightGBM, CatBoost Symmetric/Balanced, dan XGBoost Histogram.
+4. **Consensus Ensemble**: Pembobotan optimal dari model pohon LightGBM, CatBoost Symmetric/Balanced, dan XGBoost Histogram via Non-negative Ridge Meta-Learner.
 
 ---
 
-## Panduan Menjalankan Web Dashboard
+## Panduan Menjalankan Web Dashboard (ChargeIQ)
 
-Dashboard dirancang sebagai aplikasi web berbasis *Modern Vanilla Frontend* tanpa ketergantungan paket server berat (*zero-build architecture*).
+Dashboard dirancang sebagai aplikasi web berbasis *Modern Vanilla Frontend* dengan library visualisasi Plotly.js, Leaflet.js, dan Chart.js (*zero-build architecture*).
 
 ### Menjalankan Secara Lokal:
 1. Kloning repositori ini:
@@ -91,9 +90,9 @@ Dashboard dirancang sebagai aplikasi web berbasis *Modern Vanilla Frontend* tanp
    - Cukup klik dua kali berkas `dashboard/index.html` (atau buka berkas via Google Chrome / Edge).
    - Atau gunakan server lokal Python:
      ```bash
-     python -m http.server 8080
+     python -m http.server 5500
      ```
-     Lalu buka `http://localhost:8080/dashboard/` di peramban Anda.
+     Lalu buka `http://localhost:5500/dashboard/index.html` di peramban Anda.
 
 ---
 
@@ -104,9 +103,8 @@ Dashboard dirancang sebagai aplikasi web berbasis *Modern Vanilla Frontend* tanp
 | :---: | :--- | :---: | :--- | :--- |
 | 1 | **Muhammad Habib Nur Aiman** | **Ketua Tim** | Feature Engineering & Statistical Analysis | Universitas Negeri Surabaya<br>`muhammadhabibna@gmail.com` |
 | 2 | **Rizki Piji Fathoni** | **Anggota** | Lead Modeler & Dashboard Architect | Universitas Negeri Surabaya<br>`rizkipiji0907@gmail.com` |
-| 3 | **Alfin Jayadi** | **Anggota** | Data Cleaning & Pipeline Integration | Universitas Negeri Surabaya |
+| 3 | **Alfin Jayadi** | **Anggota** | Data Cleaning & Pipeline Integration | Universitas Negeri Surabaya<br>`alfinjayadi76@gmail.com` |
 
 ---
 
 *ISFEST 2026 — Informatics and Information System Festival*
-

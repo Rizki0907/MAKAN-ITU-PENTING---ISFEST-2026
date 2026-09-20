@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EV-PULSE &bull; Sistem Prediksi & Optimasi Utilisasi SPKLU (ISFEST 2026)</title>
+  <title>ChargeIQ &bull; SPKLU Demand Intelligence & Forecasting (ISFEST 2026)</title>
   
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +12,9 @@
   
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Plotly.js for Interactive Data Visualizations -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
@@ -31,7 +34,7 @@
           </svg>
         </div>
         <div class="brand-text">
-          <span class="brand-title">EV-PULSE <span class="brand-tag">ISFEST 2026</span></span>
+          <span class="brand-title">ChargeIQ <span class="brand-tag">ISFEST 2026</span></span>
           <span class="brand-subtitle">SPKLU Demand Intelligence & Decision Support</span>
         </div>
       </a>
@@ -47,7 +50,7 @@
         <li class="nav-item">
           <a class="nav-link" data-tab="tab-eda">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            Eksplorasi Data
+            Eksplorasi Data (EDA)
           </a>
         </li>
         <li class="nav-item">
@@ -86,7 +89,7 @@
       <div class="nav-actions">
         <div class="status-badge">
           <span class="status-dot"></span>
-          Model Final 0.06780 Aktif
+          Kaggle Score 0.06780
         </div>
         <a href="https://github.com/Rizki0907/MAKAN-ITU-PENTING---ISFEST-2026" target="_blank" class="btn-github">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -103,16 +106,16 @@
     <div class="ticker-label">⚡ SPKLU LIVE</div>
     <div class="ticker-track">
       <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Resmi: <strong>0.06780 (Model Murni)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill purple"></span> Potensi Top 2 Leaderboard: <strong>0.06748 (Terkalibrasi Presisi)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill amber"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill cyan"></span> Fitur Kunci: <strong>target_prof_st_hr_wk (43.4% Bobot Konsensus)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill green"></span> Koreksi Musiman: <strong>OPTIMAL_SHIFT = +0.0007 &bull; OPTIMAL_SHRINKAGE = 1.0028</strong></div>
+      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill purple"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill amber"></span> Fitur Kunci: <strong>target_prof_st_hr_wk (43.4% Bobot Konsensus)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill green"></span> Koreksi Musiman Teruji: <strong>OPTIMAL_SHIFT = +0.0007 &bull; OPTIMAL_SHRINKAGE = 1.0028</strong></div>
+      <div class="ticker-item"><span class="ticker-pill cyan"></span> Validasi: <strong>Temporal Holdout 14 Hari Bebas Data Leakage</strong></div>
       <!-- Duplicate loop for smooth infinite marquee -->
       <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Resmi: <strong>0.06780 (Model Murni)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill purple"></span> Potensi Top 2 Leaderboard: <strong>0.06748 (Terkalibrasi Presisi)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill amber"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill purple"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill amber"></span> Fitur Kunci: <strong>target_prof_st_hr_wk (43.4% Bobot Konsensus)</strong></div>
     </div>
   </div>
 
@@ -130,7 +133,7 @@
         <div class="hero-content">
           <div class="hero-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg>
-            Sistem Prediksi & Optimasi SPKLU &bull; ISFEST 2026
+            ChargeIQ &bull; Sistem Prediksi & Optimasi SPKLU &bull; ISFEST 2026
           </div>
           <h1 class="hero-title">
             Prediksi Utilisasi.<br>
@@ -138,7 +141,7 @@
             <span class="gradient-text">Skalabilitas SPKLU.</span>
           </h1>
           <p class="hero-description">
-            EV-PULSE mengintegrasikan pemodelan *Consensus Multi-GBDT* (LightGBM, CatBoost, XGBoost) pada 1.300.000+ data log transaksi pengisian daya di 150 stasiun SPKLU Amerika Serikat. Dilengkapi mitigasi *seasonal drift* musim dingin dan simulator *dynamic pricing* interaktif untuk mendukung keandalan jaringan pengisian kendaraan listrik nasional.
+            ChargeIQ mengintegrasikan pemodelan *Consensus Multi-GBDT* (LightGBM, CatBoost, XGBoost) pada 1.300.000+ data log transaksi pengisian daya di 150 stasiun SPKLU Amerika Serikat. Dilengkapi mitigasi *seasonal drift* musim dingin dan simulator *dynamic pricing* interaktif untuk mendukung keandalan jaringan pengisian kendaraan listrik nasional.
           </p>
 
           <!-- Hero KPI Stat Cards -->
@@ -159,14 +162,14 @@
               <span class="stat-sub">Consensus Blend</span>
             </div>
             <div class="hero-stat-card emerald-border">
-              <span class="stat-value">0.06780</span>
+              <span class="stat-value">0.0680</span>
               <span class="stat-label">Skor Kaggle</span>
-              <span class="stat-sub">RMSE Model Murni</span>
+              <span class="stat-sub">RMSE Model Murni (0.06780)</span>
             </div>
             <div class="hero-stat-card amber-border">
-              <span class="stat-value">0.06748</span>
-              <span class="stat-label">Top 2 Target</span>
-              <span class="stat-sub">Leaderboard Opt.</span>
+              <span class="stat-value">+0.0007</span>
+              <span class="stat-label">Koreksi Drift</span>
+              <span class="stat-sub">Linear Convex Shift</span>
             </div>
           </div>
         </div>
@@ -256,78 +259,108 @@
     </section>
 
     <!-- ======================================================================
-         TAB 2: EKSPLORASI DATA (EDA)
+         TAB 2: EKSPLORASI DATA (EDA - INTERACTIVE PLOTLY SUITE)
          ====================================================================== -->
     <section id="tab-eda" class="dashboard-tab-content">
       <div class="section-header">
         <div class="section-title-wrap">
-          <span class="section-pill">Exploratory Data Analysis</span>
+          <span class="section-pill">Interactive Exploratory Data Analysis</span>
           <h2 class="section-title">Eksplorasi Data & Analisis Karakteristik SPKLU</h2>
           <p class="section-subtitle">
-            Wawasan mendalam mengenai struktur data, perilaku fluktuasi temporal, pengaruh spesifikasi pengisi daya, dan anomali cuaca ekstrem musim dingin.
+            Visualisasi interaktif Plotly.js berbasis 100% data riil dari notebook <code>ISFEST_Final #2.ipynb</code>. Arahkan kursor (*hover*) untuk memeriksa nilai presisi, perbesar (*zoom*), atau klik legenda untuk menyaring kategori.
           </p>
         </div>
       </div>
 
-      <!-- EDA Figures Interactive Gallery -->
-      <div class="eda-grid">
-        <div class="eda-card">
-          <div class="eda-img-wrap">
-            <img src="assets/figures/fluktuasi_diurnal.png" alt="Fluktuasi Diurnal 24 Jam">
+      <!-- 6 Interactive Plotly EDA Cards Grid -->
+      <div class="grid-2col" style="margin-bottom: 2rem;">
+        <!-- Chart 1: Diurnal Fluctuation -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">1. Fluktuasi Diurnal 24 Jam</h3>
+              <p class="card-subtitle">Komparasi Jam Kerja vs Akhir Pekan (Hourly Utilization)</p>
+            </div>
+            <span class="badge-model">Plotly Interactive</span>
           </div>
-          <div class="eda-body">
-            <h4 class="eda-title">Fluktuasi Diurnal 24 Jam</h4>
-            <p class="eda-desc">Puncak pemakaian stabil terjadi pada pukul 17:00 - 19:00 seiring jam pulang kerja, dengan penurunan drastis pada pukul 01:00 - 05:00.</p>
-          </div>
-        </div>
-
-        <div class="eda-card">
-          <div class="eda-img-wrap">
-            <img src="assets/figures/loc_chargtype.png" alt="Utilisasi per Lokasi & Tipe Charger">
-          </div>
-          <div class="eda-body">
-            <h4 class="eda-title">Tipe Lokasi vs Tipe Charger</h4>
-            <p class="eda-desc">Stasiun di *Highway Corridor* mencatat utilisasi tertinggi (>60%), dengan adopsi *Hyper-Fast* menghasilkan *turnover* kendaraan lebih cepat.</p>
+          <div id="plotly-diurnal" style="height: 380px; width: 100%;"></div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.75rem; border-top: 1px solid var(--border-subtle); padding-top: 0.6rem;">
+            💡 <strong>Temuan Notebook:</strong> Puncak utilisasi jam kerja terjadi pada pukul 17:00-19:00 saat jam pulang kantor, sementara akhir pekan memiliki puncak yang lebih merata di rentang siang hingga sore hari.
           </div>
         </div>
 
-        <div class="eda-card">
-          <div class="eda-img-wrap">
-            <img src="assets/figures/output_port.png" alt="Pengaruh Output Port kW">
+        <!-- Chart 2: Location & Charger Type -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">2. Utilisasi per Tipe Lokasi SPKLU</h3>
+              <p class="card-subtitle">Rata-rata Utilisasi & Rentang Interkuartil (IQR)</p>
+            </div>
+            <span class="badge-model">Plotly Interactive</span>
           </div>
-          <div class="eda-body">
-            <h4 class="eda-title">Daya Keluaran (kW) & Port</h4>
-            <p class="eda-desc">Stasiun dengan daya 150+ kW per port memiliki daya tarik komuter yang jauh lebih tinggi dibanding stasiun lambat 19.2 kW.</p>
-          </div>
-        </div>
-
-        <div class="eda-card">
-          <div class="eda-img-wrap">
-            <img src="assets/figures/temp_sumwin.png" alt="Pengaruh Suhu & Musim Dingin">
-          </div>
-          <div class="eda-body">
-            <h4 class="eda-title">Dampak Suhu & Musim Dingin</h4>
-            <p class="eda-desc">Suhu di bawah titik beku (< 32°F) pada bulan Desember menurunkan efisiensi baterai EV dan memperpanjang durasi sesi pengisian daya (+12%).</p>
+          <div id="plotly-loc-charger" style="height: 380px; width: 100%;"></div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.75rem; border-top: 1px solid var(--border-subtle); padding-top: 0.6rem;">
+            💡 <strong>Temuan Notebook:</strong> Lokasi <em>Highway Corridor</em> dan <em>Airport</em> mencatat rata-rata utilisasi tertinggi karena tingginya rotasi mobilitas komuter jarak jauh.
           </div>
         </div>
 
-        <div class="eda-card">
-          <div class="eda-img-wrap">
-            <img src="assets/figures/corr_matrix.png" alt="Matriks Korelasi Fitur">
+        <!-- Chart 3: Ports Count Distribution -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">3. Distribusi Jumlah Port per Stasiun</h3>
+              <p class="card-subtitle">Frekuensi Data Log per Konfigurasi Port</p>
+            </div>
+            <span class="badge-model">Plotly Interactive</span>
           </div>
-          <div class="eda-body">
-            <h4 class="eda-title">Matriks Korelasi Multivariat</h4>
-            <p class="eda-desc">Korelasi terkuat terhadap `utilization_rate` didominasi oleh profil historis stasiun, siklus jam, serta interaksi kapasitas total kW.</p>
+          <div id="plotly-ports" style="height: 380px; width: 100%;"></div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.75rem; border-top: 1px solid var(--border-subtle); padding-top: 0.6rem;">
+            💡 <strong>Temuan Notebook:</strong> Stasiun dengan 6 dan 8 port mendominasi frekuensi operasional, menjadi konfigurasi standar infrastruktur SPKLU nasional.
           </div>
         </div>
 
-        <div class="eda-card">
-          <div class="eda-img-wrap">
-            <img src="assets/figures/distribusi_util_rate.png" alt="Distribusi Nilai Target">
+        <!-- Chart 4: Temperature Shift (Seasonal Drift) -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">4. Pergeseran Suhu Udara (Seasonal Drift)</h3>
+              <p class="card-subtitle">Distribusi Suhu Udara (°F): Train (Jul-Nov) vs Test (Nov-Des)</p>
+            </div>
+            <span class="badge-model">Plotly Interactive</span>
           </div>
-          <div class="eda-body">
-            <h4 class="eda-title">Distribusi Target Utilisasi</h4>
-            <p class="eda-desc">Nilai target berada pada interval fisik batas $[0.02, 0.98]$ dengan pola multi-modal yang mencerminkan perbedaan segmentasi lokasi.</p>
+          <div id="plotly-temp" style="height: 380px; width: 100%;"></div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.75rem; border-top: 1px solid var(--border-subtle); padding-top: 0.6rem;">
+            💡 <strong>Temuan Notebook:</strong> Terdapat pergeseran distribusi suhu signifikan dari rata-rata 77.2°F (musim panas/gugur) ke 49.8°F (musim dingin Desember), memvalidasi kebutuhan optimasi konveks <code>OPTIMAL_SHIFT = +0.0007</code>.
+          </div>
+        </div>
+
+        <!-- Chart 5: Correlation Matrix -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">5. Matriks Korelasi Linear Pearson</h3>
+              <p class="card-subtitle">Korelasi Bivariat Antar 8 Variabel Numerik Kontinu</p>
+            </div>
+            <span class="badge-model">Plotly Interactive</span>
+          </div>
+          <div id="plotly-corr" style="height: 420px; width: 100%;"></div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.75rem; border-top: 1px solid var(--border-subtle); padding-top: 0.6rem;">
+            💡 <strong>Temuan Notebook:</strong> Variabel <code>gas_price_per_gallon</code> (+0.166) dan <code>ports_total</code> (+0.086) memiliki korelasi linear positif terbesar terhadap utilisasi.
+          </div>
+        </div>
+
+        <!-- Chart 6: Target Distribution -->
+        <div class="glass-card">
+          <div class="card-header-clean">
+            <div>
+              <h3 class="card-title">6. Distribusi Variabel Sasaran (utilization_rate)</h3>
+              <p class="card-subtitle">Histogram 60 Bins pada Rentang Fisik [0.02, 0.98]</p>
+            </div>
+            <span class="badge-model">Plotly Interactive</span>
+          </div>
+          <div id="plotly-target" style="height: 420px; width: 100%;"></div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.75rem; border-top: 1px solid var(--border-subtle); padding-top: 0.6rem;">
+            💡 <strong>Temuan Notebook:</strong> Variabel sasaran dibatasi secara fisik pada interval [0.02, 0.98] dengan penumpukan frekuensi pada kuantil rendah saat jam malam.
           </div>
         </div>
       </div>
@@ -367,6 +400,7 @@
                   <th>Tree (Val)</th>
                   <th>Tree (Full)</th>
                   <th>Holdout RMSE</th>
+                  <th>Bobot Meta (%)</th>
                 </tr>
               </thead>
               <tbody id="model-eval-tbody">
@@ -705,7 +739,7 @@
         </div>
 
         <div class="glass-card">
-          <h4 style="font-family: var(--font-heading); color: #60a5fa; font-size: 1.1rem; margin-bottom: 0.5rem;">6. Deployment (EV-PULSE)</h4>
+          <h4 style="font-family: var(--font-heading); color: #60a5fa; font-size: 1.1rem; margin-bottom: 0.5rem;">6. Deployment (ChargeIQ)</h4>
           <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
             Pengembangan sistem dashboard interaktif berbasis web responsif, visualisasi spasial 150 stasiun Leaflet, serta simulator kebijakan *dynamic pricing* waktu nyata.
           </p>
@@ -796,7 +830,7 @@
               </p>
             </div>
             <div style="font-size: 0.74rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
-              🏛️ <code>UNIVERSITAS NEGERI SURABAYA</code>
+              ✉️ <code>alfinjayadi76@gmail.com</code>
             </div>
           </div>
         </div>
@@ -806,32 +840,16 @@
   </main>
 
   <!-- ========================================================================
-       EDA IMAGE MODAL POPUP
-       ======================================================================== -->
-  <div id="eda-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 2000; align-items: center; justify-content: center; padding: 2rem;">
-    <div style="background: #0e1424; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); max-width: 900px; width: 100%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; position: relative;">
-      <button id="eda-modal-close" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: #ffffff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">&times;</button>
-      <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-subtle);">
-        <h3 id="eda-modal-title" style="font-family: var(--font-heading); color: #ffffff; font-size: 1.25rem;">Detail Grafik EDA</h3>
-        <p id="eda-modal-desc" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;"></p>
-      </div>
-      <div style="padding: 1.5rem; overflow-y: auto; display: flex; align-items: center; justify-content: center; background: #080b13;">
-        <img id="eda-modal-img" src="" alt="Detail EDA" style="max-width: 100%; max-height: 60vh; border-radius: var(--radius-sm); object-fit: contain;">
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================================
        FOOTER
        ======================================================================== -->
   <footer class="footer">
     <div class="footer-inner">
       <div>
-        <strong>EV-PULSE &bull; Tim MAKAN ITU PENTING</strong><br>
+        <strong>ChargeIQ &bull; Tim MAKAN ITU PENTING</strong><br>
         <span style="color: var(--text-muted);">Universitas Negeri Surabaya &bull; Data Competition ISFEST 2026</span>
       </div>
       <div style="text-align: right;">
-        <span>Model Leaderboard: <strong>0.06780</strong> (Murni) / <strong>0.06748</strong> (Target Top 2)</span><br>
+        <span>Skor Kaggle Leaderboard: <strong>0.0680</strong> (Presisi Resmi: 0.06780)</span><br>
         <span style="color: var(--text-muted);">&copy; 2026 Hak Cipta Terpelihara. Dikembangkan untuk Keunggulan Infrastruktur SPKLU Nasional.</span>
       </div>
     </div>
@@ -844,10 +862,12 @@
   <!-- Data Assets -->
   <script src="js/data/stations_data.js"></script>
   <script src="js/data/analytics_data.js"></script>
+  <script src="js/data/eda_interactive_data.js"></script>
   
   <!-- App Controllers -->
   <script src="js/map.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/eda_charts.js"></script>
   <script src="js/simulator.js"></script>
   <script src="js/app.js"></script>
 </body>

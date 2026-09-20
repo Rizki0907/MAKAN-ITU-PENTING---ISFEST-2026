@@ -1,5 +1,5 @@
 /* ==========================================================================
-   EV-PULSE Main Application Controller (ISFEST 2026)
+   ChargeIQ Main Application Controller (ISFEST 2026)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAllCharts();
   initSpkluMap();
   initSimulator();
-
-  // Setup EDA Gallery Modal
-  setupEdaModal();
+  initInteractiveEdaCharts();
 
   // Setup Diurnal Day Filter
   setupDiurnalFilter();
@@ -50,6 +48,17 @@ function setupTabNavigation() {
         }, 150);
       }
 
+      // Trigger Plotly Resize if EDA tab is opened
+      if (targetTabId === 'tab-eda' && typeof Plotly !== 'undefined') {
+        setTimeout(() => {
+          const plotIds = ['plotly-diurnal', 'plotly-loc-charger', 'plotly-ports', 'plotly-temp', 'plotly-corr', 'plotly-target'];
+          plotIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) Plotly.Plots.resize(el);
+          });
+        }, 100);
+      }
+
       // Smooth scroll to top of content
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -71,44 +80,5 @@ function setupDiurnalFilter() {
 
   daySelect.addEventListener('change', (e) => {
     initDiurnalChart(e.target.value);
-  });
-}
-
-/* --------------------------------------------------------------------------
-   3. EDA Image Modal Viewer
-   -------------------------------------------------------------------------- */
-function setupEdaModal() {
-  const modal = document.getElementById('eda-modal');
-  const modalImg = document.getElementById('eda-modal-img');
-  const modalTitle = document.getElementById('eda-modal-title');
-  const modalDesc = document.getElementById('eda-modal-desc');
-  const closeBtn = document.getElementById('eda-modal-close');
-
-  if (!modal) return;
-
-  document.querySelectorAll('.eda-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const img = card.querySelector('img');
-      const title = card.querySelector('.eda-title');
-      const desc = card.querySelector('.eda-desc');
-
-      if (img && modalImg) modalImg.src = img.src;
-      if (title && modalTitle) modalTitle.innerText = title.innerText;
-      if (desc && modalDesc) modalDesc.innerText = desc.innerText;
-
-      modal.style.display = 'flex';
-    });
-  });
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-  }
-
-  window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-    }
   });
 }

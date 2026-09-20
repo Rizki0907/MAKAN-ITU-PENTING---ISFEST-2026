@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Chart.js & Visualization Controllers (EV-PULSE ISFEST 2026)
+   Chart.js & Visualization Controllers (ChargeIQ ISFEST 2026)
    ========================================================================== */
 
 let donutChartInstance = null;
@@ -328,12 +328,12 @@ function renderModelEvaluationTable() {
   let html = '';
 
   models.forEach((m, idx) => {
-    const isChampion = idx === 2; // A3 Balanced or A2
+    const isChampion = idx === 2; // A3 Balanced
     html += `
       <tr>
         <td>
           <strong style="color: #ffffff;">${m.Model}</strong>
-          ${isChampion ? '<span class="badge-model badge-champion" style="margin-left: 6px;">Top Performer</span>' : ''}
+          ${isChampion ? '<span class="badge-model badge-champion" style="margin-left: 6px;">Best Single</span>' : ''}
         </td>
         <td>${m['Kedalaman Pohon']}</td>
         <td>${m['Learning Rate']}</td>
@@ -342,9 +342,31 @@ function renderModelEvaluationTable() {
         <td style="font-family: monospace; font-weight: 700; color: ${m['Holdout RMSE'] < 0.0678 ? '#34d399' : '#cbd5e1'}">
           ${m['Holdout RMSE'].toFixed(6)}
         </td>
+        <td style="font-family: monospace; color: #60a5fa; font-weight: 600;">
+          ${m.Weight_Percentage ? m.Weight_Percentage.toFixed(2) + '%' : '-'}
+        </td>
       </tr>
     `;
   });
+
+  // Final Consensus Ensemble Row
+  html += `
+    <tr style="background: rgba(99, 102, 241, 0.15); border-top: 2px solid rgba(99, 102, 241, 0.4);">
+      <td>
+        <strong style="color: #a5b4fc;">🏆 Consensus Meta-Learner (Ridge + Shift/Shrinkage)</strong>
+      </td>
+      <td>Ensemble</td>
+      <td>-</td>
+      <td>5 Seeds</td>
+      <td>100% Data</td>
+      <td style="font-family: monospace; font-weight: 800; color: #4ade80;">
+        0.067710
+      </td>
+      <td style="font-family: monospace; color: #a5b4fc; font-weight: 700;">
+        100.0%
+      </td>
+    </tr>
+  `;
 
   tbody.innerHTML = html;
 }

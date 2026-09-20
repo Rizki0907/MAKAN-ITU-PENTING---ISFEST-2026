@@ -2022,7 +2022,7 @@ const ANALYTICS_DATA = {
       "Pohon Optimal (Validation)": 172,
       "Pohon Pelatihan Penuh (125%)": 215,
       "Holdout RMSE": 0.0682544151117214,
-      "Weight_Percentage": NaN
+      "Weight_Percentage": 8.62
     },
     {
       "Model": "A2: CatBoost Deep Symmetric",
@@ -2031,7 +2031,7 @@ const ANALYTICS_DATA = {
       "Pohon Optimal (Validation)": 399,
       "Pohon Pelatihan Penuh (125%)": 498,
       "Holdout RMSE": 0.0677652032369824,
-      "Weight_Percentage": NaN
+      "Weight_Percentage": 20.00
     },
     {
       "Model": "A3: CatBoost Balanced",
@@ -2040,7 +2040,7 @@ const ANALYTICS_DATA = {
       "Pohon Optimal (Validation)": 368,
       "Pohon Pelatihan Penuh (125%)": 460,
       "Holdout RMSE": 0.0677476866893494,
-      "Weight_Percentage": NaN
+      "Weight_Percentage": 20.87
     },
     {
       "Model": "B1: LightGBM Regularized",
@@ -2049,7 +2049,7 @@ const ANALYTICS_DATA = {
       "Pohon Optimal (Validation)": 167,
       "Pohon Pelatihan Penuh (125%)": 209,
       "Holdout RMSE": 0.068024421749078,
-      "Weight_Percentage": NaN
+      "Weight_Percentage": 13.16
     },
     {
       "Model": "B2: CatBoost Regularized",
@@ -2058,7 +2058,7 @@ const ANALYTICS_DATA = {
       "Pohon Optimal (Validation)": 379,
       "Pohon Pelatihan Penuh (125%)": 473,
       "Holdout RMSE": 0.0677603549427712,
-      "Weight_Percentage": NaN
+      "Weight_Percentage": 21.00
     },
     {
       "Model": "B3: XGBoost Hist",
@@ -2067,7 +2067,7 @@ const ANALYTICS_DATA = {
       "Pohon Optimal (Validation)": 217,
       "Pohon Pelatihan Penuh (125%)": 272,
       "Holdout RMSE": 0.067904131101241,
-      "Weight_Percentage": NaN
+      "Weight_Percentage": 16.36
     }
   ],
   "loc_matrix": [
