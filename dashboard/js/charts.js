@@ -221,7 +221,7 @@ function initFeatureImportanceChart() {
   const canvas = document.getElementById('featureImportanceChart');
   if (!canvas) return;
 
-  const features = ANALYTICS_DATA.features.slice(0, 12);
+  const features = ANALYTICS_DATA.features;
   const labels = features.map(f => f.Fitur);
   const consensusVals = features.map(f => f['Konsensus (%)']);
   const lgbVals = features.map(f => f['LightGBM (%)']);
@@ -367,7 +367,9 @@ function renderModelEvaluationTable() {
   html += `
     <tr style="background: rgba(99, 102, 241, 0.15); border-top: 2px solid rgba(99, 102, 241, 0.4);">
       <td>
-        <strong style="color: #a5b4fc;">🏆 Consensus Meta-Learner (Ridge + Shift/Shrinkage)</strong>
+        <span class="badge-model badge-champion" style="margin-right: 6px;">Consensus</span>
+        <strong style="color: #a5b4fc;">Meta-Learner</strong>
+        <span style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-top: 2px;">Ridge + Shift / Shrinkage</span>
       </td>
       <td>Ensemble</td>
       <td>-</td>

@@ -107,7 +107,7 @@
        LIVE TICKER BAR (SIPEDA Reference Style)
        ======================================================================== -->
   <div class="ticker-bar">
-    <div class="ticker-label"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px;"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg> SPKLU LIVE</div>
+    <div class="ticker-label"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px;"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg> ChargeIQ</div>
     <div class="ticker-track">
       <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
       <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
@@ -400,7 +400,7 @@
                   <th>Tree (Val)</th>
                   <th>Tree (Full)</th>
                   <th>Holdout RMSE</th>
-                  <th>Bobot Meta (%)</th>
+                  <th>Bobot (%)</th>
                 </tr>
               </thead>
               <tbody id="model-eval-tbody">
@@ -411,15 +411,31 @@
         </div>
 
         <!-- Right: Feature Importance Bar Chart -->
-        <div class="glass-card">
-          <div class="card-header-clean">
-            <div>
-              <h3 class="card-title">Feature Importance Konsensus</h3>
-              <p class="card-subtitle">Bobot relatif kontribusi fitur penentu utilisasi</p>
+        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="card-header-clean">
+              <div>
+                <h3 class="card-title">Feature Importance Konsensus</h3>
+                <p class="card-subtitle">Bobot relatif kontribusi fitur penentu utilisasi</p>
+              </div>
+              <span class="badge-model badge-champion">Top Predictors</span>
+            </div>
+            <div style="height: 345px; position: relative;">
+              <canvas id="featureImportanceChart"></canvas>
             </div>
           </div>
-          <div style="height: 340px; position: relative;">
-            <canvas id="featureImportanceChart"></canvas>
+
+          <!-- Feature Insight Box (Fills space gracefully with analytical depth) -->
+          <div class="feature-insight-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem;">
+              <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan); letter-spacing: 0.06em;">
+                Analisis Fitur Kunci
+              </span>
+              <span class="badge-model" style="font-size: 0.68rem;">56.5% Kumulatif</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+              Interaksi spasial-temporal <code>target_prof_st_hr_wk</code> (43.4%) dan <code>target_prof_loc_hr_wk</code> (13.1%) mendominasi keputusan model, membuktikan utilisasi SPKLU sangat berpola siklis antara jam kerja, hari libur, dan geolokasi stasiun.
+            </p>
           </div>
         </div>
       </div>

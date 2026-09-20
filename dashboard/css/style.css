@@ -397,23 +397,26 @@ body.light-theme .btn-github:hover {
   overflow: hidden;
   padding: 0 1.25rem;
   transition: background 0.25s ease;
+  mask-image: linear-gradient(to right, transparent, black 30px, black calc(100% - 30px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 30px, black calc(100% - 30px), transparent);
 }
 
 .ticker-label {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+  background: linear-gradient(135deg, #00f2fe 0%, #6366f1 55%, #ec4899 100%);
   color: #ffffff;
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: var(--radius-full);
   margin-right: 1rem;
   flex-shrink: 0;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 242, 254, 0.3);
 }
 
 .ticker-track {
@@ -805,15 +808,19 @@ body.light-theme .hero-visual-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  padding: 1.6rem;
   backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
   box-shadow: var(--shadow-card);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
   min-width: 0; /* Prevents flex/grid blowouts */
+  position: relative;
 }
 
 .glass-card:hover {
   border-color: var(--border-glow);
+  box-shadow: 0 12px 35px -10px rgba(0, 242, 254, 0.12);
+  transform: translateY(-2px);
 }
 
 .card-header-clean {
@@ -835,6 +842,28 @@ body.light-theme .hero-visual-card {
   font-size: 0.78rem;
   color: var(--text-muted);
   margin-top: 0.2rem;
+}
+
+/* Feature Insight Box to balance height */
+.feature-insight-card {
+  margin-top: 1rem;
+  padding: 0.9rem 1.1rem;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+}
+
+body.light-theme .feature-insight-card {
+  background: rgba(79, 70, 229, 0.05);
+  border-color: rgba(79, 70, 229, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.feature-insight-card:hover {
+  border-color: rgba(0, 242, 254, 0.4);
+  background: rgba(99, 102, 241, 0.12);
 }
 
 /* Inline card icon badge */
@@ -1323,3 +1352,55 @@ body.light-theme .badge-champion {
     text-align: center;
   }
 }
+
+/* ==========================================================================
+   GLOBAL CUSTOM SCROLLBAR & CARD AURA ACCENTS
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+.hero-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-purple), transparent);
+  opacity: 0.6;
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  pointer-events: none;
+}
+
