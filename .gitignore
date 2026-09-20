@@ -8,20 +8,38 @@ env/
 venv/
 ENV/
 
-# Large Datasets (>50MB)
-data/train.csv
-data/train_ORI.csv
-data/test.csv
-data/test_ORI.csv
-data/test_with_ground_truth_full.csv
+# Large & Raw Datasets
+data/
 
 # Heavy Model Binaries (>40MB)
 models/final_champion_model.joblib
 models/pipeline_full_artifacts.joblib
 
+# Competition PDF Documents
+*.pdf
+
+# Intermediate / Trial Notebooks (Keep only ISFEST_Final)
+notebook/Experiment_piji_*.ipynb
+notebook/Notebook_habib_*.ipynb
+notebook/notebook_alfin_*.ipynb
+notebook/isfest-*.ipynb
+notebook/isfest-*.xpynb
+notebook/notebook-isfest*.ipynb
+notebook/sub*.ipynb
+notebook/Local_Leaderboard_Evaluator.ipynb
+
+# Intermediate / Trial Submissions (Keep only FINAL-SUB)
+submission/submission_*.csv
+submission/Submission_habib_*.csv
+submission/submission_alfin_*.csv
+submission/submission (*).csv
+submission/ensemble*.csv
+submission/MAKAN ITU PENTING_Submission*.csv
+
 # Scratch & Logs
 scratch/
 catboost_info/
+__results___files/
 .gemini/
 *.log
 
