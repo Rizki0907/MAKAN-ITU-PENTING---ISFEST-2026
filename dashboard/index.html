@@ -50,19 +50,20 @@
   <!-- ========================================================================
        HEADER & NAVIGATION BAR
        ======================================================================== -->
-  <header class="header">
+  <header class="header-wrapper">
     <nav class="navbar">
-      <div class="brand-wrapper">
-        <div class="brand-logo">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+      <!-- Brand Logo -->
+      <a href="#tab-beranda" class="nav-brand" id="brand-logo-link" onclick="switchTab('tab-beranda')">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
             <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
           </svg>
         </div>
-        <div class="brand-text-block">
-          <span class="brand-title">Charge<span class="accent-text">IQ</span></span>
+        <div class="brand-text">
+          <span class="brand-title">ChargeIQ <span class="brand-tag">ISFEST 2026</span></span>
           <span class="brand-subtitle">SPKLU Demand Intelligence &bull; ISFEST 2026</span>
         </div>
-      </div>
+      </a>
 
       <div class="nav-menu">
         <a href="#tab-beranda" class="nav-link active" data-tab="tab-beranda">
