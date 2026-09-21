@@ -1,6 +1,6 @@
 /* ==========================================================================
    ChargeIQ - Interactive Plotly.js EDA Controllers (ISFEST 2026)
-   Matches exact distributions & numbers from ISFEST_Final #2.ipynb
+   Matches exact distributions & numbers from MAKAN ITU PENTING_Penyisihan_Datcom.ipynb
    ========================================================================== */
 
 function getPlotlyBaseLayout() {

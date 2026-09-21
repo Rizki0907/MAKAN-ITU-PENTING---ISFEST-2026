@@ -54,7 +54,7 @@ Fokus kompetisi adalah memprediksi **Tingkat Utilisasi (*utilization rate*)** pa
 │   ├── baseline_ridge_model.joblib
 │   └── meta_learner_ridge.joblib
 ├── notebook/                   # Berkas Notebook Final Resmi
-│   └── ISFEST_Final #2.ipynb   # Notebook Final Tim MAKAN ITU PENTING
+│   └── MAKAN ITU PENTING_Penyisihan_Datcom.ipynb # Notebook Utama Final Tim MAKAN ITU PENTING
 ├── submission/                 # Berkas Hasil Prediksi Resmi
 │   └── MAKAN ITU PENTING_FINAL-SUB.csv # Submission Final Resmi (0.0680 / 0.06780)
 └── README.md                   # Dokumentasi Utama Proyek
