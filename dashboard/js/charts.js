@@ -29,8 +29,8 @@ function initAllCharts() {
 }
 
 function updateChartJsTheme(isLight) {
-  Chart.defaults.color = isLight ? '#475569' : '#94a3b8';
-  Chart.defaults.plugins.tooltip.backgroundColor = isLight ? 'rgba(255, 255, 255, 0.96)' : 'rgba(14, 20, 36, 0.95)';
+  Chart.defaults.color = isLight ? '#334155' : '#94a3b8';
+  Chart.defaults.plugins.tooltip.backgroundColor = isLight ? 'rgba(255, 255, 255, 0.98)' : 'rgba(14, 20, 36, 0.95)';
   Chart.defaults.plugins.tooltip.titleColor = isLight ? '#0f172a' : '#ffffff';
   Chart.defaults.plugins.tooltip.bodyColor = isLight ? '#334155' : '#e2e8f0';
   Chart.defaults.plugins.tooltip.borderColor = isLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(99, 102, 241, 0.4)';
@@ -47,6 +47,11 @@ function updateChartJsTheme(isLight) {
     const item = itemSelect ? itemSelect.value : '';
     initFutureForecastChart(cat, item);
   }
+
+  // Re-render HTML-based visualizations with theme-matched colors
+  renderHourlyHeatmap();
+  renderModelEvaluationTable();
+  renderForecastRanking();
 }
 
 /* --------------------------------------------------------------------------
@@ -85,7 +90,7 @@ function initDonutChart() {
           '#10b981'  // Emerald
         ],
         borderWidth: 2,
-        borderColor: '#0e1424',
+        borderColor: document.body.classList.contains('light-theme') ? '#ffffff' : '#0e1424',
         hoverOffset: 6
       }]
     },
@@ -209,14 +214,18 @@ function initDiurnalChart(dayFilter = 'all') {
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255, 255, 255, 0.04)' },
+          grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.04)' },
+          ticks: { color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8' },
           title: { display: true, text: 'Jam Operasional (00:00 - 23:00)', font: { size: 11 } }
         },
         y: {
-          grid: { color: 'rgba(255, 255, 255, 0.06)' },
+          grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)' },
           min: 0,
           max: 85,
-          ticks: { callback: v => `${v}%` },
+          ticks: { 
+            color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8',
+            callback: v => `${v}%` 
+          },
           title: { display: true, text: 'Tingkat Utilisasi (%)', font: { size: 11 } }
         }
       }
@@ -277,12 +286,18 @@ function initFeatureImportanceChart() {
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255, 255, 255, 0.05)' },
-          ticks: { callback: v => `${v}%` }
+          grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)' },
+          ticks: { 
+            color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8',
+            callback: v => `${v}%` 
+          }
         },
         y: {
           grid: { display: false },
-          ticks: { font: { size: 11, family: 'monospace' } }
+          ticks: { 
+            color: document.body.classList.contains('light-theme') ? '#1e293b' : '#cbd5e1',
+            font: { size: 11, family: 'monospace' } 
+          }
         }
       }
     }
@@ -311,28 +326,49 @@ function renderHourlyHeatmap() {
   }
   html += `</tr></thead><tbody>`;
 
+  const isLight = document.body.classList.contains('light-theme');
+
   heatmapData.forEach((row, idx) => {
     html += `<tr><td class="day-header">${dayNames[row.dayofweek] || 'Hari ' + row.dayofweek}</td>`;
     for (let h = 0; h < 24; h++) {
       const val = row[h.toString()] || 0;
       const pct = (val * 100).toFixed(1);
       
-      // Color interpolation: 0.10 (low) -> 0.40 (med) -> 0.70 (high)
-      let bgColor, textColor = '#ffffff';
-      if (val < 0.20) {
-        bgColor = 'rgba(30, 58, 138, 0.35)'; // Deep Navy
-        textColor = '#94a3b8';
-      } else if (val < 0.35) {
-        bgColor = 'rgba(14, 116, 144, 0.6)'; // Teal
-      } else if (val < 0.50) {
-        bgColor = 'rgba(16, 185, 129, 0.7)'; // Emerald
-      } else if (val < 0.62) {
-        bgColor = 'rgba(245, 158, 11, 0.8)'; // Amber
+      let bgColor, textColor;
+      if (isLight) {
+        if (val < 0.20) {
+          bgColor = '#e0e7ff';
+          textColor = '#3730a3';
+        } else if (val < 0.35) {
+          bgColor = '#bae6fd';
+          textColor = '#0369a1';
+        } else if (val < 0.50) {
+          bgColor = '#a7f3d0';
+          textColor = '#065f46';
+        } else if (val < 0.62) {
+          bgColor = '#fde68a';
+          textColor = '#92400e';
+        } else {
+          bgColor = '#fecaca';
+          textColor = '#991b1b';
+        }
       } else {
-        bgColor = 'rgba(239, 68, 68, 0.85)'; // Red/Coral
+        textColor = '#ffffff';
+        if (val < 0.20) {
+          bgColor = 'rgba(30, 58, 138, 0.35)'; // Deep Navy
+          textColor = '#94a3b8';
+        } else if (val < 0.35) {
+          bgColor = 'rgba(14, 116, 144, 0.6)'; // Teal
+        } else if (val < 0.50) {
+          bgColor = 'rgba(16, 185, 129, 0.7)'; // Emerald
+        } else if (val < 0.62) {
+          bgColor = 'rgba(245, 158, 11, 0.8)'; // Amber
+        } else {
+          bgColor = 'rgba(239, 68, 68, 0.85)'; // Red/Coral
+        }
       }
 
-      html += `<td style="background-color: ${bgColor}; color: ${textColor};" title="${dayNames[row.dayofweek]} Jam ${h}:00: ${pct}% Utilisasi">${pct}</td>`;
+      html += `<td style="background-color: ${bgColor}; color: ${textColor}; font-weight: ${isLight ? '600' : '500'};" title="${dayNames[row.dayofweek]} Jam ${h}:00: ${pct}% Utilisasi">${pct}</td>`;
     }
     html += `</tr>`;
   });
@@ -357,21 +393,21 @@ function renderModelEvaluationTable() {
     html += `
       <tr>
         <td>
-          <strong style="color: #ffffff;">${m.Model}</strong>
+          <strong style="color: var(--text-primary); font-weight: 700;">${m.Model}</strong>
           ${isChampion ? '<span class="badge-model badge-champion" style="margin-left: 6px;">Best Single</span>' : ''}
         </td>
         <td>${m['Kedalaman Pohon']}</td>
         <td>${m['Learning Rate']}</td>
         <td>${m['Pohon Optimal (Validation)']}</td>
         <td>${m['Pohon Pelatihan Penuh (125%)']}</td>
-        <td style="font-family: monospace; font-weight: 700; color: ${m['Holdout RMSE'] < 0.0678 ? '#34d399' : '#cbd5e1'}">
+        <td style="font-family: monospace; font-weight: 700; color: ${m['Holdout RMSE'] < 0.0678 ? 'var(--accent-emerald)' : 'var(--text-secondary)'}">
           ${m['Holdout RMSE'].toFixed(6)}
         </td>
         <td style="min-width: 105px;">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: monospace; font-size: 0.78rem;">
-            <span style="color: #60a5fa; font-weight: 600;">${pct.toFixed(2)}%</span>
-            <div style="flex: 1; max-width: 44px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
-              <div style="width: ${(pct / 25) * 100}%; height: 100%; background: linear-gradient(90deg, #6366f1, #00f2fe); border-radius: 3px;"></div>
+            <span style="color: var(--accent-cyan); font-weight: 600;">${pct.toFixed(2)}%</span>
+            <div style="flex: 1; max-width: 44px; height: 5px; background: var(--border-subtle); border-radius: 3px; overflow: hidden;">
+              <div style="width: ${(pct / 25) * 100}%; height: 100%; background: linear-gradient(90deg, #6366f1, #0284c7); border-radius: 3px;"></div>
             </div>
           </div>
         </td>
@@ -381,24 +417,24 @@ function renderModelEvaluationTable() {
 
   // Final Consensus Ensemble Row
   html += `
-    <tr style="background: rgba(99, 102, 241, 0.15); border-top: 2px solid rgba(99, 102, 241, 0.4);">
+    <tr class="consensus-table-row">
       <td>
         <span class="badge-model badge-champion" style="margin-right: 6px;">Consensus</span>
-        <strong style="color: #a5b4fc;">Meta-Learner</strong>
+        <strong style="color: var(--accent-purple); font-weight: 800;">Meta-Learner</strong>
         <span style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-top: 2px;">Ridge + Shift / Shrinkage</span>
       </td>
       <td>Ensemble</td>
       <td>-</td>
       <td>5 Seeds</td>
       <td>100% Data</td>
-      <td style="font-family: monospace; font-weight: 800; color: #4ade80;">
+      <td style="font-family: monospace; font-weight: 800; color: var(--accent-emerald);">
         0.067710
       </td>
       <td style="min-width: 105px;">
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: monospace; font-size: 0.78rem;">
-          <span style="color: #a5b4fc; font-weight: 700;">100.0%</span>
-          <div style="flex: 1; max-width: 44px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
-            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ec4899, #a5b4fc); border-radius: 3px;"></div>
+          <span style="color: var(--accent-purple); font-weight: 700;">100.0%</span>
+          <div style="flex: 1; max-width: 44px; height: 5px; background: var(--border-subtle); border-radius: 3px; overflow: hidden;">
+            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ec4899, #6366f1); border-radius: 3px;"></div>
           </div>
         </div>
       </td>
@@ -485,13 +521,13 @@ function initFutureForecastChart(selectedCategory = 'national', selectedItem = '
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255, 255, 255, 0.04)' },
-          ticks: { color: '#94a3b8', font: { size: 10 }, maxTicksLimit: 13 }
+          grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.04)' },
+          ticks: { color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8', font: { size: 10 }, maxTicksLimit: 13 }
         },
         y: {
-          grid: { color: 'rgba(255, 255, 255, 0.06)' },
+          grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)' },
           ticks: {
-            color: '#94a3b8',
+            color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8',
             callback: v => `${v}%`
           },
           suggestedMin: 15,
@@ -550,19 +586,21 @@ function renderForecastRanking() {
   const ranking = ANALYTICS_DATA.forecast ? ANALYTICS_DATA.forecast.city_ranking : null;
   if (!ranking) return;
 
+  const isLight = document.body.classList.contains('light-theme');
   const top5 = Object.entries(ranking).slice(0, 5);
   let html = '<div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.5rem;">';
 
   top5.forEach(([city, val], idx) => {
     const pct = (val * 100).toFixed(1);
-    const color = idx === 0 ? '#00f2fe' : (idx === 1 ? '#6366f1' : '#a5b4fc');
+    const color = isLight ? (idx === 0 ? '#0284c7' : (idx === 1 ? '#4f46e5' : '#7c3aed')) : (idx === 0 ? '#00f2fe' : (idx === 1 ? '#6366f1' : '#a5b4fc'));
+    const trackBg = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)';
     html += `
       <div>
         <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 2px;">
           <span><strong>#${idx + 1} ${city}</strong></span>
           <span style="font-family: monospace; font-weight: 700; color: ${color}">${pct}%</span>
         </div>
-        <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+        <div style="width: 100%; height: 5px; background: ${trackBg}; border-radius: 3px; overflow: hidden;">
           <div style="width: ${(val / 0.65) * 100}%; height: 100%; background: linear-gradient(90deg, ${color}, #ec4899); border-radius: 3px;"></div>
         </div>
       </div>

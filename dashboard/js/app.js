@@ -137,7 +137,7 @@ function setupDiurnalFilter() {
    -------------------------------------------------------------------------- */
 function initThemeToggle() {
   const toggleBtn = document.getElementById('theme-toggle-btn');
-  const savedTheme = localStorage.getItem('chargeiq_theme') || 'dark';
+  const savedTheme = localStorage.getItem('chargeiq_theme') || 'light';
 
   applyTheme(savedTheme);
 

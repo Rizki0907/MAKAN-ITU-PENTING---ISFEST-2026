@@ -6,9 +6,9 @@
 function getPlotlyBaseLayout() {
   const isLight = document.body.classList.contains('light-theme');
   return {
-    paper_bgcolor: isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(14, 20, 36, 0.85)',
-    plot_bgcolor: isLight ? 'rgba(244, 246, 250, 0.7)' : 'rgba(8, 11, 19, 0.6)',
-    font: { family: 'Inter, sans-serif', color: isLight ? '#475569' : '#94a3b8', size: 11 },
+    paper_bgcolor: isLight ? '#ffffff' : 'rgba(14, 20, 36, 0.85)',
+    plot_bgcolor: isLight ? '#f8fafc' : 'rgba(8, 11, 19, 0.6)',
+    font: { family: 'Inter, sans-serif', color: isLight ? '#334155' : '#94a3b8', size: 11 },
     margin: { l: 50, r: 25, t: 40, b: 45 },
     hovermode: 'closest',
     autosize: true
@@ -78,20 +78,24 @@ function renderEdaDiurnal() {
     hovertemplate: '<b>Akhir Pekan</b><br>Jam %{x}:00<br>Rata-rata: %{y:.4f}<extra></extra>'
   };
 
+  const isLight = document.body.classList.contains('light-theme');
+  const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+  const zeroLineColor = isLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.1)';
+
   const layout = {
     ...getPlotlyBaseLayout(),
-    title: { text: '<b>Rata-rata Utilisasi: Hari Kerja vs Akhir Pekan</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
+    title: { text: '<b>Rata-rata Utilisasi: Hari Kerja vs Akhir Pekan</b>', font: { size: 13, color: (isLight ? '#0f172a' : '#ffffff') } },
     xaxis: {
       title: 'Jam Operasional (0 - 23)',
-      gridcolor: 'rgba(255, 255, 255, 0.05)',
+      gridcolor: gridColor,
       tickmode: 'linear',
       tick0: 0,
       dtick: 2
     },
     yaxis: {
       title: 'Average Utilization Rate',
-      gridcolor: 'rgba(255, 255, 255, 0.07)',
-      zerolinecolor: 'rgba(255, 255, 255, 0.1)'
+      gridcolor: gridColor,
+      zerolinecolor: zeroLineColor
     },
     legend: { orientation: 'h', y: -0.22, x: 0.15 }
   };
@@ -133,16 +137,19 @@ function renderEdaLocationCharger() {
     hovertemplate: '<b>%{x}</b><br>Rata-rata: %{y:.4f}<extra></extra>'
   };
 
+  const isLight = document.body.classList.contains('light-theme');
+  const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+
   const layout = {
     ...getPlotlyBaseLayout(),
-    title: { text: '<b>Distribusi Utilisasi per Tipe Lokasi SPKLU (Mean & IQR)</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
+    title: { text: '<b>Distribusi Utilisasi per Tipe Lokasi SPKLU (Mean & IQR)</b>', font: { size: 13, color: (isLight ? '#0f172a' : '#ffffff') } },
     xaxis: {
-      gridcolor: 'rgba(255, 255, 255, 0.05)',
+      gridcolor: gridColor,
       tickangle: -20
     },
     yaxis: {
       title: 'Utilization Rate',
-      gridcolor: 'rgba(255, 255, 255, 0.07)'
+      gridcolor: gridColor
     },
     showlegend: false
   };
@@ -172,11 +179,14 @@ function renderEdaPorts() {
     hovertemplate: '<b>%{x}</b><br>Frekuensi Sampel: %{y:,}<extra></extra>'
   };
 
+  const isLight = document.body.classList.contains('light-theme');
+  const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+
   const layout = {
     ...getPlotlyBaseLayout(),
-    title: { text: '<b>Distribusi Jumlah Port per Stasiun Pengisian Daya</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
-    xaxis: { gridcolor: 'rgba(255, 255, 255, 0.05)' },
-    yaxis: { title: 'Jumlah Data Log (Frekuensi)', gridcolor: 'rgba(255, 255, 255, 0.07)' },
+    title: { text: '<b>Distribusi Jumlah Port per Stasiun Pengisian Daya</b>', font: { size: 13, color: (isLight ? '#0f172a' : '#ffffff') } },
+    xaxis: { gridcolor: gridColor },
+    yaxis: { title: 'Jumlah Data Log (Frekuensi)', gridcolor: gridColor },
     showlegend: false
   };
 
@@ -217,11 +227,14 @@ function renderEdaTemperature() {
     hovertemplate: 'Test: %{x}°F<br>Densitas: %{y:.4f}<extra></extra>'
   };
 
+  const isLight = document.body.classList.contains('light-theme');
+  const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+
   const layout = {
     ...getPlotlyBaseLayout(),
-    title: { text: '<b>Pergeseran Distribusi Suhu (Seasonal Drift): Train vs Test</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
-    xaxis: { title: 'Suhu Udara (°F)', gridcolor: 'rgba(255, 255, 255, 0.05)' },
-    yaxis: { title: 'Density Estimator', gridcolor: 'rgba(255, 255, 255, 0.07)' },
+    title: { text: '<b>Pergeseran Distribusi Suhu (Seasonal Drift): Train vs Test</b>', font: { size: 13, color: (isLight ? '#0f172a' : '#ffffff') } },
+    xaxis: { title: 'Suhu Udara (°F)', gridcolor: gridColor },
+    yaxis: { title: 'Density Estimator', gridcolor: gridColor },
     legend: { orientation: 'h', y: -0.22, x: 0.15 }
   };
 
@@ -245,12 +258,18 @@ function renderEdaCorrelation() {
     'precipitation_mm', 'gas_price', 'latitude', 'longitude'
   ];
 
+  const isLight = document.body.classList.contains('light-theme');
+
   const trace = {
     z: z,
     x: prettyLabels,
     y: prettyLabels,
     type: 'heatmap',
-    colorscale: [
+    colorscale: isLight ? [
+      [0, '#1d4ed8'],     // Strong negative (blue)
+      [0.5, '#f1f5f9'],   // Zero (clean slate)
+      [1, '#dc2626']      // Strong positive (red)
+    ] : [
       [0, '#1e3a8a'],     // Strong negative (blue)
       [0.5, '#0f172a'],   // Zero (dark)
       [1, '#ef4444']      // Strong positive (red)
@@ -260,15 +279,23 @@ function renderEdaCorrelation() {
     hovertemplate: '<b>%{y}</b> vs <b>%{x}</b><br>Korelasi Pearson: %{z:.3f}<extra></extra>'
   };
 
-  // Text annotations on heatmap cells
+  // Text annotations on heatmap cells with dynamic high contrast
   const annotations = [];
   for (let i = 0; i < prettyLabels.length; i++) {
     for (let j = 0; j < prettyLabels.length; j++) {
+      const val = z[i][j];
+      const absVal = Math.abs(val);
+      let annotColor;
+      if (isLight) {
+        annotColor = absVal > 0.28 ? '#ffffff' : '#0f172a';
+      } else {
+        annotColor = '#ffffff';
+      }
       annotations.push({
         x: prettyLabels[j],
         y: prettyLabels[i],
-        text: z[i][j].toFixed(3),
-        font: { color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff'), size: 9, family: 'monospace' },
+        text: val.toFixed(3),
+        font: { color: annotColor, size: 9, family: 'monospace', weight: isLight ? 600 : 400 },
         showarrow: false
       });
     }
@@ -276,7 +303,7 @@ function renderEdaCorrelation() {
 
   const layout = {
     ...getPlotlyBaseLayout(),
-    title: { text: '<b>Matriks Korelasi Linear Pearson Antar Variabel</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
+    title: { text: '<b>Matriks Korelasi Linear Pearson Antar Variabel</b>', font: { size: 13, color: (isLight ? '#0f172a' : '#ffffff') } },
     margin: { l: 110, r: 30, t: 40, b: 80 },
     xaxis: { tickangle: -35 },
     yaxis: { autorange: 'reversed' },
@@ -306,17 +333,20 @@ function renderEdaTargetDistribution() {
     hovertemplate: 'Bin Utilisasi: %{x:.3f}<br>Frekuensi: %{y:,}<extra></extra>'
   };
 
+  const isLight = document.body.classList.contains('light-theme');
+  const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)';
+
   const layout = {
     ...getPlotlyBaseLayout(),
-    title: { text: '<b>Distribusi Frekuensi Variabel Sasaran: utilization_rate (60 Bins)</b>', font: { size: 13, color: (document.body.classList.contains('light-theme') ? '#0f172a' : '#ffffff') } },
+    title: { text: '<b>Distribusi Frekuensi Variabel Sasaran: utilization_rate (60 Bins)</b>', font: { size: 13, color: (isLight ? '#0f172a' : '#ffffff') } },
     xaxis: {
       title: 'Tingkat Utilisasi ([0.02, 0.98])',
-      gridcolor: 'rgba(255, 255, 255, 0.05)',
+      gridcolor: gridColor,
       range: [0, 1]
     },
     yaxis: {
       title: 'Frekuensi Sampel Data',
-      gridcolor: 'rgba(255, 255, 255, 0.07)'
+      gridcolor: gridColor
     },
     showlegend: false
   };

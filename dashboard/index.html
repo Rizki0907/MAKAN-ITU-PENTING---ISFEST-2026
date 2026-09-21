@@ -19,7 +19,7 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="light-theme">
 
   <!-- ========================================================================
        PRELOADER: CHARGEIQ SYSTEM INITIALIZATION ANIMATION
@@ -43,80 +43,63 @@
       </div>
 
       <!-- Telemetry Status Label -->
-      <div id="preloader-status-text" class="preloader-status">Menginisialisasi Jaringan 150 SPKLU...</div>
+      <div id="preloader-status-text" class="preloader-status">Menginisialisasi Sistem Telemetri...</div>
     </div>
   </div>
 
   <!-- ========================================================================
-       STICKY NAVBAR & FIXED TOP HEADER
+       HEADER & NAVIGATION BAR
        ======================================================================== -->
-  <header class="header-wrapper">
+  <header class="header">
     <nav class="navbar">
-      <!-- Brand Logo -->
-      <a class="nav-brand" onclick="switchTab('tab-beranda')">
-        <div class="brand-icon">
-          <svg viewBox="0 0 24 24">
+      <div class="brand-wrapper">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
             <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
           </svg>
         </div>
-        <div class="brand-text">
-          <span class="brand-title"><span class="brand-gradient">ChargeIQ</span> <span class="brand-tag">ISFEST 2026</span></span>
-          <span class="brand-subtitle">SPKLU Demand Intelligence & Decision Support</span>
+        <div class="brand-text-block">
+          <span class="brand-title">Charge<span class="accent-text">IQ</span></span>
+          <span class="brand-subtitle">SPKLU Demand Intelligence &bull; ISFEST 2026</span>
         </div>
-      </a>
+      </div>
 
-      <!-- Menu Items (Top Navigation Buttons) -->
-      <ul class="nav-menu">
-        <li class="nav-item">
-          <a class="nav-link active" data-tab="tab-beranda">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Beranda
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-tab="tab-eda">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            Eksplorasi Data
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-tab="tab-model">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
-            Model & Evaluasi
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-tab="tab-peta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-            Peta Sebaran
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-tab="tab-forecast">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Forecast
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-tab="tab-simulasi">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Simulasi
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-tab="tab-metodologi">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            Metodologi
-          </a>
-        </li>
-      </ul>
+      <div class="nav-menu">
+        <a href="#tab-beranda" class="nav-link active" data-tab="tab-beranda">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Beranda
+        </a>
+        <a href="#tab-eda" class="nav-link" data-tab="tab-eda">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          EDA & Korelasi
+        </a>
+        <a href="#tab-model" class="nav-link" data-tab="tab-model">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Model & Konsensus
+        </a>
+        <a href="#tab-peta" class="nav-link" data-tab="tab-peta">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          Spasial & Peta
+        </a>
+        <a href="#tab-forecast" class="nav-link" data-tab="tab-forecast">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Proyeksi Masa Depan
+        </a>
+        <a href="#tab-simulasi" class="nav-link" data-tab="tab-simulasi">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Simulator Beban
+        </a>
+        <a href="#tab-metodologi" class="nav-link" data-tab="tab-metodologi">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Metodologi
+        </a>
+      </div>
 
-      <!-- Action Items (Right Corner) -->
       <div class="nav-actions">
-        <div class="status-badge">
+        <span class="status-badge">
           <span class="status-dot"></span>
           Live
-        </div>
+        </span>
         <button id="theme-toggle-btn" class="theme-toggle-btn" title="Ganti Mode Terang / Gelap" aria-label="Toggle Theme">
           <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
           <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -130,10 +113,9 @@
   </header>
 
   <!-- ========================================================================
-       LIVE TICKER BAR (SIPEDA Reference Style)
+       LIVE TICKER BAR (Full-Width Continuous Telemetry Stream)
        ======================================================================== -->
   <div class="ticker-bar">
-    <div class="ticker-label"><span class="live-radar-dot"></span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -1px;"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg> ChargeIQ</div>
     <div class="ticker-track">
       <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
       <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
@@ -146,6 +128,8 @@
       <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
       <div class="ticker-item"><span class="ticker-pill purple"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
       <div class="ticker-item"><span class="ticker-pill amber"></span> Fitur Kunci: <strong>target_prof_st_hr_wk (43.4% Bobot Konsensus)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill green"></span> Koreksi Musiman Teruji: <strong>OPTIMAL_SHIFT = +0.0007 &bull; OPTIMAL_SHRINKAGE = 1.0028</strong></div>
+      <div class="ticker-item"><span class="ticker-pill cyan"></span> Validasi: <strong>Temporal Holdout 14 Hari Bebas Data Leakage</strong></div>
     </div>
   </div>
 
@@ -547,7 +531,7 @@
             <span>Kapasitas Longgar (&lt; 38%)</span>
           </div>
           <div style="margin-top: 0.6rem; font-size: 0.68rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.4rem;">
-            Menampilkan: <strong id="map-filtered-count" style="color: #ffffff;">150 Stasiun</strong>
+            Menampilkan: <strong id="map-filtered-count" style="color: var(--text-primary);">150 Stasiun</strong>
           </div>
         </div>
       </div>
@@ -599,7 +583,7 @@
           </div>
 
           <!-- Right: Top 5 High-Demand Cities Ranking in December 2025 -->
-          <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="forecast-ranking-card">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                 <span style="font-size: 0.74rem; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan); letter-spacing: 0.05em;">
@@ -754,7 +738,7 @@
 
               <div style="margin: 0.75rem 0;">
                 <span style="font-size: 0.76rem; color: var(--text-muted);">Nilai Utilisasi Terprediksi (utilization_rate):</span>
-                <div id="calc-pred-val" style="font-family: var(--font-heading); font-size: 2.8rem; font-weight: 800; color: #ffffff; line-height: 1;">
+                <div id="calc-pred-val" style="font-family: var(--font-heading); font-size: 2.8rem; font-weight: 800; color: var(--text-primary); line-height: 1;">
                   42.85%
                 </div>
               </div>
@@ -849,7 +833,7 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-end;">
               <div>
                 <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em;">Proyeksi Tingkat Utilisasi</span>
-                <div id="sim-result-util-val" style="font-family: var(--font-heading); font-size: 2.75rem; font-weight: 800; color: #ffffff; line-height: 1.1;">
+                <div id="sim-result-util-val" style="font-family: var(--font-heading); font-size: 2.75rem; font-weight: 800; color: var(--text-primary); line-height: 1.1;">
                   52.0%
                 </div>
               </div>
@@ -943,7 +927,7 @@
         </div>
 
         <div class="glass-card">
-          <h4 style="font-family: var(--font-heading); color: #60a5fa; font-size: 1.1rem; margin-bottom: 0.5rem;">6. Deployment (ChargeIQ)</h4>
+          <h4 style="font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 0.5rem;">6. Deployment (ChargeIQ)</h4>
           <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;">
             Pengembangan sistem dashboard interaktif berbasis web responsif, visualisasi spasial 150 stasiun Leaflet, serta simulator kebijakan *dynamic pricing* waktu nyata.
           </p>
@@ -1034,7 +1018,7 @@
 
         <div class="grid-3col" style="margin-top: 1rem;">
           <!-- 1. Ketua Tim: Muhammad Habib Nur Aiman -->
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="team-member-card">
             <div>
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.15rem; color: #ffffff; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
@@ -1042,9 +1026,9 @@
                 </div>
                 <div>
                   <div style="display: flex; align-items: center; gap: 0.4rem;">
-                    <h4 style="font-family: var(--font-heading); font-size: 1.02rem; color: #ffffff;">Muhammad Habib Nur Aiman</h4>
+                    <h4 class="team-member-name">Muhammad Habib Nur Aiman</h4>
                   </div>
-                  <span style="display: inline-block; font-size: 0.68rem; padding: 2px 8px; border-radius: var(--radius-full); background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #fbbf24; font-weight: 700; text-transform: uppercase; margin-top: 2px;">Ketua Tim</span>
+                  <span class="role-badge leader">Ketua Tim</span>
                 </div>
               </div>
               <div style="font-size: 0.76rem; color: var(--accent-cyan); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
@@ -1060,7 +1044,7 @@
           </div>
 
           <!-- 2. Anggota: Rizki Piji Fathoni -->
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="team-member-card">
             <div>
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #00f2fe 0%, #6366f1 100%); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.15rem; color: #ffffff; box-shadow: 0 4px 12px rgba(0, 242, 254, 0.3);">
@@ -1068,9 +1052,9 @@
                 </div>
                 <div>
                   <div style="display: flex; align-items: center; gap: 0.4rem;">
-                    <h4 style="font-family: var(--font-heading); font-size: 1.02rem; color: #ffffff;">Rizki Piji Fathoni</h4>
+                    <h4 class="team-member-name">Rizki Piji Fathoni</h4>
                   </div>
-                  <span style="display: inline-block; font-size: 0.68rem; padding: 2px 8px; border-radius: var(--radius-full); background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.5); color: #a5b4fc; font-weight: 700; text-transform: uppercase; margin-top: 2px;">Anggota</span>
+                  <span class="role-badge member-piji">Anggota</span>
                 </div>
               </div>
               <div style="font-size: 0.76rem; color: var(--accent-cyan); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
@@ -1086,7 +1070,7 @@
           </div>
 
           <!-- 3. Anggota: Alfin Jayadi -->
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="team-member-card">
             <div>
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.15rem; color: #ffffff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
@@ -1094,9 +1078,9 @@
                 </div>
                 <div>
                   <div style="display: flex; align-items: center; gap: 0.4rem;">
-                    <h4 style="font-family: var(--font-heading); font-size: 1.02rem; color: #ffffff;">Alfin Jayadi</h4>
+                    <h4 class="team-member-name">Alfin Jayadi</h4>
                   </div>
-                  <span style="display: inline-block; font-size: 0.68rem; padding: 2px 8px; border-radius: var(--radius-full); background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; font-weight: 700; text-transform: uppercase; margin-top: 2px;">Anggota</span>
+                  <span class="role-badge member-alfin">Anggota</span>
                 </div>
               </div>
               <div style="font-size: 0.76rem; color: var(--accent-cyan); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">

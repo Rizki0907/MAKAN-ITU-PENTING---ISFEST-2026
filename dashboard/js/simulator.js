@@ -119,11 +119,11 @@ function initPolicySimulator() {
     if (alertBox) {
       let recommendation = '';
       if (util > 0.75) {
-        recommendation = '<span class="badge-model" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; margin-right: 6px;">Perhatian</span> <strong>Peringatan Risiko Antrean Kritis:</strong> Tingkat utilisasi melampaui ambang batas 75%. Sangat disarankan menaikkan tarif beban puncak (+15% s/d +20%) untuk menggeser beban atau segera menambah minimal 2 port pengisian daya.';
+        recommendation = '<span class="badge-model" style="background: rgba(220, 38, 38, 0.15); color: var(--accent-red); border: 1px solid rgba(220, 38, 38, 0.3); margin-right: 6px;">Perhatian</span> <strong>Peringatan Risiko Antrean Kritis:</strong> Tingkat utilisasi melampaui ambang batas 75%. Sangat disarankan menaikkan tarif beban puncak (+15% s/d +20%) untuk menggeser beban atau segera menambah minimal 2 port pengisian daya.';
       } else if (util < 0.35) {
-        recommendation = '<span class="badge-model" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; margin-right: 6px;">Peluang</span> <strong>Monetisasi Kapasitas Menganggur:</strong> Utilisasi berada pada level rendah (&lt;35%). Terapkan diskon tarif dinamis (-15%) untuk menarik pengguna komuter dan armada logistik.';
+        recommendation = '<span class="badge-model" style="background: rgba(2, 132, 199, 0.15); color: var(--accent-cyan); border: 1px solid rgba(2, 132, 199, 0.3); margin-right: 6px;">Peluang</span> <strong>Monetisasi Kapasitas Menganggur:</strong> Utilisasi berada pada level rendah (&lt;35%). Terapkan diskon tarif dinamis (-15%) untuk menarik pengguna komuter dan armada logistik.';
       } else {
-        recommendation = '<span class="badge-model" style="background: rgba(16, 185, 129, 0.2); color: #34d399; margin-right: 6px;">Stabil</span> <strong>Kondisi Jaringan Optimal:</strong> Utilisasi berada di rentang ideal (45% - 70%). Keseimbangan antara perputaran kendaraan, pendapatan operator, dan kepuasan pelanggan tercapai secara stabil.';
+        recommendation = '<span class="badge-model badge-champion" style="margin-right: 6px;">Stabil</span> <strong>Kondisi Jaringan Optimal:</strong> Utilisasi berada di rentang ideal (45% - 70%). Keseimbangan antara perputaran kendaraan, pendapatan operator, dan kepuasan pelanggan tercapai secara stabil.';
       }
       alertBox.innerHTML = recommendation;
     }
@@ -242,11 +242,11 @@ function initInferencePlayground() {
 
     if (predRiskEl) {
       if (finalPred >= 0.55) {
-        predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5);">Kepadatan Tinggi (Antrean Puncak)</span>';
+        predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(220, 38, 38, 0.15); color: var(--accent-red); border: 1px solid rgba(220, 38, 38, 0.35);">Kepadatan Tinggi (Antrean Puncak)</span>';
       } else if (finalPred >= 0.38) {
-        predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.5);">Beban Moderat (Operasi Normal)</span>';
+        predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-purple); border: 1px solid rgba(99, 102, 241, 0.35);">Beban Moderat (Operasi Normal)</span>';
       } else {
-        predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.5);">Kapasitas Longgar (Lancar)</span>';
+        predRiskEl.innerHTML = '<span class="badge-model badge-champion">Kapasitas Longgar (Lancar)</span>';
       }
     }
 
