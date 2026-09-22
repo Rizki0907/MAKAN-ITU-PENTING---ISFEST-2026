@@ -213,3 +213,44 @@ function animateHeroCounters() {
   });
 }
 
+/* --------------------------------------------------------------------------
+   5. Figure Lightbox Modal Controller (Interactive High-Res Figure Zoom)
+   -------------------------------------------------------------------------- */
+function openFigureLightbox(imgSrc, titleText, captionText) {
+  const modal = document.getElementById('figure-lightbox-modal');
+  const modalImg = document.getElementById('lightbox-img');
+  const modalTitle = document.getElementById('lightbox-title');
+  const modalCaption = document.getElementById('lightbox-caption');
+
+  if (!modal || !modalImg) return;
+
+  modalImg.src = imgSrc;
+  if (modalTitle) modalTitle.textContent = titleText || 'Pratinjau Resolusi Penuh';
+  if (modalCaption) modalCaption.textContent = captionText || '';
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFigureLightbox(event) {
+  if (event && event.target && event.target.closest('.lightbox-content-box') && !event.target.closest('.lightbox-close-btn')) {
+    return;
+  }
+  const modal = document.getElementById('figure-lightbox-modal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Global keyboard escape listener to dismiss modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeFigureLightbox();
+  }
+});
+
+// Expose lightbox functions globally for inline HTML onclick attributes
+window.openFigureLightbox = openFigureLightbox;
+window.closeFigureLightbox = closeFigureLightbox;
+
+

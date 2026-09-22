@@ -9,12 +9,14 @@ let modelChartInstance = null;
 let futureForecastChartInstance = null;
 let whatIfChartInstance = null;
 
-// Global Chart.js Defaults for Dark Mode Luxury Aesthetic
+// Global Chart.js Defaults: Plus Jakarta Sans for UI text, JetBrains Mono for numeric telemetry
 Chart.defaults.color = '#94a3b8';
-Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(14, 20, 36, 0.95)';
+Chart.defaults.font.family = "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif";
+Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(11, 16, 28, 0.95)';
+Chart.defaults.plugins.tooltip.titleFont = { family: "'Plus Jakarta Sans', sans-serif", weight: '700' };
+Chart.defaults.plugins.tooltip.bodyFont = { family: "'JetBrains Mono', monospace", weight: '500' };
 Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
-Chart.defaults.plugins.tooltip.borderColor = 'rgba(99, 102, 241, 0.4)';
+Chart.defaults.plugins.tooltip.borderColor = 'rgba(99, 102, 241, 0.35)';
 Chart.defaults.plugins.tooltip.borderWidth = 1;
 Chart.defaults.plugins.tooltip.padding = 10;
 Chart.defaults.plugins.tooltip.cornerRadius = 8;
@@ -219,7 +221,10 @@ function initDiurnalChart(dayFilter = 'all') {
       scales: {
         x: {
           grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.04)' },
-          ticks: { color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8' },
+          ticks: { 
+            color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8',
+            font: { family: "'JetBrains Mono', monospace", size: 10 }
+          },
           title: { display: true, text: 'Jam Operasional (00:00 - 23:00)', font: { size: 11 } }
         },
         y: {
@@ -228,6 +233,7 @@ function initDiurnalChart(dayFilter = 'all') {
           max: 85,
           ticks: { 
             color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8',
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
             callback: v => `${v}%` 
           },
           title: { display: true, text: 'Tingkat Utilisasi (%)', font: { size: 11 } }
@@ -293,6 +299,7 @@ function initFeatureImportanceChart() {
           grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.05)' },
           ticks: { 
             color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8',
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
             callback: v => `${v}%` 
           }
         },
@@ -300,7 +307,7 @@ function initFeatureImportanceChart() {
           grid: { display: false },
           ticks: { 
             color: document.body.classList.contains('light-theme') ? '#1e293b' : '#cbd5e1',
-            font: { size: 11, family: 'monospace' } 
+            font: { size: 10.5, family: "'JetBrains Mono', monospace" } 
           }
         }
       }
@@ -404,11 +411,11 @@ function renderModelEvaluationTable() {
         <td>${m['Learning Rate']}</td>
         <td>${m['Pohon Optimal (Validation)']}</td>
         <td>${m['Pohon Pelatihan Penuh (125%)']}</td>
-        <td style="font-family: monospace; font-weight: 700; color: ${m['Holdout RMSE'] < 0.0678 ? 'var(--accent-emerald)' : 'var(--text-secondary)'}">
+        <td style="font-family: var(--font-number); font-weight: 700; font-variant-numeric: tabular-nums; color: ${m['Holdout RMSE'] < 0.0678 ? 'var(--accent-emerald)' : 'var(--text-secondary)'}">
           ${m['Holdout RMSE'].toFixed(6)}
         </td>
         <td style="min-width: 105px;">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: monospace; font-size: 0.78rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: var(--font-number); font-variant-numeric: tabular-nums; font-size: 0.78rem;">
             <span style="color: var(--accent-cyan); font-weight: 600;">${pct.toFixed(2)}%</span>
             <div style="flex: 1; max-width: 44px; height: 5px; background: var(--border-subtle); border-radius: 3px; overflow: hidden;">
               <div style="width: ${(pct / 25) * 100}%; height: 100%; background: linear-gradient(90deg, #6366f1, #0284c7); border-radius: 3px;"></div>
@@ -431,11 +438,11 @@ function renderModelEvaluationTable() {
       <td>-</td>
       <td>5 Seeds</td>
       <td>100% Data</td>
-      <td style="font-family: monospace; font-weight: 800; color: var(--accent-emerald);">
+      <td style="font-family: var(--font-number); font-weight: 800; font-variant-numeric: tabular-nums; color: var(--accent-emerald);">
         0.067710
       </td>
       <td style="min-width: 105px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: monospace; font-size: 0.78rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: var(--font-number); font-variant-numeric: tabular-nums; font-size: 0.78rem;">
           <span style="color: var(--accent-purple); font-weight: 700;">100.0%</span>
           <div style="flex: 1; max-width: 44px; height: 5px; background: var(--border-subtle); border-radius: 3px; overflow: hidden;">
             <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ec4899, #6366f1); border-radius: 3px;"></div>
@@ -526,12 +533,17 @@ function initFutureForecastChart(selectedCategory = 'national', selectedItem = '
       scales: {
         x: {
           grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.04)' },
-          ticks: { color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8', font: { size: 10 }, maxTicksLimit: 13 }
+          ticks: { 
+            color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8', 
+            font: { family: "'JetBrains Mono', monospace", size: 10 }, 
+            maxTicksLimit: 13 
+          }
         },
         y: {
           grid: { color: document.body.classList.contains('light-theme') ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)' },
           ticks: {
             color: document.body.classList.contains('light-theme') ? '#475569' : '#94a3b8',
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
             callback: v => `${v}%`
           },
           suggestedMin: 15,
@@ -642,6 +654,20 @@ function initShapExplainer() {
       });
     });
   });
+
+  // Attach Lightbox Zoom Click Listeners to all figure showcases and images
+  const figureShowcases = document.querySelectorAll('.xai-figure-showcase');
+  figureShowcases.forEach(showcase => {
+    showcase.addEventListener('click', () => {
+      const img = showcase.querySelector('.xai-figure-img');
+      const caption = showcase.querySelector('.xai-figure-caption');
+      if (img && typeof openFigureLightbox === 'function') {
+        const title = img.getAttribute('alt') || 'Pratinjau Resolusi Penuh';
+        const captionText = caption ? caption.textContent : '';
+        openFigureLightbox(img.src, title, captionText);
+      }
+    });
+  });
 }
 
 /* --------------------------------------------------------------------------
@@ -668,39 +694,43 @@ function initWhatIfChart() {
       labels: hours,
       datasets: [
         {
-          label: 'Baseline Operasional Normal (%)',
+          label: 'Baseline Historis (Empiris) (%)',
           data: baselineData,
           borderColor: isLight ? '#64748b' : '#94a3b8',
-          borderDash: [6, 4],
           borderWidth: 2,
-          pointRadius: 0,
+          borderDash: [5, 5],
+          pointRadius: 2,
+          pointHoverRadius: 5,
           tension: 0.35,
-          fill: false
+          fill: false,
+          zIndex: 1
         },
         {
-          label: 'Skenario Guncangan Stres (%)',
+          label: 'Skenario Stressed (Tanpa Intervensi) (%)',
           data: initialStressedData,
           borderColor: '#ef4444',
-          backgroundColor: 'rgba(239, 68, 68, 0.1)',
-          borderWidth: 3,
+          backgroundColor: 'rgba(239, 68, 68, 0.08)',
+          borderWidth: 2.5,
           pointBackgroundColor: '#ef4444',
           pointRadius: 3,
           pointHoverRadius: 6,
           tension: 0.35,
-          fill: false
+          fill: '+1',
+          zIndex: 2
         },
         {
-          label: 'Hasil Intervensi Mitigasi CPO (%)',
+          label: 'Skenario Termitigasi (CPO Levers Aktif) (%)',
           data: initialStressedData,
           borderColor: '#10b981',
-          backgroundColor: 'rgba(16, 185, 129, 0.08)',
+          backgroundColor: 'rgba(16, 185, 129, 0.12)',
           borderWidth: 2.5,
           pointBackgroundColor: '#10b981',
-          pointRadius: 0,
-          borderDash: [4, 4],
+          pointRadius: 3,
+          pointHoverRadius: 6,
           tension: 0.35,
           fill: false,
-          hidden: true
+          hidden: true,
+          zIndex: 3
         }
       ]
     },
@@ -711,7 +741,7 @@ function initWhatIfChart() {
       plugins: {
         legend: {
           position: 'top',
-          labels: { boxWidth: 14, font: { size: 11 } }
+          labels: { boxWidth: 14, font: { size: 11, family: "'Plus Jakarta Sans', sans-serif" } }
         },
         tooltip: {
           callbacks: {
@@ -724,7 +754,10 @@ function initWhatIfChart() {
       scales: {
         x: {
           grid: { color: isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.04)' },
-          ticks: { color: isLight ? '#475569' : '#94a3b8' },
+          ticks: { 
+            color: isLight ? '#475569' : '#94a3b8',
+            font: { family: "'JetBrains Mono', monospace", size: 10 }
+          },
           title: { display: true, text: 'Jam Operasional (00:00 - 23:00)', font: { size: 11 } }
         },
         y: {
@@ -733,6 +766,7 @@ function initWhatIfChart() {
           max: 85,
           ticks: { 
             color: isLight ? '#475569' : '#94a3b8',
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
             callback: v => `${v}%` 
           },
           title: { display: true, text: 'Tingkat Utilisasi (%)', font: { size: 11 } }
