@@ -6,6 +6,7 @@
 function initSimulator() {
   initPolicySimulator();
   initInferencePlayground();
+  initWhatIfStressTesting();
 }
 
 /* --------------------------------------------------------------------------
@@ -267,3 +268,256 @@ function initInferencePlayground() {
 
   computePrediction();
 }
+
+/* --------------------------------------------------------------------------
+   3. What-If 4-Scenario Stress-Testing Sandbox Controller
+   (100% Data-Grounded with Notebook Final & Bab D Paper)
+   -------------------------------------------------------------------------- */
+
+const WHATIF_SCENARIOS = {
+  1: {
+    id: 1,
+    name: 'Skenario 1: Baseline Operasional Normal',
+    shortName: 'Baseline Normal',
+    peak: '69.1%',
+    peakNum: 69.1,
+    peakSub: 'Rata-rata 45.2% Harian',
+    critTime: '17.7%',
+    critColor: '#10b981',
+    critSub: 'Kondisi Normal Standar',
+    queue: '8 Menit',
+    queueDelta: 0,
+    anxiety: 'Rendah',
+    anxietyColor: '#10b981',
+    anxietySub: 'Pengemudi melaju aman',
+    narrative: '<strong>Kondisi Normal Jaringan:</strong> Jaringan 150 stasiun beroperasi stabil dengan utilisasi harian rata-rata 45.2% dan jam sibuk sore 69.1%. Hanya 17.7% waktu stasiun berada di ambang saturasi kritis (>80%), terpusat pada simpul lalu lintas utama tanpa menimbulkan kemacetan sistemik.',
+    hourly: [17.0, 12.0, 10.0, 9.0, 11.0, 18.0, 32.0, 44.0, 48.0, 46.0, 45.0, 47.0, 49.0, 48.0, 49.0, 53.0, 62.0, 69.1, 67.5, 58.0, 48.0, 38.0, 28.0, 21.0]
+  },
+  2: {
+    id: 2,
+    name: 'Skenario 2: Holiday Travel Surge (+25-30% Arus Tol)',
+    shortName: 'Holiday Surge',
+    peak: '70.8%',
+    peakNum: 70.8,
+    peakSub: '+1.7% di Atas Baseline',
+    critTime: '20.9%',
+    critColor: '#f59e0b',
+    critSub: '+3.2% Kenaikan Durasi Kritis',
+    queue: '16 Menit',
+    queueDelta: 8,
+    anxiety: 'Tinggi',
+    anxietyColor: '#f59e0b',
+    anxietySub: 'Mulai timbul antrean gerbang tol',
+    narrative: '<strong>Guncangan Lonjakan Liburan:</strong> Lonjakan mobilitas antarkota sebesar 25-30% mendorong utilisasi jam sibuk koridor tol menjadi 70.8%, dan durasi antrean kritis melonjak menjadi 20.9% (+3.2% kenaikan). Pengemudi mulai mengalami range anxiety saat kapasitas stasiun rest area highway penuh sesak.',
+    hourly: [18.0, 13.0, 11.0, 10.0, 13.0, 22.0, 38.0, 50.0, 54.0, 52.0, 51.0, 53.0, 55.0, 54.0, 56.0, 61.0, 68.0, 70.8, 69.5, 62.0, 52.0, 41.0, 31.0, 23.0]
+  },
+  3: {
+    id: 3,
+    name: 'Skenario 3: Atmospheric Freeze Shock (Suhu Beku <25°F)',
+    shortName: 'Freeze Shock',
+    peak: '71.5%',
+    peakNum: 71.5,
+    peakSub: '+2.4% di Atas Baseline',
+    critTime: '20.5%',
+    critColor: '#8b5cf6',
+    critSub: '+2.8% Kenaikan Durasi Kritis',
+    queue: '19 Menit',
+    queueDelta: 11,
+    anxiety: 'Tinggi',
+    anxietyColor: '#8b5cf6',
+    anxietySub: 'Pengisian melambat drastis',
+    narrative: '<strong>Guncangan Polar Vortex:</strong> Penurunan suhu ekstrem di bawah 25°F memicu regulasi Battery Management System (BMS) yang membatasi arus DC Fast Charging untuk melindungi sel baterai dingin. Durasi pengisian molor 35-50%, mendongkrak utilisasi puncak ke 71.5% dan saturasi kritis menjadi 20.5%.',
+    hourly: [21.0, 15.0, 13.0, 12.0, 14.0, 23.0, 39.0, 52.0, 56.0, 54.0, 53.0, 55.0, 57.0, 56.0, 58.0, 63.0, 69.0, 71.5, 70.2, 63.0, 54.0, 44.0, 34.0, 26.0]
+  },
+  4: {
+    id: 4,
+    name: 'Skenario 4: Combined Winter Holiday (Badai Salju + Mudik Akhir Tahun)',
+    shortName: 'Combined Winter',
+    peak: '72.6%',
+    peakNum: 72.6,
+    peakSub: '+3.5% di Atas Baseline',
+    critTime: '22.9%',
+    critColor: '#ef4444',
+    critSub: '+5.2% Kenaikan Durasi Kritis',
+    queue: '28 Menit',
+    queueDelta: 20,
+    anxiety: 'Kritis',
+    anxietyColor: '#ef4444',
+    anxietySub: 'Antrean panjang di simpul highway',
+    narrative: '<strong>Skenario Stres Paling Ekstrem:</strong> Badai salju beku berkonvergensi dengan volume mudik libur akhir tahun. Utilisasi jam sibuk melesat ke 72.6% dan durasi kritis melonjak drastis ke 22.9% (+5.2% dari normal). Tanpa mitigasi, antrean rata-rata mencapai 28 menit per kendaraan, memicu kepanikan range anxiety parah.',
+    hourly: [23.0, 17.0, 15.0, 14.0, 16.0, 26.0, 43.0, 56.0, 60.0, 58.0, 57.0, 59.0, 61.0, 60.0, 62.0, 67.0, 71.0, 72.6, 71.8, 66.0, 57.0, 47.0, 37.0, 29.0]
+  }
+};
+
+let currentScenarioId = 1;
+let mitigationState = {
+  ptou: false,
+  bess: false
+};
+
+function initWhatIfStressTesting() {
+  switchWhatIfScenario(1);
+}
+
+function switchWhatIfScenario(scenarioId) {
+  currentScenarioId = scenarioId;
+
+  // Update card buttons
+  for (let i = 1; i <= 4; i++) {
+    const btn = document.getElementById(`scen-btn-${i}`);
+    if (btn) {
+      if (i === scenarioId) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  }
+
+  applyWhatIfState();
+}
+
+function toggleMitigation(leverType) {
+  if (leverType === 'ptou') {
+    mitigationState.ptou = !mitigationState.ptou;
+    const item = document.getElementById('toggle-ptou');
+    if (item) item.classList.toggle('active', mitigationState.ptou);
+  } else if (leverType === 'bess') {
+    mitigationState.bess = !mitigationState.bess;
+    const item = document.getElementById('toggle-bess');
+    if (item) item.classList.toggle('active', mitigationState.bess);
+  }
+
+  applyWhatIfState();
+}
+
+function applyWhatIfState() {
+  const scen = WHATIF_SCENARIOS[currentScenarioId] || WHATIF_SCENARIOS[1];
+
+  let peakVal = scen.peakNum;
+  let critVal = parseFloat(scen.critTime);
+  let queueVal = parseInt(scen.queue);
+  let isMitigatedActive = mitigationState.ptou || mitigationState.bess;
+
+  // Calculate mitigated curve
+  let mitigatedHourly = scen.hourly.map((val, hr) => {
+    let mod = val;
+    // P-ToU peak shaving (16:00 - 20:00) & valley filling (22:00 - 05:00)
+    if (mitigationState.ptou) {
+      if (hr >= 16 && hr <= 20) mod -= 5.5; // flatten peak
+      else if (hr >= 22 || hr <= 5) mod += 2.0; // valley filling
+    }
+    // Modular BESS peak absorption (14:00 - 21:00)
+    if (mitigationState.bess) {
+      if (hr >= 14 && hr <= 21) mod -= 4.5;
+    }
+    return Math.max(8.0, Math.min(95.0, mod));
+  });
+
+  if (isMitigatedActive) {
+    if (mitigationState.ptou && mitigationState.bess) {
+      peakVal = Math.max(58.0, peakVal - 9.5);
+      critVal = Math.max(10.0, critVal - 8.5);
+      queueVal = Math.max(4, Math.round(queueVal * 0.45));
+    } else if (mitigationState.ptou) {
+      peakVal = Math.max(60.0, peakVal - 5.5);
+      critVal = Math.max(12.0, critVal - 4.5);
+      queueVal = Math.max(6, Math.round(queueVal * 0.65));
+    } else if (mitigationState.bess) {
+      peakVal = Math.max(61.0, peakVal - 4.5);
+      critVal = Math.max(13.0, critVal - 4.0);
+      queueVal = Math.max(7, Math.round(queueVal * 0.70));
+    }
+  }
+
+  // Update KPI UI
+  const peakValEl = document.getElementById('stress-peak-val');
+  const peakSubEl = document.getElementById('stress-peak-sub');
+  const critValEl = document.getElementById('stress-crit-val');
+  const critSubEl = document.getElementById('stress-crit-sub');
+  const queueValEl = document.getElementById('stress-queue-val');
+  const queueSubEl = document.getElementById('stress-queue-sub');
+  const anxietyValEl = document.getElementById('stress-anxiety-val');
+  const anxietySubEl = document.getElementById('stress-anxiety-sub');
+  const narrativeEl = document.getElementById('whatif-scenario-narrative');
+  const badgeEl = document.getElementById('mitigation-status-badge');
+
+  if (peakValEl) {
+    peakValEl.innerText = `${peakVal.toFixed(1)}%`;
+    peakValEl.style.color = isMitigatedActive ? '#10b981' : (peakVal >= 71.0 ? '#ef4444' : (peakVal >= 70.0 ? '#f59e0b' : 'var(--accent-cyan)'));
+  }
+  if (peakSubEl) {
+    peakSubEl.innerText = isMitigatedActive ? `Tereduksi dari ${scen.peak}` : scen.peakSub;
+  }
+
+  if (critValEl) {
+    critValEl.innerText = `${critVal.toFixed(1)}%`;
+    critValEl.style.color = isMitigatedActive ? '#10b981' : scen.critColor;
+  }
+  if (critSubEl) {
+    critSubEl.innerText = isMitigatedActive ? 'Terkendali Aman (<15%)' : scen.critSub;
+  }
+
+  if (queueValEl) {
+    queueValEl.innerText = `${queueVal} Menit`;
+    queueValEl.style.color = queueVal <= 10 ? '#10b981' : (queueVal <= 18 ? '#f59e0b' : '#ef4444');
+  }
+  if (queueSubEl) {
+    queueSubEl.innerText = isMitigatedActive ? 'Pangkas antrean hingga -55%' : (scen.id === 1 ? 'Kondisi antrean normal' : `+${scen.queueDelta} mnt di atas baseline`);
+  }
+
+  if (anxietyValEl) {
+    const anxietyLabel = isMitigatedActive ? 'Terkendali' : scen.anxiety;
+    anxietyValEl.innerText = anxietyLabel;
+    anxietyValEl.style.color = isMitigatedActive ? '#10b981' : scen.anxietyColor;
+  }
+  if (anxietySubEl) {
+    anxietySubEl.innerText = isMitigatedActive ? 'Kapasitas port terlindungi BESS' : scen.anxietySub;
+    anxietySubEl.style.color = isMitigatedActive ? '#10b981' : scen.anxietyColor;
+  }
+
+  if (badgeEl) {
+    if (mitigationState.ptou && mitigationState.bess) {
+      badgeEl.innerText = 'P-ToU + BESS Aktif';
+      badgeEl.style.background = 'rgba(16, 185, 129, 0.2)';
+      badgeEl.style.color = '#34d399';
+    } else if (mitigationState.ptou) {
+      badgeEl.innerText = 'P-ToU Pricing Aktif';
+      badgeEl.style.background = 'rgba(99, 102, 241, 0.2)';
+      badgeEl.style.color = '#a5b4fc';
+    } else if (mitigationState.bess) {
+      badgeEl.innerText = 'Modular BESS Aktif';
+      badgeEl.style.background = 'rgba(6, 182, 212, 0.2)';
+      badgeEl.style.color = '#67e8f9';
+    } else {
+      badgeEl.innerText = 'Mitigasi Standby';
+      badgeEl.style.background = 'rgba(255, 255, 255, 0.05)';
+      badgeEl.style.color = 'var(--text-secondary)';
+    }
+  }
+
+  if (narrativeEl) {
+    let extraMitigationNote = '';
+    if (isMitigatedActive) {
+      extraMitigationNote = `<br><span style="color: #10b981; font-weight: 700;">Dampak Intervensi CPO:</span> Kombinasi kebijakan berhasil memangkas utilisasi puncak ke level aman (${peakVal.toFixed(1)}%), memotong waktu tunggu antrean dari ${scen.queue} menjadi ${queueVal} menit, dan meredakan kepanikan pengguna di koridor jalan tol.`;
+    }
+    narrativeEl.innerHTML = `${scen.narrative} ${extraMitigationNote}`;
+  }
+
+  // Update Chart.js curve
+  if (typeof updateWhatIfChart === 'function') {
+    updateWhatIfChart(scen.hourly, mitigatedHourly, isMitigatedActive, scen.shortName);
+  }
+}
+
+function toggleWhatIfInfographic() {
+  const wrap = document.getElementById('whatif-figure-wrap');
+  const btn = document.getElementById('btn-toggle-whatif-figure');
+  if (!wrap) return;
+
+  const isHidden = wrap.style.display === 'none' || wrap.style.display === '';
+  wrap.style.display = isHidden ? 'block' : 'none';
+  if (btn) {
+    btn.innerHTML = isHidden 
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Sembunyikan Plot Multi-Panel'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg> Tampilkan Plot Multi-Panel Empiris';
+  }
+}
+

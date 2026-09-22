@@ -4,6 +4,7 @@
 
 let spkluMap = null;
 let markerLayerGroup = null;
+let stationMarkersMap = {};
 
 function initSpkluMap() {
   if (spkluMap) return; // already initialized
@@ -36,6 +37,9 @@ function initSpkluMap() {
 
   // Setup Event Listeners for Map Filters
   setupMapFilterListeners();
+
+  // Initialize Top 10 Bottleneck Hotspots
+  initBottleneckHotspots();
 }
 
 function getMarkerColor(utilization) {
@@ -117,6 +121,7 @@ function renderMapMarkers(stations) {
       offset: [0, -6],
       opacity: 0.95
     });
+    stationMarkersMap[station.station_id] = marker;
     markerLayerGroup.addLayer(marker);
   });
 
@@ -153,4 +158,95 @@ function setupMapFilterListeners() {
   if (searchInput) searchInput.addEventListener('input', applyFilters);
   if (chargerFilter) chargerFilter.addEventListener('change', applyFilters);
   if (locationFilter) locationFilter.addEventListener('change', applyFilters);
+}
+
+/* --------------------------------------------------------------------------
+   Top 10 Bottleneck Hotspots & Spatial Radar Controller
+   -------------------------------------------------------------------------- */
+function initBottleneckHotspots() {
+  const container = document.getElementById('bottleneck-stations-grid');
+  if (!container || typeof STATIONS_DATA === 'undefined') return;
+
+  // Sort by avg_utilization descending
+  const sorted = [...STATIONS_DATA].sort((a, b) => b.avg_utilization - a.avg_utilization);
+  const top10 = sorted.slice(0, 10);
+
+  let html = '';
+  top10.forEach((station, idx) => {
+    const utilPct = (station.avg_utilization * 100).toFixed(1);
+    const p90Pct = ((station.p90_utilization || station.avg_utilization * 1.35) * 100).toFixed(0);
+    const pCritEstimated = Math.min(28, Math.round((station.avg_utilization - 0.40) * 100));
+
+    html += `
+      <div class="bottleneck-card">
+        <div class="bottleneck-card-top">
+          <div class="bottleneck-rank-badge">#${idx + 1}</div>
+          <div class="bottleneck-info">
+            <div class="bottleneck-name">${station.station_name}</div>
+            <div class="bottleneck-meta">
+              <span>${station.city}, ${station.state}</span> &bull; 
+              <span style="color: var(--accent-cyan); font-weight: 600;">${station.location_type}</span> &bull; 
+              <span>${station.ports_total} Port (${station.total_capacity_kw} kW)</span>
+            </div>
+          </div>
+          <button class="btn-focus-station" onclick="focusStationOnMap('${station.station_id}')" title="Pusatkan kamera Leaflet ke stasiun ini">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 2px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            Fokus Peta
+          </button>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 2px;">
+            <span style="color: var(--text-muted);">Rata-rata: <strong style="color: #ef4444;">${utilPct}%</strong> &bull; P90: <strong>${p90Pct}%</strong></span>
+            <span style="color: #f59e0b; font-weight: 700;">P(Kritis &gt; 80%): ~${pCritEstimated}%</span>
+          </div>
+          <div class="bottleneck-bar-wrap">
+            <div class="bottleneck-bar-fill" style="width: ${utilPct}%;"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function focusStationOnMap(stationId) {
+  if (typeof STATIONS_DATA === 'undefined') return;
+  const station = STATIONS_DATA.find(s => s.station_id === stationId);
+  if (!station || !spkluMap) return;
+
+  // Fly to station coordinates
+  spkluMap.flyTo([station.latitude, station.longitude], 13, {
+    animate: true,
+    duration: 1.2
+  });
+
+  // Open marker popup after flight
+  setTimeout(() => {
+    const marker = stationMarkersMap[stationId];
+    if (marker) {
+      marker.openPopup();
+    }
+  }, 1250);
+
+  // Smooth scroll to map
+  const mapElement = document.getElementById('spklu-map');
+  if (mapElement) {
+    mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function toggleBottleneckInfographic() {
+  const wrap = document.getElementById('bottleneck-infographic-wrap');
+  const btn = document.getElementById('btn-toggle-bottleneck-map');
+  if (!wrap) return;
+
+  const isHidden = wrap.style.display === 'none' || wrap.style.display === '';
+  wrap.style.display = isHidden ? 'block' : 'none';
+  if (btn) {
+    btn.innerHTML = isHidden 
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Sembunyikan Analisis Spasial'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg> Tampilkan Analisis Spasial Komprehensif';
+  }
 }

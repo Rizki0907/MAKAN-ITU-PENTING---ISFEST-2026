@@ -108,6 +108,13 @@ function setupTabNavigation() {
         }, 100);
       }
 
+      // Trigger What-If Chart resize if Simulasi tab is opened
+      if (targetTabId === 'tab-simulasi' && typeof whatIfChartInstance !== 'undefined' && whatIfChartInstance) {
+        setTimeout(() => {
+          whatIfChartInstance.resize();
+        }, 100);
+      }
+
       // Smooth scroll to top of content
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });

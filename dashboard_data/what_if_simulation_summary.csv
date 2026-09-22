@@ -1,0 +1,5 @@
+Skenario,Rata-rata Utilisasi Jaringan,Utilisasi Jam Sibuk (Peak Hours),Risiko Kepadatan Kritis (>80%)
+Skenario 1: Baseline Operasional,0.4499252783028149,0.6907478841291178,0.17660470879801735
+Skenario 2: Lonjakan Liburan (Holiday Surge),0.4671866069539869,0.7075279005371538,0.2089814126394052
+Skenario 3: Gelombang Dingin Ekstrem (Freeze),0.4690961126703747,0.715136653101134,0.2051548946716233
+Skenario 4: Stres Kombinasi Libur Musim Dingin,0.4820040420922761,0.7262031066600728,0.22896654275092937

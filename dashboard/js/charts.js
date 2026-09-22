@@ -7,6 +7,7 @@ let diurnalChartInstance = null;
 let featureChartInstance = null;
 let modelChartInstance = null;
 let futureForecastChartInstance = null;
+let whatIfChartInstance = null;
 
 // Global Chart.js Defaults for Dark Mode Luxury Aesthetic
 Chart.defaults.color = '#94a3b8';
@@ -26,6 +27,8 @@ function initAllCharts() {
   setupForecastControls();
   renderHourlyHeatmap();
   renderModelEvaluationTable();
+  initShapExplainer();
+  initWhatIfChart();
 }
 
 function updateChartJsTheme(isLight) {
@@ -47,6 +50,7 @@ function updateChartJsTheme(isLight) {
     const item = itemSelect ? itemSelect.value : '';
     initFutureForecastChart(cat, item);
   }
+  if (whatIfChartInstance) updateWhatIfChart();
 
   // Re-render HTML-based visualizations with theme-matched colors
   renderHourlyHeatmap();
@@ -609,5 +613,157 @@ function renderForecastRanking() {
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+/* --------------------------------------------------------------------------
+   7. Explainable AI (SHAP) Tab Switcher Controller
+   -------------------------------------------------------------------------- */
+function initShapExplainer() {
+  const pillBtns = document.querySelectorAll('.xai-pill-btn[data-xai-target]');
+  if (!pillBtns || pillBtns.length === 0) return;
+
+  pillBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-xai-target');
+      if (!targetId) return;
+
+      // Update Active Button
+      pillBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update Visible Panel
+      const panels = document.querySelectorAll('.xai-content-panel');
+      panels.forEach(p => {
+        if (p.id === targetId) {
+          p.classList.add('active');
+        } else {
+          p.classList.remove('active');
+        }
+      });
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   8. What-If Diurnal Curve Comparison Chart (Chart.js)
+   -------------------------------------------------------------------------- */
+function initWhatIfChart() {
+  const canvas = document.getElementById('whatIfDiurnalChart');
+  if (!canvas) return;
+
+  const hours = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+  
+  // Default baseline data
+  const baselineData = [17.0, 12.0, 10.0, 9.0, 11.0, 18.0, 32.0, 44.0, 48.0, 46.0, 45.0, 47.0, 49.0, 48.0, 49.0, 53.0, 62.0, 69.1, 67.5, 58.0, 48.0, 38.0, 28.0, 21.0];
+  const initialStressedData = [...baselineData];
+
+  const ctx = canvas.getContext('2d');
+  if (whatIfChartInstance) whatIfChartInstance.destroy();
+
+  const isLight = document.body.classList.contains('light-theme');
+
+  whatIfChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: hours,
+      datasets: [
+        {
+          label: 'Baseline Operasional Normal (%)',
+          data: baselineData,
+          borderColor: isLight ? '#64748b' : '#94a3b8',
+          borderDash: [6, 4],
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.35,
+          fill: false
+        },
+        {
+          label: 'Skenario Guncangan Stres (%)',
+          data: initialStressedData,
+          borderColor: '#ef4444',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          borderWidth: 3,
+          pointBackgroundColor: '#ef4444',
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          tension: 0.35,
+          fill: false
+        },
+        {
+          label: 'Hasil Intervensi Mitigasi CPO (%)',
+          data: initialStressedData,
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16, 185, 129, 0.08)',
+          borderWidth: 2.5,
+          pointBackgroundColor: '#10b981',
+          pointRadius: 0,
+          borderDash: [4, 4],
+          tension: 0.35,
+          fill: false,
+          hidden: true
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { boxWidth: 14, font: { size: 11 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(c) {
+              return ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.04)' },
+          ticks: { color: isLight ? '#475569' : '#94a3b8' },
+          title: { display: true, text: 'Jam Operasional (00:00 - 23:00)', font: { size: 11 } }
+        },
+        y: {
+          grid: { color: isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)' },
+          min: 0,
+          max: 85,
+          ticks: { 
+            color: isLight ? '#475569' : '#94a3b8',
+            callback: v => `${v}%` 
+          },
+          title: { display: true, text: 'Tingkat Utilisasi (%)', font: { size: 11 } }
+        }
+      }
+    }
+  });
+}
+
+function updateWhatIfChart(stressedData, mitigatedData, isMitigatedActive, scenarioName) {
+  if (!whatIfChartInstance) return;
+
+  const isLight = document.body.classList.contains('light-theme');
+
+  // Dataset 0: Baseline (always static)
+  whatIfChartInstance.data.datasets[0].borderColor = isLight ? '#64748b' : '#94a3b8';
+
+  // Dataset 1: Stressed Scenario
+  if (stressedData) {
+    whatIfChartInstance.data.datasets[1].data = stressedData.map(v => typeof v === 'number' ? (v > 1 ? v : v * 100) : v);
+    if (scenarioName) whatIfChartInstance.data.datasets[1].label = `${scenarioName} (%)`;
+  }
+
+  // Dataset 2: Mitigated Curve
+  if (mitigatedData && isMitigatedActive) {
+    whatIfChartInstance.data.datasets[2].data = mitigatedData.map(v => typeof v === 'number' ? (v > 1 ? v : v * 100) : v);
+    whatIfChartInstance.data.datasets[2].hidden = false;
+  } else {
+    whatIfChartInstance.data.datasets[2].hidden = true;
+  }
+
+  whatIfChartInstance.update();
 }
 

@@ -225,6 +225,76 @@
         </div>
       </div>
 
+      <!-- SDGs 7 & 13 Decarbonization & Clean Energy Impact Ledger -->
+      <div class="sdg-ledger-banner">
+        <div class="sdg-ledger-header">
+          <div>
+            <div class="sdg-badge-group">
+              <span class="sdg-tag sdg-tag-7">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg>
+                SDG 7: Affordable & Clean Energy
+              </span>
+              <span class="sdg-tag sdg-tag-13">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
+                SDG 13: Climate Action
+              </span>
+            </div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--text-primary); margin: 0.45rem 0 0.2rem 0;">
+              Neraca Dampak Berkelanjutan & Dekarbonisasi Nasional
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">
+              Estimasi dampak terukur jaringan 150 SPKLU (kapasitas terpasang 85 MW) berbasis inferensi empiris model Consensus GBDT
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="xai-pill-btn active" onclick="switchTab('tab-simulasi')" style="font-size: 0.78rem;">
+              Uji Simulasi What-If &rarr;
+            </button>
+            <button class="xai-pill-btn" onclick="switchTab('tab-model')" style="font-size: 0.78rem;">
+              Buka XAI (SHAP) &rarr;
+            </button>
+          </div>
+        </div>
+
+        <div class="sdg-grid-4col">
+          <div class="sdg-stat-card">
+            <div class="sdg-stat-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg>
+            </div>
+            <span class="sdg-stat-val">43.934</span>
+            <span class="sdg-stat-lbl">MWh / Bulan</span>
+            <span class="sdg-stat-sub">Penyaluran Energi Listrik Bersih</span>
+          </div>
+
+          <div class="sdg-stat-card">
+            <div class="sdg-stat-icon-wrap" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <span class="sdg-stat-val">34.768</span>
+            <span class="sdg-stat-lbl">Ton CO₂ / Bulan</span>
+            <span class="sdg-stat-sub">417.218 Ton/Tahun Emisi Ditekan</span>
+          </div>
+
+          <div class="sdg-stat-card">
+            <div class="sdg-stat-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+            </div>
+            <span class="sdg-stat-val">3,91 Juta</span>
+            <span class="sdg-stat-lbl">Galon Bensin / Bulan</span>
+            <span class="sdg-stat-sub">Bahan Bakar Fosil Terdisrupsi</span>
+          </div>
+
+          <div class="sdg-stat-card">
+            <div class="sdg-stat-icon-wrap" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <span class="sdg-stat-val">$8,62 Juta</span>
+            <span class="sdg-stat-lbl">USD / Bulan</span>
+            <span class="sdg-stat-sub">Penghematan Biaya Pengemudi EV</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Quick Action Navigation Cards -->
       <div class="grid-3col">
         <div class="glass-card" onclick="switchTab('tab-peta')" style="cursor: pointer;">
@@ -479,6 +549,140 @@
           </div>
         </div>
       </div>
+
+      <!-- Explainable AI (SHAP) & Residual Diagnosis Section -->
+      <div class="glass-card" style="margin-top: 2rem;">
+        <div class="card-header-clean">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.25rem;">
+              <span class="badge-model badge-champion">Explainable AI (XAI)</span>
+              <span class="badge-model" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-purple);">Shapley Additive Explanations</span>
+            </div>
+            <h3 class="card-title">Interpretabilitas Model: Analisis SHAP & Profiling Residual</h3>
+            <p class="card-subtitle">
+              Pembongkaran mekanisme *black-box* model Consensus GBDT menggunakan teori permainan kooperatif Shapley values dan diagnosis galat residual pada holdout 14 hari
+            </p>
+          </div>
+        </div>
+
+        <!-- Navigation Pills for XAI Tabs -->
+        <div class="xai-nav-pills">
+          <button class="xai-pill-btn active" data-xai-target="xai-beeswarm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            1. SHAP Beeswarm Global
+          </button>
+          <button class="xai-pill-btn" data-xai-target="xai-temp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
+            2. Dependensi Suhu (Cold Gating)
+          </button>
+          <button class="xai-pill-btn" data-xai-target="xai-waterfall">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            3. Waterfall Explainer: Koridor Tol
+          </button>
+          <button class="xai-pill-btn" data-xai-target="xai-residual">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            4. Diagnosis Residual & Homoskedastisitas
+          </button>
+        </div>
+
+        <!-- Panel 1: Beeswarm -->
+        <div id="xai-beeswarm" class="xai-content-panel active">
+          <div style="display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 1.5rem;" class="xai-grid-layout">
+            <div class="xai-figure-showcase">
+              <img src="assets/figures/figure_09_shap_beeswarm_global_summary.png" alt="SHAP Beeswarm Global Summary" class="xai-figure-img" onerror="this.src='assets/figures/shap_beeswarm_global.png'">
+              <div class="xai-figure-caption">Gambar: Distribusi Kontribusi SHAP Global dari 20 Fitur Penentu Utama Utilisasi SPKLU</div>
+            </div>
+            <div class="xai-narrative-card">
+              <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan); letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">
+                Wawasan Global Beeswarm
+              </span>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Konsensus Fitur Dominan:</strong> Tiga prediktor interaksi spasial-temporal menempati puncak impak model: <code>target_prof_st_hr_wk</code> (43.4%), <code>target_prof_loc_hr_wk</code> (13.1%), dan <code>target_prof_st_hr</code> (6.9%).
+              </p>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Titik Merah (Nilai Tinggi) vs Biru (Nilai Rendah):</strong> Titik merah pada fitur profil historis bergeser jauh ke kanan sumbu ($+0.15$ hingga $+0.25$), membuktikan bahwa histori beban spesifik jam-lokasi merupakan penentu terkuat tingginya pemakaian port pengisian.
+              </p>
+              <p style="margin: 0;">
+                <strong>Sensitivitas Makro:</strong> Fitur ekonomi <code>gas_price_per_gallon</code> (+4.8%) menunjukkan titik merah terkonsentrasi di sisi positif, mengonfirmasi substitusi bensin ke listrik saat BBM fosil mahal.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Temperature Dependence -->
+        <div id="xai-temp" class="xai-content-panel">
+          <div style="display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 1.5rem;" class="xai-grid-layout">
+            <div class="xai-figure-showcase">
+              <img src="assets/figures/figure_10_shap_dependence_temperature.png" alt="SHAP Temperature Dependence" class="xai-figure-img" onerror="this.src='assets/figures/shap_dependence_temperature.png'">
+              <div class="xai-figure-caption">Gambar: Plot Dependensi SHAP Suhu Udara (°F) Mendeteksi Efek Non-Linear Cold Gating</div>
+            </div>
+            <div class="xai-narrative-card">
+              <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent-purple); letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">
+                Fenomena "Battery Cold Penalty"
+              </span>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Ambang Batas Kritis 32°F (0°C):</strong> Pada temperatur di atas 45°F, nilai SHAP berkisar netral ($-0.01$ s/d $+0.01$). Namun begitu suhu menembus di bawah titik beku 32°F, kurva SHAP mengalami infleksi tajam menanjak hingga $+0.04$ s/d $+0.08$.
+              </p>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Mekanisme Fisik:</strong> Baterai Lithium-ion pada suhu beku mengaktifkan proteksi *Battery Management System (BMS)* untuk mencegah *lithium plating*, sehingga laju penerimaan arus DC Fast Charging melambat.
+              </p>
+              <p style="margin: 0;">
+                <strong>Implikasi Operasional:</strong> Durasi pengisian satu mobil membengkak 35-50%, memicu penumpukan antrean dan kenaikan utilisasi semu (*occupancy time spike*) yang berhasil ditangkap akurat oleh model.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Waterfall Explainer -->
+        <div id="xai-waterfall" class="xai-content-panel">
+          <div style="display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 1.5rem;" class="xai-grid-layout">
+            <div class="xai-figure-showcase">
+              <img src="assets/figures/figure_11_shap_waterfall_highway_case_study.png" alt="SHAP Waterfall Highway Case Study" class="xai-figure-img" onerror="this.src='assets/figures/shap_waterfall_case_study.png'">
+              <div class="xai-figure-caption">Gambar: SHAP Waterfall Explainer untuk Stasiun Highway Corridor pada Jam Sibuk Sore (18:00)</div>
+            </div>
+            <div class="xai-narrative-card">
+              <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent-pink); letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">
+                Studi Kasus Mikro: Lonjakan Koridor Tol
+              </span>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Evolusi Prediksi $E[f(X)] \to f(X)$:</strong> Dimulai dari rata-rata ekspektasi jaringan $E[f(X)] = 0.452$ (45.2%), waterfall mengurai step-by-step bagaimana prediksi melonjak ke tingkat kritis <strong>0.814 (81.4%)</strong>.
+              </p>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Pendorong Utama (+):</strong>
+                Profil stasiun-jam sore memberikan dorongan terbesar ($+0.183$), diikuti profil Highway Corridor ($+0.089$), indikator rush hour ($+0.051$), dan suhu dingin Desember ($+0.038$).
+              </p>
+              <p style="margin: 0;">
+                <strong>Penahan (-):</strong>
+                Kapasitas port stasiun yang relatif besar (8 port) memberikan sedikit efek peredam ($-0.019$), namun tidak cukup menahan lonjakan arus komuter antar-kota.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 4: Residual Diagnosis -->
+        <div id="xai-residual" class="xai-content-panel">
+          <div style="display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 1.5rem;" class="xai-grid-layout">
+            <div class="xai-figure-showcase">
+              <img src="assets/figures/figure_13_residual_error_breakdown.png" alt="Residual Error Breakdown" class="xai-figure-img" onerror="this.src='assets/figures/residual_error_breakdown.png'">
+              <div class="xai-figure-caption">Gambar: Diagnosis Galat Residual Lintas 8 Tipe Lokasi dan Pola Homoskedastisitas Model</div>
+            </div>
+            <div class="xai-narrative-card">
+              <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent-emerald); letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">
+                Audit Homoskedastisitas & Tanpa Bias
+              </span>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Zero Systematic Bias:</strong> Rata-rata residual pada holdout 14 hari tercatat $\mu = 0.00003 \approx 0.000$ dengan distribusi Gaussian simetris sempurna, mengonfirmasi model tidak mengalami under-prediction maupun over-prediction sistematis.
+              </p>
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Kestabilan Lintas Kategori:</strong> Nilai RMSE terdistribusi merata di antara $0.062$ (Residential) hingga $0.071$ (Highway Corridor), membuktikan model adaptif terhadap dinamika heterogen seluruh tipe stasiun.
+              </p>
+              <p style="margin: 0;">
+                <strong>Uji Bebas Leakage:</strong> Karena dievaluasi murni pada data temporal 14 hari terakhir tanpa tumpang tindih waktu latih, skor holdout $0.067710$ mencerminkan daya generalisasi nyata pada kondisi produksi.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ======================================================================
@@ -539,6 +743,43 @@
           <div style="margin-top: 0.6rem; font-size: 0.68rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.4rem;">
             Menampilkan: <strong id="map-filtered-count" style="color: var(--text-primary);">150 Stasiun</strong>
           </div>
+        </div>
+      </div>
+
+      <!-- Top 10 Bottleneck SPKLU Hotspots Panel -->
+      <div class="glass-card bottleneck-panel-card">
+        <div class="card-header-clean">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.25rem;">
+              <span class="badge-model" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">
+                Zona Merah Saturasi Kritis
+              </span>
+              <span class="badge-model" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                P(Utilisasi > 80%) s/d 28%
+              </span>
+            </div>
+            <h3 class="card-title">Top 10 Bottleneck SPKLU Hotspots & Radar Antrean</h3>
+            <p class="card-subtitle">
+              Stasiun dengan probabilitas antrean terpanjang saat peak hour, didominasi koridor jalan tol (Highway) dan simpul transit perkotaan. Klik tombol <strong>Fokus Peta</strong> untuk mengarahkan kamera dan membuka telemetri stasiun secara instan.
+            </p>
+          </div>
+          <button id="btn-toggle-bottleneck-map" class="xai-pill-btn" onclick="toggleBottleneckInfographic()" style="font-size: 0.78rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            Tampilkan Analisis Spasial Komprehensif
+          </button>
+        </div>
+
+        <!-- Infographic Showcase (Collapsible) -->
+        <div id="bottleneck-infographic-wrap" style="display: none; margin-bottom: 1.25rem; animation: fadeIn 0.3s ease;">
+          <div class="xai-figure-showcase">
+            <img src="assets/figures/figure_14_spatial_bottleneck_mapping.png" alt="Spatial Bottleneck Mapping" class="xai-figure-img" onerror="this.src='assets/figures/spatial_bottleneck_mapping.png'">
+            <div class="xai-figure-caption">Gambar: Pemetaan Spasial Hotspot Kemacetan SPKLU & Probabilitas Saturasi Beban Kritis P(utilisasi > 80%)</div>
+          </div>
+        </div>
+
+        <!-- Dynamic 10 Bottlenecks Grid -->
+        <div id="bottleneck-stations-grid" class="bottleneck-grid">
+          <!-- Populated dynamically by map.js -->
         </div>
       </div>
     </section>
@@ -667,6 +908,144 @@
           <p class="section-subtitle">
             Uji inferensi prediksi langsung untuk setiap stasiun secara spesifik, serta simulasikan skenario penyesuaian tarif dinamis dan ekspansi port berbasis data empiris.
           </p>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           MAJOR COMPONENT: SIMULASI 4 SKENARIO WHAT-IF & STRESS-TESTING OPERASIONAL
+           (Sinkron 100% dengan Notebook Final & Bab D Paper Kompetisi)
+           ==================================================================== -->
+      <div class="glass-card" style="margin-bottom: 2rem; border-color: rgba(0, 242, 254, 0.25);">
+        <div class="card-header-clean">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.25rem;">
+              <span class="badge-model badge-champion">Bab D Paper & Notebook Sync</span>
+              <span class="badge-model" style="background: rgba(236, 72, 153, 0.15); color: var(--accent-pink);">Operational Stress-Testing</span>
+            </div>
+            <h3 class="card-title">Simulasi 4 Skenario "What-If" & Uji Ketahanan Jaringan SPKLU</h3>
+            <p class="card-subtitle">
+              Eksplorasi respons dinamis utilisasi jaringan 150 SPKLU di bawah 4 skenario guncangan empiris dan uji efektivitas intervensi strategis operator (CPO)
+            </p>
+          </div>
+          <button id="btn-toggle-whatif-figure" class="xai-pill-btn" onclick="toggleWhatIfInfographic()" style="font-size: 0.78rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            Tampilkan Plot Multi-Panel Empiris
+          </button>
+        </div>
+
+        <!-- Empirical Multi-Panel Figure (Collapsible) -->
+        <div id="whatif-figure-wrap" style="display: none; margin-bottom: 1.25rem; animation: fadeIn 0.3s ease;">
+          <div class="xai-figure-showcase">
+            <img src="assets/figures/figure_15_what_if_stress_testing_scenarios.png" alt="What-If Stress Testing Scenarios" class="xai-figure-img" onerror="this.src='assets/figures/what_if_stress_testing.png'">
+            <div class="xai-figure-caption">Gambar: Evaluasi Ketahanan Jaringan SPKLU Terhadap 4 Skenario Guncangan Operasional & Intervensi Mitigasi CPO</div>
+          </div>
+        </div>
+
+        <!-- 4 Scenario Selection Cards -->
+        <div class="scenario-selector-grid">
+          <div class="scenario-card-btn active" onclick="switchWhatIfScenario(1)" id="scen-btn-1">
+            <span class="scenario-num-tag">Skenario 1</span>
+            <div class="scenario-title">Baseline Normal</div>
+            <div class="scenario-desc-short">Operasional harian stabil jaringan SPKLU nasional tanpa gangguan eksternal.</div>
+          </div>
+
+          <div class="scenario-card-btn" onclick="switchWhatIfScenario(2)" id="scen-btn-2">
+            <span class="scenario-num-tag" style="color: #f59e0b;">Skenario 2</span>
+            <div class="scenario-title">Holiday Travel Surge</div>
+            <div class="scenario-desc-short">Lonjakan arus kendaraan antarkota +25-30% di koridor jalan tol & bandara saat libur panjang.</div>
+          </div>
+
+          <div class="scenario-card-btn" onclick="switchWhatIfScenario(3)" id="scen-btn-3">
+            <span class="scenario-num-tag" style="color: #8b5cf6;">Skenario 3</span>
+            <div class="scenario-title">Atmospheric Freeze Shock</div>
+            <div class="scenario-desc-short">Gelombang dingin polar vortex (&lt;25°F) memicu pelambatan charging rate baterai dingin.</div>
+          </div>
+
+          <div class="scenario-card-btn" onclick="switchWhatIfScenario(4)" id="scen-btn-4">
+            <span class="scenario-num-tag" style="color: #ef4444;">Skenario 4</span>
+            <div class="scenario-title">Combined Winter Holiday</div>
+            <div class="scenario-desc-short">Badai salju beku bertepatan dengan puncak mobilitas akhir tahun (stress-test ekstrem).</div>
+          </div>
+        </div>
+
+        <!-- Dynamic Stress KPI Cards -->
+        <div class="stress-kpi-row">
+          <div class="stress-kpi-card">
+            <span class="stress-kpi-label">Puncak Jam Sibuk (17-19)</span>
+            <span id="stress-peak-val" class="stress-kpi-value" style="color: var(--accent-cyan);">69.1%</span>
+            <span id="stress-peak-sub" class="stress-kpi-sub" style="color: var(--text-secondary);">Rata-rata 45.2% Harian</span>
+          </div>
+
+          <div class="stress-kpi-card">
+            <span class="stress-kpi-label">Porsi Durasi Kritis (&gt;80%)</span>
+            <span id="stress-crit-val" class="stress-kpi-value" style="color: #f59e0b;">17.7%</span>
+            <span id="stress-crit-sub" class="stress-kpi-sub" style="color: #10b981;">Kondisi Normal Standar</span>
+          </div>
+
+          <div class="stress-kpi-card">
+            <span class="stress-kpi-label">Estimasi Waktu Tunggu Antrean</span>
+            <span id="stress-queue-val" class="stress-kpi-value" style="color: var(--text-primary);">8 Menit</span>
+            <span id="stress-queue-sub" class="stress-kpi-sub" style="color: var(--text-muted);">Per kendaraan di gerbang tol</span>
+          </div>
+
+          <div class="stress-kpi-card">
+            <span class="stress-kpi-label">Indeks Range Anxiety</span>
+            <span id="stress-anxiety-val" class="stress-kpi-value" style="color: #10b981;">Rendah</span>
+            <span id="stress-anxiety-sub" class="stress-kpi-sub" style="color: #10b981;">Pengemudi melaju aman</span>
+          </div>
+        </div>
+
+        <!-- Strategic Operator Response Levers (CPO Mitigation Playbook) -->
+        <div class="cpo-levers-card">
+          <div class="cpo-levers-header">
+            <div>
+              <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--accent-purple); letter-spacing: 0.05em; display: block;">
+                CPO Response Playbook (Intervensi Kebijakan Operator)
+              </span>
+              <span style="font-size: 0.82rem; color: var(--text-primary); font-weight: 600;">
+                Aktifkan mitigasi untuk meratakan puncak beban dan mengeliminasi antrean kritis secara real-time
+              </span>
+            </div>
+            <span id="mitigation-status-badge" class="badge-model badge-champion">Mitigasi Siap</span>
+          </div>
+
+          <div class="cpo-toggles-grid">
+            <div id="toggle-ptou" class="cpo-toggle-item" onclick="toggleMitigation('ptou')">
+              <div>
+                <div class="cpo-toggle-title">1. Predictive Time-of-Use (P-ToU) Dynamic Pricing</div>
+                <div class="cpo-toggle-desc">Menerapkan diskon off-peak malam (-25%) dan surcharge jam sibuk (+15%) untuk menggeser 12-18% komuter fleksibel.</div>
+              </div>
+              <div class="switch-pill"></div>
+            </div>
+
+            <div id="toggle-bess" class="cpo-toggle-item" onclick="toggleMitigation('bess')">
+              <div>
+                <div class="cpo-toggle-title">2. Modular BESS & Mobile Rapid Charger Deployment</div>
+                <div class="cpo-toggle-desc">Mengirimkan unit baterai penyimpan modular (BESS) ke rest area koridor tol untuk menyerap hingga 20% lonjakan beban puncak.</div>
+              </div>
+              <div class="switch-pill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Chart.js What-If Diurnal Curve Comparison -->
+        <div>
+          <div class="card-header-clean" style="margin-bottom: 0.75rem;">
+            <div>
+              <h4 style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.15rem;">
+                Kurva Utilisasi Diurnal 24 Jam: Baseline vs Skenario Guncangan vs Hasil Mitigasi
+              </h4>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0;">
+                Bandingkan profil jam operasional (00:00 - 23:00) untuk memvalidasi efektivitas intervensi operasional
+              </p>
+            </div>
+          </div>
+          <div style="height: 350px; position: relative;">
+            <canvas id="whatIfDiurnalChart"></canvas>
+          </div>
+          <div id="whatif-scenario-narrative" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.85rem; border-top: 1px solid var(--border-subtle); padding-top: 0.65rem; line-height: 1.55;">
+            <!-- Populated dynamically based on scenario & levers -->
+          </div>
         </div>
       </div>
 
