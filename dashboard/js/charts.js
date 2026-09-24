@@ -167,10 +167,10 @@ function initDiurnalChart(dayFilter = 'all') {
         {
           label: 'Median / Mean Utilisasi (%)',
           data: meanVals,
-          borderColor: '#00f2fe',
-          backgroundColor: 'rgba(0, 242, 254, 0.1)',
+          borderColor: '#01ac86',
+          backgroundColor: 'rgba(1, 172, 134, 0.12)',
           borderWidth: 3,
-          pointBackgroundColor: '#00f2fe',
+          pointBackgroundColor: '#00e5a3',
           pointRadius: 3,
           pointHoverRadius: 6,
           tension: 0.35,
@@ -267,16 +267,16 @@ function initFeatureImportanceChart() {
         {
           label: 'Bobot Konsensus (%)',
           data: consensusVals,
-          backgroundColor: 'rgba(99, 102, 241, 0.85)',
-          borderColor: '#818cf8',
+          backgroundColor: 'rgba(1, 172, 134, 0.85)',
+          borderColor: '#00e5a3',
           borderWidth: 1,
           borderRadius: 4
         },
         {
           label: 'LightGBM (%)',
           data: lgbVals,
-          backgroundColor: 'rgba(0, 242, 254, 0.35)',
-          borderColor: '#00f2fe',
+          backgroundColor: 'rgba(2, 132, 199, 0.35)',
+          borderColor: '#0284c7',
           borderWidth: 1,
           borderRadius: 4
         }
@@ -418,7 +418,7 @@ function renderModelEvaluationTable() {
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: var(--font-number); font-variant-numeric: tabular-nums; font-size: 0.78rem;">
             <span style="color: var(--accent-cyan); font-weight: 600;">${pct.toFixed(2)}%</span>
             <div style="flex: 1; max-width: 44px; height: 5px; background: var(--border-subtle); border-radius: 3px; overflow: hidden;">
-              <div style="width: ${(pct / 25) * 100}%; height: 100%; background: linear-gradient(90deg, #6366f1, #0284c7); border-radius: 3px;"></div>
+              <div style="width: ${(pct / 25) * 100}%; height: 100%; background: linear-gradient(90deg, #01ac86, #00e5a3); border-radius: 3px;"></div>
             </div>
           </div>
         </td>
@@ -431,7 +431,7 @@ function renderModelEvaluationTable() {
     <tr class="consensus-table-row">
       <td>
         <span class="badge-model badge-champion" style="margin-right: 6px;">Consensus</span>
-        <strong style="color: var(--accent-purple); font-weight: 800;">Meta-Learner</strong>
+        <strong style="color: var(--accent-green); font-weight: 800;">Meta-Learner</strong>
         <span style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-top: 2px;">Ridge + Shift / Shrinkage</span>
       </td>
       <td>Ensemble</td>
@@ -443,9 +443,9 @@ function renderModelEvaluationTable() {
       </td>
       <td style="min-width: 105px;">
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; font-family: var(--font-number); font-variant-numeric: tabular-nums; font-size: 0.78rem;">
-          <span style="color: var(--accent-purple); font-weight: 700;">100.0%</span>
+          <span style="color: var(--accent-green); font-weight: 700;">100.0%</span>
           <div style="flex: 1; max-width: 44px; height: 5px; background: var(--border-subtle); border-radius: 3px; overflow: hidden;">
-            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ec4899, #6366f1); border-radius: 3px;"></div>
+            <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #01ac86, #00e5a3); border-radius: 3px;"></div>
           </div>
         </div>
       </td>

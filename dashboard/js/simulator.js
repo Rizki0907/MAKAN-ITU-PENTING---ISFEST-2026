@@ -245,7 +245,7 @@ function initInferencePlayground() {
       if (finalPred >= 0.55) {
         predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(220, 38, 38, 0.15); color: var(--accent-red); border: 1px solid rgba(220, 38, 38, 0.35);">Kepadatan Tinggi (Antrean Puncak)</span>';
       } else if (finalPred >= 0.38) {
-        predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-purple); border: 1px solid rgba(99, 102, 241, 0.35);">Beban Moderat (Operasi Normal)</span>';
+        predRiskEl.innerHTML = '<span class="badge-model" style="background: rgba(1, 172, 134, 0.15); color: var(--accent-green); border: 1px solid rgba(1, 172, 134, 0.35);">Beban Moderat (Operasi Normal)</span>';
       } else {
         predRiskEl.innerHTML = '<span class="badge-model badge-champion">Kapasitas Longgar (Lancar)</span>';
       }

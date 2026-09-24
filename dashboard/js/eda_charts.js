@@ -6,9 +6,9 @@
 function getPlotlyBaseLayout() {
   const isLight = document.body.classList.contains('light-theme');
   return {
-    paper_bgcolor: isLight ? '#ffffff' : 'rgba(14, 20, 36, 0.85)',
-    plot_bgcolor: isLight ? '#f8fafc' : 'rgba(8, 11, 19, 0.6)',
-    font: { family: 'Inter, sans-serif', color: isLight ? '#334155' : '#94a3b8', size: 11 },
+    paper_bgcolor: isLight ? '#ffffff' : 'rgba(11, 28, 44, 0.85)',
+    plot_bgcolor: isLight ? '#eef7f5' : 'rgba(6, 18, 30, 0.6)',
+    font: { family: 'Plus Jakarta Sans, sans-serif', color: isLight ? '#05204c' : '#94a3b8', size: 11 },
     margin: { l: 50, r: 25, t: 40, b: 45 },
     hovermode: 'closest',
     autosize: true
@@ -63,8 +63,8 @@ function renderEdaDiurnal() {
     y: weekdayVals,
     mode: 'lines+markers',
     name: 'Hari Kerja (Senin-Jumat)',
-    line: { color: '#00f2fe', width: 3 },
-    marker: { size: 6, color: '#00f2fe' },
+    line: { color: '#01ac86', width: 3 },
+    marker: { size: 6, color: '#00e5a3' },
     hovertemplate: '<b>Hari Kerja</b><br>Jam %{x}:00<br>Rata-rata: %{y:.4f}<extra></extra>'
   };
 
@@ -124,8 +124,8 @@ function renderEdaLocationCharger() {
     type: 'bar',
     name: 'Tipe Lokasi',
     marker: {
-      color: ['#38bdf8', '#818cf8', '#c084fc', '#f472b6', '#34d399'],
-      opacity: 0.85
+      color: ['#01ac86', '#00e5a3', '#059669', '#0284c7', '#34d399'],
+      opacity: 0.88
     },
     error_y: {
       type: 'data',
@@ -173,7 +173,7 @@ function renderEdaPorts() {
     y: counts,
     type: 'bar',
     marker: {
-      color: ports.map(p => p >= 8 ? '#f59e0b' : '#00f2fe'),
+      color: ports.map(p => p >= 8 ? '#f59e0b' : '#01ac86'),
       line: { color: 'rgba(255, 255, 255, 0.2)', width: 1 }
     },
     hovertemplate: '<b>%{x}</b><br>Frekuensi Sampel: %{y:,}<extra></extra>'

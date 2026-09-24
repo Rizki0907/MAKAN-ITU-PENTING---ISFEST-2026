@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChargeIQ &bull; SPKLU Demand Intelligence & Forecasting (ISFEST 2026)</title>
+  <link rel="icon" type="image/png" href="assets/brand/chargeiq_favicon.png">
   
   <!-- Google Fonts: Plus Jakarta Sans, Space Grotesk, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,11 +29,8 @@
     <div class="preloader-card">
       <div class="preloader-logo-wrap">
         <div class="preloader-energy-ring"></div>
-        <div class="preloader-icon-box">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
-          </svg>
-        </div>
+        <img src="assets/brand/chargeiq_logo_dark.png" alt="ChargeIQ" class="preloader-logo-img dark-mode-logo">
+        <img src="assets/brand/chargeiq_logo_light.png" alt="ChargeIQ" class="preloader-logo-img light-mode-logo">
       </div>
       <div class="preloader-title">ChargeIQ</div>
       <div class="preloader-subtitle">SPKLU Demand Intelligence &bull; ISFEST 2026</div>
@@ -54,15 +52,11 @@
     <nav class="navbar">
       <!-- Brand Logo -->
       <a href="#tab-beranda" class="nav-brand" id="brand-logo-link" onclick="switchTab('tab-beranda')">
-        <div class="brand-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
-          </svg>
+        <div class="brand-logo-wrapper">
+          <img src="assets/brand/chargeiq_logo_dark.png" alt="ChargeIQ" class="brand-logo-img dark-mode-logo">
+          <img src="assets/brand/chargeiq_logo_light.png" alt="ChargeIQ" class="brand-logo-img light-mode-logo">
         </div>
-        <div class="brand-text">
-          <span class="brand-title">ChargeIQ <span class="brand-tag">ISFEST 2026</span></span>
-          <span class="brand-subtitle">SPKLU Demand Intelligence &bull; ISFEST 2026</span>
-        </div>
+        <span class="brand-tag">ISFEST 2026</span>
       </a>
 
       <div class="nav-menu">
@@ -119,18 +113,18 @@
   <div class="ticker-bar">
     <div class="ticker-track">
       <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill purple"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill mint"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill green"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
       <div class="ticker-item"><span class="ticker-pill amber"></span> Fitur Kunci: <strong>target_prof_st_hr_wk (43.4% Bobot Konsensus)</strong></div>
       <div class="ticker-item"><span class="ticker-pill green"></span> Koreksi Musiman Teruji: <strong>OPTIMAL_SHIFT = +0.0007 &bull; OPTIMAL_SHRINKAGE = 1.0028</strong></div>
-      <div class="ticker-item"><span class="ticker-pill cyan"></span> Validasi: <strong>Temporal Holdout 14 Hari Bebas Data Leakage</strong></div>
+      <div class="ticker-item"><span class="ticker-pill mint"></span> Validasi: <strong>Temporal Holdout 14 Hari Bebas Data Leakage</strong></div>
       <!-- Duplicate loop for smooth infinite marquee -->
       <div class="ticker-item"><span class="ticker-pill green"></span> Jaringan Terkoneksi: <strong>150 Stasiun SPKLU Aktif (100% US Coverage)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill cyan"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
-      <div class="ticker-item"><span class="ticker-pill purple"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill mint"></span> Skor Kaggle Leaderboard: <strong>0.0680 (Model Murni Stacking Consensus)</strong></div>
+      <div class="ticker-item"><span class="ticker-pill green"></span> Jam Puncak Nasional: <strong>17:00 - 19:00 (Highway Corridor & Retail)</strong></div>
       <div class="ticker-item"><span class="ticker-pill amber"></span> Fitur Kunci: <strong>target_prof_st_hr_wk (43.4% Bobot Konsensus)</strong></div>
       <div class="ticker-item"><span class="ticker-pill green"></span> Koreksi Musiman Teruji: <strong>OPTIMAL_SHIFT = +0.0007 &bull; OPTIMAL_SHRINKAGE = 1.0028</strong></div>
-      <div class="ticker-item"><span class="ticker-pill cyan"></span> Validasi: <strong>Temporal Holdout 14 Hari Bebas Data Leakage</strong></div>
+      <div class="ticker-item"><span class="ticker-pill mint"></span> Validasi: <strong>Temporal Holdout 14 Hari Bebas Data Leakage</strong></div>
     </div>
   </div>
 
@@ -161,17 +155,17 @@
 
           <!-- Hero KPI Stat Cards -->
           <div class="hero-stats-row">
-            <div class="hero-stat-card">
+            <div class="hero-stat-card emerald-border">
               <span class="stat-value" data-target="150">150</span>
               <span class="stat-label">Stasiun SPKLU</span>
               <span class="stat-sub">15 Kota &bull; 100% US Coverage</span>
             </div>
-            <div class="hero-stat-card purple-border">
+            <div class="hero-stat-card mint-border">
               <span class="stat-value" data-target="1.3" data-suffix="M+" data-decimal="true">1.3M+</span>
               <span class="stat-label">Data Log Riil</span>
               <span class="stat-sub">1.317.750 Observasi (Train+Test)</span>
             </div>
-            <div class="hero-stat-card pink-border">
+            <div class="hero-stat-card teal-border">
               <span class="stat-value" data-target="6">6</span>
               <span class="stat-label">Model GBDT</span>
               <span class="stat-sub">Multi-Seed Consensus Blend</span>
