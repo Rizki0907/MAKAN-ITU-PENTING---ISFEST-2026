@@ -1396,6 +1396,15 @@ body.light-theme .badge-champion {
   .grid-3col {
     grid-template-columns: 1fr;
   }
+  .grid-4col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-4col {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1993,6 +2002,17 @@ body.light-theme .sdg-ledger-banner {
 body.light-theme .sdg-tag-7 {
   background: rgba(245, 158, 11, 0.12);
   color: #b45309;
+}
+
+.sdg-tag-9 {
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  color: #fb923c;
+}
+
+body.light-theme .sdg-tag-9 {
+  background: rgba(249, 115, 22, 0.12);
+  color: #c2410c;
 }
 
 .sdg-tag-13 {
