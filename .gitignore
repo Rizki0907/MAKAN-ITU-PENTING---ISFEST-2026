@@ -47,6 +47,8 @@ submission/MAKAN ITU PENTING_Submission*.csv
 scratch/
 catboost_info/
 __results___files/
+ppt_mockup_references/
+*.zip
 .gemini/
 *.log
 
